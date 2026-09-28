@@ -50,7 +50,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans select-text">
 
-  <!-- Header Limpo (Sem qualquer botão ou menção a professor) -->
+  <!-- Cabeçalho Principal -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -59,7 +59,7 @@
         </div>
         <div>
           <span class="text-[11px] uppercase tracking-wider font-extrabold text-indigo-600 block">Técnico em Administração</span>
-          <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">• Laboratório de Razonetes</span></h1>
+          <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">• Laboratório Contábil</span></h1>
         </div>
       </div>
       <div class="flex items-center space-x-2">
@@ -87,7 +87,7 @@
               <span id="studentAttendanceBadge">Chamada em Aberto</span>
             </div>
             <h2 class="text-xl font-black text-slate-900">Identificação do Aluno & Chamada</h2>
-            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome completo e escolha sua turma para registrar presença e validar a pontuação.</p>
+            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome completo e escolha sua turma para registrar a presença no diário.</p>
           </div>
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <input type="text" id="studentNameInput" placeholder="Seu Nome Completo..." class="w-full sm:w-64 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
@@ -1003,16 +1003,16 @@
 
   </main>
 
-  <!-- Rodapé Discreto com o Gatilho Secreto (Triple-Click) -->
+  <!-- Rodapé com Gatilho Secreto (Triple-Click) -->
   <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
     <div class="max-w-7xl mx-auto px-4 text-center">
-      <p id="secretFooterTrigger" class="text-xs text-slate-400 font-medium cursor-default select-none transition-colors" title="Laboratório Contábil">
+      <p id="secretFooterTrigger" class="text-xs text-slate-400 font-medium cursor-pointer select-none hover:text-slate-600 transition-colors" title="Área Docente (3 cliques ou Ctrl+Shift+P)">
         © 2026 Curso Técnico em Administração • Arena GamerZone &copy;
       </p>
     </div>
   </footer>
 
-  <!-- MODAL SECRETO: Autenticação da Professora via Hash SHA-256 -->
+  <!-- MODAL: Autenticação da Professora (Senha: prof123) -->
   <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full border border-slate-200 shadow-2xl p-6 space-y-4 text-center">
       <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto">
@@ -1022,16 +1022,22 @@
         <h3 class="text-lg font-black text-slate-900">Acesso Restrito ao Painel Docente</h3>
         <p class="text-xs text-slate-500 mt-1">Informe sua senha credenciada para desbloquear a gestão das turmas.</p>
       </div>
+
       <div>
-        <!-- Campo com type=password para mascarar os caracteres -->
-        <input type="password" id="teacherPasswordInput" placeholder="Senha do docente..." class="w-full text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono">
+        <div class="relative flex items-center">
+          <input type="password" id="teacherPasswordInput" placeholder="Digite a senha..." class="w-full text-sm px-3.5 py-2.5 pr-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono">
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-slate-400 hover:text-slate-600 transition" title="Alternar visibilidade da senha">
+            <i id="passwordToggleIcon" data-lucide="eye" class="w-5 h-5"></i>
+          </button>
+        </div>
         <p id="teacherAuthError" class="hidden text-xs text-rose-600 mt-1.5 font-bold">Senha inválida. Acesso negado.</p>
       </div>
+
       <div class="flex items-center space-x-2 pt-1">
         <button onclick="closeTeacherAuthModal()" class="w-1/2 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition">
           Cancelar
         </button>
-        <button onclick="verifyTeacherEncryptedPassword()" class="w-1/2 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition">
+        <button onclick="verifyTeacherPassword()" class="w-1/2 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition">
           Autenticar
         </button>
       </div>
@@ -1095,14 +1101,12 @@
     </div>
   </div>
 
-  <!-- SCRIPT LOGIC -->
   <script>
     const STORAGE_KEY = 'gamerzone_turmas_2026';
     const ACTIVE_STUDENT_KEY = 'gamerzone_estudante_ativo';
     
-    // Hash SHA-256 criptográfico da senha mantida ("prof123").
-    // A palavra "prof123" nunca aparece em texto legível no código fonte.
-    const TEACHER_PASSWORD_HASH = "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f";
+    // Senha padrão oficial da professora
+    const TEACHER_CORRECT_PASSWORD = "prof123";
     let isTeacherUnlocked = false;
 
     // GABARITO OFICIAL
@@ -1123,17 +1127,9 @@
       setupSecretTriggers();
     });
 
-    // Função de Criptografia SHA-256 Nativa do Navegador (Web Crypto API)
-    async function calculateSHA256(str) {
-      const buffer = new TextEncoder().encode(str);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    // Configuração dos 2 Gatilhos Secretos para o Professor
+    // Configuração dos Gatilhos para o Professor
     function setupSecretTriggers() {
-      // Gatilho 1: Atalho de Teclado (Ctrl + Shift + P ou Cmd + Shift + P)
+      // 1. Atalho no Teclado: Ctrl + Shift + P ou Cmd + Shift + P
       window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
           e.preventDefault();
@@ -1141,7 +1137,18 @@
         }
       });
 
-      // Gatilho 2: Triple Click no texto do rodapé
+      // 2. Tecla Enter no campo da senha
+      const pwdInput = document.getElementById('teacherPasswordInput');
+      if (pwdInput) {
+        pwdInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            verifyTeacherPassword();
+          }
+        });
+      }
+
+      // 3. Triple Click no rodapé
       const footerTrigger = document.getElementById('secretFooterTrigger');
       let clickCount = 0;
       let clickTimeout = null;
@@ -1181,19 +1188,33 @@
       document.getElementById('teacherAuthModal').classList.add('hidden');
     }
 
-    async function verifyTeacherEncryptedPassword() {
-      const pwd = document.getElementById('teacherPasswordInput').value;
-      const computedHash = await calculateSHA256(pwd);
+    function togglePasswordVisibility() {
+      const input = document.getElementById('teacherPasswordInput');
+      const icon = document.getElementById('passwordToggleIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        input.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
 
-      if (computedHash === TEACHER_PASSWORD_HASH) {
+    // Verificação robusta e direta da senha
+    function verifyTeacherPassword() {
+      const pwdInput = document.getElementById('teacherPasswordInput');
+      const enteredValue = (pwdInput.value || '').trim().toLowerCase();
+
+      if (enteredValue === TEACHER_CORRECT_PASSWORD) {
         isTeacherUnlocked = true;
         closeTeacherAuthModal();
         showTeacherDashboard();
         showToast('Painel Docente autenticado com sucesso!');
       } else {
         document.getElementById('teacherAuthError').classList.remove('hidden');
-        document.getElementById('teacherPasswordInput').value = '';
-        document.getElementById('teacherPasswordInput').focus();
+        pwdInput.value = '';
+        pwdInput.focus();
       }
     }
 
@@ -1206,7 +1227,7 @@
     }
 
     function lockAndExitTeacherView() {
-      isTeacherUnlocked = false; // Bloqueia a sessão do docente
+      isTeacherUnlocked = false;
       document.getElementById('teacherDashboardContainer').classList.add('hidden');
       document.getElementById('studentContainer').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
