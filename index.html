@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RazoneteLab - Arena GamerZone & Painel Docente</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            debito: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              600: '#2563eb',
+              700: '#1d4ed8'
+            },
+            credito: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              600: '#9333ea',
+              700: '#7e22ce'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .t-divider {
+      position: relative;
+    }
+    .t-divider::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background-color: #cbd5e1;
+      transform: translateX(-50%);
+    }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- Header Global -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gradient-to-tr from-indigo-600 to-violet-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+          <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[11px] uppercase tracking-wider font-extrabold text-indigo-600 block">Técnico em Administração</span>
+          <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">| Razonetes & Apuração</span></h1>
+        </div>
+      </div>
+
+      <!-- Abas de Navegação -->
+      <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 space-x-1">
+        <button id="navStudentBtn" onclick="switchView('student')" class="flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm">
+          <i data-lucide="user-check" class="w-4 h-4"></i>
+          <span>Espaço do Aluno</span>
+        </button>
+        <button id="navTeacherBtn" onclick="switchView('teacher')" class="flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+          <span>Painel da Professora</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: ESPAÇO DO ALUNO                   -->
+    <!-- ========================================== -->
+    <section id="studentView" class="space-y-6">
+
+      <!-- Registro de Presença Simplificado (Sem número de chamada) -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center space-x-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span id="studentAttendanceBadge">Presença em Aberto</span>
+            </div>
+            <h2 class="text-xl font-extrabold text-slate-900">Identificação & Registro de Presença</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome completo e turma. A presença é confirmada na hora com registro de horário!</p>
+          </div>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <input type="text" id="studentNameInput" placeholder="Seu Nome Completo" class="w-full sm:w-64 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+            <select id="studentClassInput" class="w-full sm:w-44 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition font-medium">
+              <option value="1º Técnico Adm - Matutino">1º Adm - Manhã</option>
+              <option value="1º Técnico Adm - Vespertino">1º Adm - Tarde</option>
+              <option value="1º Técnico Adm - Noturno">1º Adm - Noite</option>
+              <option value="2º Técnico Adm">2º Adm</option>
+            </select>
+            <button onclick="registerAttendance()" id="btnMarkAttendance" class="inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow-md transition active:scale-95">
+              <i data-lucide="badge-check" class="w-4 h-4"></i>
+              <span>Marcar Presença</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enredo Gamificado & Lista de Fatos Contábeis (6 Fatos) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+          <div class="flex items-start sm:items-center space-x-3">
+            <span class="p-2.5 rounded-xl bg-violet-100 text-violet-700">
+              <i data-lucide="cpu" class="w-6 h-6"></i>
+            </span>
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Missão Contábil: Arena GamerZone & E-Sports</h3>
+              <p class="text-xs text-slate-500">A galera da sala abriu uma loja e arena de games. Analise os 6 lançamentos do primeiro mês e registre cada Débito e Crédito:</p>
+            </div>
+          </div>
+
+          <!-- Cards dos 6 Fatos -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (1) - Capital</span>
+                <span class="font-mono font-bold text-slate-800">R$ 5.000,00</span>
+              </div>
+              <p class="text-slate-600">Abertura: Os sócios integralizaram R$ 5.000,00 em dinheiro no <strong>Caixa</strong> como <strong>Capital Social</strong>.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (2) - Depósito</span>
+                <span class="font-mono font-bold text-slate-800">R$ 3.000,00</span>
+              </div>
+              <p class="text-slate-600">Depósito Bancário: Abertura de conta corrente. Saiu do <strong>Caixa</strong> e entrou no <strong>Banco Conta Movimento</strong>.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (3) - PCs Gamer</span>
+                <span class="font-mono font-bold text-slate-800">R$ 2.000,00</span>
+              </div>
+              <p class="text-slate-600">Equipamentos: Compra de 2 computadores gamer pagos via transferência da conta <strong>Banco</strong>.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (4) - Jogos p/ Venda</span>
+                <span class="font-mono font-bold text-slate-800">R$ 1.500,00</span>
+              </div>
+              <p class="text-slate-600">Estoque a Prazo: Compra de jogos e controles (Estoque) a prazo para pagar depois ao <strong>Fornecedor</strong>.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (5) - Cadeiras Gamer</span>
+                <span class="font-mono font-bold text-slate-800">R$ 600,00</span>
+              </div>
+              <p class="text-slate-600">Móveis e Utensílios: Compra de 2 cadeiras gamer à vista, pagas com dinheiro do <strong>Caixa</strong>.</p>
+            </div>
+
+            <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (6) - Pagto Parcial</span>
+                <span class="font-mono font-bold text-slate-800">R$ 500,00</span>
+              </div>
+              <p class="text-slate-600">Abatimento de Dívida: Pagamento de parte da dívida com o <strong>Fornecedor</strong> através de Pix pelo <strong>Banco</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo a Passo Didático para Adolescentes -->
+        <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2 text-indigo-300 text-xs font-bold uppercase tracking-wider">
+              <i data-lucide="calculator" class="w-4 h-4"></i>
+              <span>Como Calcular o Saldo do Razonete</span>
+            </div>
+            <h4 class="text-base font-black text-white">O Algoritmo do Razonete</h4>
+            <div class="space-y-2 text-xs leading-relaxed text-indigo-100">
+              <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1.5">
+                <p><span class="font-bold text-blue-300">1º Passo:</span> Some todos os números do lado <strong>Débito (D)</strong>.</p>
+                <p><span class="font-bold text-purple-300">2º Passo:</span> Some todos os números do lado <strong>Crédito (C)</strong>.</p>
+                <p><span class="font-bold text-emerald-300">3º Passo:</span> Diminua: <strong>Total Maior − Total Menor</strong>.</p>
+                <p><span class="font-bold text-amber-300">4º Passo:</span> O saldo fica do lado onde a soma foi <strong>maior</strong> (D ou C)!</p>
+              </div>
+              <p class="text-[11px] text-slate-300">
+                💡 <em>Use os botões de <strong>Somar (Σ)</strong> e a <strong>Continha de Menor (-)</strong> dentro de cada razonete abaixo para calcular direto na página!</em>
+              </p>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-indigo-800/80 flex items-center justify-between text-xs text-indigo-300">
+            <span>Débito = Crédito</span>
+            <span class="font-mono text-emerald-400 font-bold">Partidas Dobradas</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Painel dos 6 Razonetes com Calculadora Embutida -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+          <div>
+            <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
+              <span>Razonetes da GamerZone</span>
+              <span class="text-xs px-2.5 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full font-bold">Com Calculadora Embutida</span>
+            </h3>
+            <p class="text-xs text-slate-500">Lance os valores em cada lado. Utilize a ferramenta no rodapé de cada razonete para fazer as somas e subtrações!</p>
+          </div>
+          <button onclick="fillExampleFirstTransaction()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 underline text-left sm:text-right">
+            Preencher lançamento (1) como modelo
+          </button>
+        </div>
+
+        <!-- Grid de Razonetes: 6 Contas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- 1. CAIXA (Ativo) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-caixa">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-blue-600 uppercase font-bold bg-blue-50 px-2 py-0.5 rounded">Ativo</span>
+                <span class="text-sm tracking-wide">CAIXA</span>
+                <span class="text-[11px] text-slate-400 font-mono">Bens</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <!-- Corpo da Conta T -->
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-caixa-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="D">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-caixa-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="C">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <!-- Calculadora Embutida no Razonete -->
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('caixa')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-caixa" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-caixa" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <!-- Continha de Diminuir (Maior - Menor) -->
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('caixa')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <!-- Linha Oficial do Saldo Final -->
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-caixa-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-caixa-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="D">D</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. CAPITAL SOCIAL (Patrimônio Líquido) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-capital">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-purple-600 uppercase font-bold bg-purple-50 px-2 py-0.5 rounded">PL</span>
+                <span class="text-sm tracking-wide">CAPITAL SOCIAL</span>
+                <span class="text-[11px] text-slate-400 font-mono">Sócios</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-capital-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="capital" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-capital-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="capital" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('capital')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-capital" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-capital" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('capital')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-capital-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-capital-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. BANCO CONTA MOVIMENTO (Ativo) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-banco">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-blue-600 uppercase font-bold bg-blue-50 px-2 py-0.5 rounded">Ativo</span>
+                <span class="text-sm tracking-wide">BANCO C/ MOVIMENTO</span>
+                <span class="text-[11px] text-slate-400 font-mono">Direitos</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-banco-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="banco" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-banco-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="banco" data-side="C">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="banco" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('banco')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-banco" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-banco" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('banco')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-banco-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-banco-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="D">D</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. COMPUTADORES E EQUIPAMENTOS (Ativo) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-equipamentos">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-blue-600 uppercase font-bold bg-blue-50 px-2 py-0.5 rounded">Ativo</span>
+                <span class="text-sm tracking-wide">EQUIPAMENTOS (PCs)</span>
+                <span class="text-[11px] text-slate-400 font-mono">Bens</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-equipamentos-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="equipamentos" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-equipamentos-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="equipamentos" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('equipamentos')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-equipamentos" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-equipamentos" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('equipamentos')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-equipamentos-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-equipamentos-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="D">D</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. ESTOQUE DE JOGOS & ACESSÓRIOS (Ativo) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-estoque">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-blue-600 uppercase font-bold bg-blue-50 px-2 py-0.5 rounded">Ativo</span>
+                <span class="text-sm tracking-wide">ESTOQUE DE JOGOS</span>
+                <span class="text-[11px] text-slate-400 font-mono">Bens</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-estoque-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="estoque" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-estoque-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="estoque" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('estoque')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-estoque" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-estoque" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('estoque')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-estoque-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-estoque-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="D">D</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. MÓVEIS E UTENSÍLIOS (Cadeiras Gamer) (Ativo) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-moveis">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-blue-600 uppercase font-bold bg-blue-50 px-2 py-0.5 rounded">Ativo</span>
+                <span class="text-sm tracking-wide">MÓVEIS E UTENSÍLIOS</span>
+                <span class="text-[11px] text-slate-400 font-mono">Cadeiras</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-moveis-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="moveis" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-moveis-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="moveis" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('moveis')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-moveis" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-moveis" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('moveis')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-moveis-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-moveis-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="D">D</option>
+                    <option value="C">C</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. FORNECEDORES (Passivo) -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-fornecedores">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-rose-600 uppercase font-bold bg-rose-50 px-2 py-0.5 rounded">Passivo</span>
+                <span class="text-sm tracking-wide">FORNECEDORES</span>
+                <span class="text-[11px] text-slate-400 font-mono">Obrigação</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2" id="inputs-fornecedores-deb">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="fornecedores" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2" id="inputs-fornecedores-cred">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="fornecedores" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('fornecedores')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-fornecedores" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-fornecedores" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
+                <button type="button" onclick="calculateNetBalance('fornecedores')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+                </button>
+              </div>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-fornecedores-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-fornecedores-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ETAPA 3: EQUAÇÃO FUNDAMENTAL DO PATRIMÔNIO (ATIVO = PASSIVO + PL) -->
+      <div class="bg-white rounded-2xl p-6 border-2 border-indigo-200 shadow-md space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+          <div class="space-y-1">
+            <div class="inline-flex items-center space-x-2 text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <i data-lucide="scale" class="w-4 h-4"></i>
+              <span>Etapa Final Obrigatória • Prova Real</span>
+            </div>
+            <h3 class="text-xl font-black text-slate-900">Equação Fundamental do Patrimônio</h3>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Chegou a hora de provar que as contas bateram! Calcule a soma de todos os bens e direitos (Ativo) e compare com a soma das obrigações e capital (Passivo + PL).
+            </p>
+          </div>
+          <button type="button" onclick="autoPullBalancesToEquation()" class="inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition">
+            <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
+            <span>Puxar Saldos dos Razonetes Acima</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Lado Esquerdo: Ativo (Bens e Direitos) -->
+          <div class="lg:col-span-5 bg-blue-50/50 p-5 rounded-2xl border border-blue-200 space-y-4">
+            <div class="flex items-center justify-between border-b border-blue-200 pb-2">
+              <h4 class="text-sm font-black text-blue-900 flex items-center gap-1.5">
+                <i data-lucide="wallet" class="w-4 h-4 text-blue-600"></i>
+                <span>ATIVO (Bens e Direitos)</span>
+              </h4>
+              <span class="text-[10px] font-bold uppercase text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Natureza Devedora (D)</span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <label for="eq-caixa" class="text-slate-600 font-medium">1. Saldo do Caixa:</label>
+                <div class="flex items-center space-x-1">
+                  <span class="font-mono text-slate-400">R$</span>
+                  <input type="number" id="eq-caixa" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <label for="eq-banco" class="text-slate-600 font-medium">2. Saldo do Banco:</label>
+                <div class="flex items-center space-x-1">
+                  <span class="font-mono text-slate-400">R$</span>
+                  <input type="number" id="eq-banco" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <label for="eq-equip" class="text-slate-600 font-medium">3. Saldo dos PCs (Equip.):</label>
+                <div class="flex items-center space-x-1">
+                  <span class="font-mono text-slate-400">R$</span>
+                  <input type="number" id="eq-equip" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <label for="eq-estoque" class="text-slate-600 font-medium">4. Saldo do Estoque:</label>
+                <div class="flex items-center space-x-1">
+                  <span class="font-mono text-slate-400">R$</span>
+                  <input type="number" id="eq-estoque" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <label for="eq-moveis" class="text-slate-600 font-medium">5. Saldo dos Móveis:</label>
+                <div class="flex items-center space-x-1">
+                  <span class="font-mono text-slate-400">R$</span>
+                  <input type="number" id="eq-moveis" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+            </div>
+
+            <!-- Botão de Somar o Ativo -->
+            <div class="pt-3 border-t border-blue-200 space-y-2">
+              <button type="button" onclick="sumAtivoEquation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1.5">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                <span>Somar Total do Ativo</span>
+              </button>
+              <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-blue-200">
+                <span class="text-xs font-black text-blue-900">TOTAL DO ATIVO:</span>
+                <span id="eq-total-ativo" class="font-mono font-black text-sm text-blue-700">R$ 0,00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Centro: Símbolo de Igualdade da Equação -->
+          <div class="lg:col-span-2 flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-3">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Equilíbrio</span>
+            <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl font-black shadow-md">
+              =
+            </div>
+            <button type="button" onclick="verifyEquationMatch()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2 px-2.5 rounded-xl text-xs shadow transition active:scale-95">
+              Conferir Balanço ⚖️
+            </button>
+            <p class="text-[11px] text-slate-500 font-medium">Ativo deve ser igual a Passivo + PL!</p>
+          </div>
+
+          <!-- Lado Direito: Passivo + PL -->
+          <div class="lg:col-span-5 bg-purple-50/50 p-5 rounded-2xl border border-purple-200 space-y-4">
+            <div class="flex items-center justify-between border-b border-purple-200 pb-2">
+              <h4 class="text-sm font-black text-purple-900 flex items-center gap-1.5">
+                <i data-lucide="building-2" class="w-4 h-4 text-purple-600"></i>
+                <span>PASSIVO + PATRIMÔNIO LÍQUIDO</span>
+              </h4>
+              <span class="text-[10px] font-bold uppercase text-purple-700 bg-purple-100 px-2 py-0.5 rounded">Natureza Credora (C)</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="space-y-1">
+                <span class="text-[11px] font-bold text-purple-800 uppercase block">Passivo Exigível (Dívidas):</span>
+                <div class="flex items-center justify-between">
+                  <label for="eq-fornecedores" class="text-slate-600 font-medium">1. Saldo de Fornecedores:</label>
+                  <div class="flex items-center space-x-1">
+                    <span class="font-mono text-slate-400">R$</span>
+                    <input type="number" id="eq-fornecedores" placeholder="0" class="eq-passivo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-purple-500">
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-1 pt-1 border-t border-purple-200">
+                <span class="text-[11px] font-bold text-purple-800 uppercase block">Patrimônio Líquido (Recursos Próprios):</span>
+                <div class="flex items-center justify-between">
+                  <label for="eq-capital" class="text-slate-600 font-medium">2. Saldo do Capital Social:</label>
+                  <div class="flex items-center space-x-1">
+                    <span class="font-mono text-slate-400">R$</span>
+                    <input type="number" id="eq-capital" placeholder="0" class="eq-passivo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-purple-500">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botão de Somar o Passivo + PL -->
+            <div class="pt-3 border-t border-purple-200 space-y-2">
+              <button type="button" onclick="sumPassivoEquation()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1.5">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                <span>Somar Passivo + PL</span>
+              </button>
+              <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-purple-200">
+                <span class="text-xs font-black text-purple-900">TOTAL PASSIVO + PL:</span>
+                <span id="eq-total-passivo" class="font-mono font-black text-sm text-purple-700">R$ 0,00</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Banner com o Diagnóstico do Balanço -->
+        <div id="equationResultBanner" class="p-4 rounded-xl border bg-slate-50 border-slate-200 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div id="equationResultIcon" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="help-circle" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h5 id="equationResultTitle" class="text-xs sm:text-sm font-black text-slate-800">Preencha os valores e clique em "Conferir Balanço ⚖️"</h5>
+              <p id="equationResultMessage" class="text-xs text-slate-500">A equação será validada junto com os razonetes no envio final para a professora.</p>
+            </div>
+          </div>
+          <span id="equationResultBadge" class="hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-slate-200 text-slate-700">Pendente</span>
+        </div>
+
+        <!-- Botões de Ação Final (Envio p/ Professora) -->
+        <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-xs text-slate-500 font-medium">
+            <span class="text-indigo-600 font-bold">Nota completa (100 pts):</span> 7 Razonetes (70 pts) + Equação Fundamental do Patrimônio (30 pts).
+          </div>
+          <div class="flex items-center space-x-2 w-full sm:w-auto">
+            <button type="button" onclick="clearAllFields()" class="py-2.5 px-4 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+              Limpar Tudo
+            </button>
+            <button type="button" onclick="submitStudentExercise()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-black py-2.5 px-6 rounded-xl shadow-md transition transform active:scale-95 flex items-center justify-center space-x-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Finalizar & Enviar Resolução</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Painel de Feedback e Correção Instantânea -->
+      <div id="studentFeedbackCard" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-md space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div class="flex items-center space-x-3">
+            <div id="badgeIconContainer" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-indigo-600 shadow-md">
+              <i data-lucide="award" class="w-7 h-7"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Resultado da Correção Automática</span>
+              <h3 id="feedbackScoreTitle" class="text-xl font-extrabold text-slate-900">Parabéns! 100% de Acerto!</h3>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-500 block font-medium">Sua Pontuação</span>
+            <span id="feedbackScoreValue" class="text-3xl font-black text-indigo-600 font-mono">100 / 100</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
+              <i data-lucide="check-square" class="w-4 h-4 text-indigo-600"></i>
+              <span>Diagnóstico Conta a Conta</span>
+            </h4>
+            <ul id="feedbackAccountList" class="text-xs space-y-2 text-slate-600">
+              <!-- Populado via JS -->
+            </ul>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
+              <i data-lucide="scale" class="w-4 h-4 text-violet-600"></i>
+              <span>Conferência da Equação Patrimonial</span>
+            </h4>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-200">
+                <span class="text-slate-600">Total do Ativo (Caixa + Banco + PCs + Jogos + Móveis):</span>
+                <span id="feedbackAtivoTotal" class="font-mono font-bold text-emerald-600">R$ 6.000,00</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5 border-b border-slate-200">
+                <span class="text-slate-600">Total Passivo + PL (Fornecedores + Capital):</span>
+                <span id="feedbackPassivoTotal" class="font-mono font-bold text-emerald-600">R$ 6.000,00</span>
+              </div>
+              <p id="feedbackBalanceMessage" class="text-slate-600 italic bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
+                Aguardando conferência...
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: DASHBOARD DA PROFESSORA           -->
+    <!-- ========================================== -->
+    <section id="teacherView" class="hidden space-y-6">
+
+      <!-- Header do Painel Docente -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Painel do Docente</span>
+            <span class="text-xs text-slate-400">• Exercício: Arena GamerZone</span>
+          </div>
+          <h2 class="text-2xl font-black text-slate-900 mt-1">Gestão de Turma & Acompanhamento de Razonetes</h2>
+          <p class="text-xs sm:text-sm text-slate-500">Monitore presença, notas em tempo real, contas que os alunos mais erraram e exporte a planilha.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="loadDemoClassData()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span>Simular Turma Completa</span>
+          </button>
+          <button onclick="exportTeacherDataToCSV()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+            <span>Exportar CSV</span>
+          </button>
+          <button onclick="clearAllClassData()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            <span>Zerar Registros</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Métricas Gerais em Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Alunos Presentes</p>
+            <h4 id="metricStudentsCount" class="text-2xl font-black text-slate-900 mt-1 font-mono">0</h4>
+            <span class="text-xs text-emerald-600 font-semibold inline-flex items-center mt-0.5">
+              <i data-lucide="user-check" class="w-3.5 h-3.5 mr-1"></i> Chamada ativa
+            </span>
+          </div>
+          <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+            <i data-lucide="users" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Média da Turma</p>
+            <h4 id="metricClassAverage" class="text-2xl font-black text-indigo-600 mt-1 font-mono">0 pts</h4>
+            <span class="text-xs text-slate-500 font-medium inline-flex items-center mt-0.5">
+              Automático por entrega
+            </span>
+          </div>
+          <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+            <i data-lucide="trending-up" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Acerto 100%</p>
+            <h4 id="metricFullScoreCount" class="text-2xl font-black text-emerald-600 mt-1 font-mono">0</h4>
+            <span id="metricFullScorePct" class="text-xs text-emerald-600 font-medium inline-flex items-center mt-0.5">
+              0% das entregas
+            </span>
+          </div>
+          <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+            <i data-lucide="trophy" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Requerem Apoio</p>
+            <h4 id="metricHelpCount" class="text-2xl font-black text-amber-600 mt-1 font-mono">0</h4>
+            <span class="text-xs text-amber-600 font-medium inline-flex items-center mt-0.5">
+              Inconsistências no cálculo
+            </span>
+          </div>
+          <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
+            <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diagnóstico Visual de Dificuldade por Razonete -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Taxa de Acerto por Razonete Contábil</h3>
+            <p class="text-xs text-slate-500">Descubra em quais contas os alunos tiveram mais dificuldade em subtrair ou identificar a natureza do saldo.</p>
+          </div>
+          <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">Visão Diagnóstica</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 pt-2" id="accountAnalyticsContainer">
+          <!-- Gerado via JavaScript -->
+        </div>
+
+        <!-- Métrica Específica: Taxa de Acerto da Equação Fundamental -->
+        <div class="mt-4 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center">
+              <i data-lucide="scale" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-black text-indigo-950 uppercase tracking-wide">Aproveitamento da Equação Fundamental ($Ativo = Passivo + PL$)</h4>
+              <p class="text-xs text-slate-600">Alunos que conseguiram fechar o Balanço com Ativo igual a Passivo + PL (R$ 6.000,00).</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span id="metricEquationSuccessRate" class="text-lg font-black text-indigo-700 font-mono">0%</span>
+            <span class="text-[10px] text-slate-500 block">dos envios validados</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Alunos e Chamada -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/60">
+          <div class="relative flex-1 max-w-sm">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input type="text" id="teacherSearchFilter" oninput="renderTeacherTable()" placeholder="Buscar por aluno ou turma..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <select id="teacherStatusFilter" onchange="renderTeacherTable()" class="text-xs sm:text-sm border border-slate-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
+              <option value="ALL">Todas as Situações</option>
+              <option value="100">100% Acerto (Perfeito)</option>
+              <option value="PARTIAL">Inconsistente (&lt; 100 pts)</option>
+              <option value="PENDING">Apenas Chamada (Sem entrega)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tabela Responsiva -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm text-slate-600">
+            <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[11px] tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="py-3.5 px-4">Aluno(a)</th>
+                <th class="py-3.5 px-4">Turma</th>
+                <th class="py-3.5 px-4">Horário de Presença</th>
+                <th class="py-3.5 px-4">Status</th>
+                <th class="py-3.5 px-4 text-center">Nota</th>
+                <th class="py-3.5 px-4 text-right">Espelho do Razonete</th>
+              </tr>
+            </thead>
+            <tbody id="teacherTableBody" class="divide-y divide-slate-100">
+              <!-- Populado dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="teacherTableEmpty" class="hidden p-8 text-center space-y-2">
+          <i data-lucide="users" class="w-8 h-8 text-slate-300 mx-auto"></i>
+          <p class="text-sm font-bold text-slate-600">Nenhum aluno encontrado.</p>
+          <p class="text-xs text-slate-400">Clique em "Simular Turma Completa" acima para testar o painel!</p>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL: Inspeção Detalhada dos Razonetes do Aluno -->
+  <div id="studentDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-3xl w-full border border-slate-200 shadow-2xl overflow-hidden">
+      <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Espelho de Correção Individual</span>
+          <h3 id="modalStudentName" class="text-lg font-black text-slate-900">Nome do Aluno</h3>
+          <p id="modalStudentClass" class="text-xs text-slate-500">Turma • Presença às 00:00</p>
+        </div>
+        <button onclick="closeStudentModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+        <div class="flex items-center justify-between bg-indigo-50 border border-indigo-100 p-3 rounded-xl text-xs">
+          <div>
+            <span class="font-bold text-indigo-900">Nota Total:</span>
+            <span id="modalStudentScore" class="font-mono font-black text-indigo-700 text-sm ml-1">--</span>
+          </div>
+          <div>
+            <span class="font-bold text-indigo-900">Situação:</span>
+            <span id="modalStudentStatus" class="font-bold text-indigo-800 ml-1">--</span>
+          </div>
+        </div>
+
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Resumo dos 7 Razonetes Entregues:</h4>
+        <div id="modalRazonetesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <!-- Populado via JS -->
+        </div>
+
+        <div class="pt-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Feedback da Atividade:</h4>
+          <ul id="modalFeedbackList" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-600">
+            <!-- Populado via JS -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <button onclick="closeStudentModal()" class="px-4 py-2 text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl transition">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Senha da Professora -->
+  <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full border border-slate-200 shadow-2xl p-6 space-y-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto">
+        <i data-lucide="lock" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-black text-slate-900">Área Exclusiva da Professora</h3>
+        <p class="text-xs text-slate-500 mt-1">Informe a senha pedagógica para gerenciar as notas e a chamada da turma.</p>
+        <p class="text-[11px] text-indigo-600 font-mono mt-1 font-semibold">(Senha padrão: <strong>prof123</strong>)</p>
+      </div>
+      <div>
+        <input type="password" id="teacherPasswordInput" placeholder="Digite a senha..." class="w-full text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono">
+        <p id="teacherAuthError" class="hidden text-xs text-rose-600 mt-1.5 font-bold">Senha incorreta. Tente "prof123".</p>
+      </div>
+      <div class="flex items-center space-x-2 pt-1">
+        <button onclick="closeTeacherAuthModal()" class="w-1/2 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="verifyTeacherPassword()" class="w-1/2 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition">
+          Entrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificação Toast -->
+  <div id="toastMessage" class="fixed bottom-5 right-5 z-50 max-w-sm w-full bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center space-x-3 pointer-events-none">
+    <div id="toastIcon" class="text-emerald-400">
+      <i data-lucide="check" class="w-5 h-5"></i>
+    </div>
+    <div class="flex-1">
+      <p id="toastText" class="font-medium leading-snug">Mensagem de aviso.</p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'gamerzone_turma_v2';
+    const ACTIVE_STUDENT_KEY = 'gamerzone_aluno_ativo_v2';
+    let isTeacherAuthenticated = false;
+
+    // GABARITO OFICIAL: Arena GamerZone
+    // (1) D: Caixa 5000, C: Capital 5000
+    // (2) D: Banco 3000, C: Caixa 3000
+    // (3) D: Equipamentos 2000, C: Banco 2000
+    // (4) D: Estoque 1500, C: Fornecedores 1500
+    // (5) D: Móveis 600, C: Caixa 600
+    // (6) D: Fornecedores 500, C: Banco 500
+    const GABARITO = {
+      caixa: {
+        debitos: [5000],
+        creditos: [3000, 600],
+        saldoVal: 1400,
+        saldoNat: 'D',
+        nome: 'Caixa'
+      },
+      capital: {
+        debitos: [],
+        creditos: [5000],
+        saldoVal: 5000,
+        saldoNat: 'C',
+        nome: 'Capital Social'
+      },
+      banco: {
+        debitos: [3000],
+        creditos: [2000, 500],
+        saldoVal: 500,
+        saldoNat: 'D',
+        nome: 'Banco c/ Movimento'
+      },
+      equipamentos: {
+        debitos: [2000],
+        creditos: [],
+        saldoVal: 2000,
+        saldoNat: 'D',
+        nome: 'Equipamentos (PCs)'
+      },
+      estoque: {
+        debitos: [1500],
+        creditos: [],
+        saldoVal: 1500,
+        saldoNat: 'D',
+        nome: 'Estoque de Jogos'
+      },
+      moveis: {
+        debitos: [600],
+        creditos: [],
+        saldoVal: 600,
+        saldoNat: 'D',
+        nome: 'Móveis e Utensílios'
+      },
+      fornecedores: {
+        debitos: [500],
+        creditos: [1500],
+        saldoVal: 1000,
+        saldoNat: 'C',
+        nome: 'Fornecedores'
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      loadActiveStudent();
+      initDemoDataIfEmpty();
+    });
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toastMessage');
+      const text = document.getElementById('toastText');
+      const icon = document.getElementById('toastIcon');
+
+      text.innerText = message;
+      if (type === 'success') {
+        icon.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>';
+      } else if (type === 'error') {
+        icon.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400"></i>';
+      } else {
+        icon.innerHTML = '<i data-lucide="info" class="w-5 h-5 text-indigo-400"></i>';
+      }
+      lucide.createIcons();
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    function switchView(target) {
+      if (target === 'teacher') {
+        if (!isTeacherAuthenticated) {
+          openTeacherAuthModal();
+          return;
+        }
+        document.getElementById('studentView').classList.add('hidden');
+        document.getElementById('teacherView').classList.remove('hidden');
+
+        document.getElementById('navStudentBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
+        document.getElementById('navTeacherBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm";
+        renderTeacherDashboard();
+      } else {
+        document.getElementById('teacherView').classList.add('hidden');
+        document.getElementById('studentView').classList.remove('hidden');
+
+        document.getElementById('navTeacherBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
+        document.getElementById('navStudentBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm";
+      }
+      lucide.createIcons();
+    }
+
+    function openTeacherAuthModal() {
+      document.getElementById('teacherAuthError').classList.add('hidden');
+      document.getElementById('teacherPasswordInput').value = '';
+      document.getElementById('teacherAuthModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('teacherPasswordInput').focus(), 100);
+    }
+
+    function closeTeacherAuthModal() {
+      document.getElementById('teacherAuthModal').classList.add('hidden');
+    }
+
+    function verifyTeacherPassword() {
+      const pwd = document.getElementById('teacherPasswordInput').value.trim();
+      if (pwd === 'prof123' || pwd === 'admin' || pwd === '123') {
+        isTeacherAuthenticated = true;
+        closeTeacherAuthModal();
+        switchView('teacher');
+        showToast('Painel Docente liberado com sucesso!');
+      } else {
+        document.getElementById('teacherAuthError').classList.remove('hidden');
+      }
+    }
+
+    // REGISTRO DE PRESENÇA (Sem número de chamada)
+    function registerAttendance() {
+      const name = document.getElementById('studentNameInput').value.trim();
+      const studentClass = document.getElementById('studentClassInput').value;
+
+      if (!name) {
+        showToast('Por favor, informe seu Nome Completo para registrar a presença.', 'error');
+        return;
+      }
+
+      const activeStudent = {
+        name: name,
+        turma: studentClass,
+        attendanceTime: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        attendanceDate: new Date().toLocaleDateString('pt-BR'),
+        status: 'PENDING',
+        score: null,
+        answers: null,
+        diagnostics: null,
+        feedback: null
+      };
+
+      localStorage.setItem(ACTIVE_STUDENT_KEY, JSON.stringify(activeStudent));
+      upsertStudent(activeStudent);
+      updateAttendanceBadge(activeStudent);
+      showToast(`Presença registrada às ${activeStudent.attendanceTime} para ${name}!`);
+    }
+
+    function updateAttendanceBadge(student) {
+      const badge = document.getElementById('studentAttendanceBadge');
+      const btn = document.getElementById('btnMarkAttendance');
+
+      badge.textContent = `Presente às ${student.attendanceTime}`;
+      badge.parentElement.className = "inline-flex items-center space-x-2 text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200";
+
+      btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Presença Confirmada</span>';
+      btn.className = "inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow-md transition";
+      lucide.createIcons();
+    }
+
+    function loadActiveStudent() {
+      const raw = localStorage.getItem(ACTIVE_STUDENT_KEY);
+      if (raw) {
+        try {
+          const student = JSON.parse(raw);
+          if (student.name) document.getElementById('studentNameInput').value = student.name;
+          if (student.turma) document.getElementById('studentClassInput').value = student.turma;
+          if (student.attendanceTime) updateAttendanceBadge(student);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    // RECURSO PEDAGÓGICO: CALCULADORA EMBUTIDA NO RAZONETE
+    // 1. Somar Débitos e Créditos de um razonete específico
+    function autoSumAccount(accName) {
+      const debInputs = document.querySelectorAll(`input[data-account="${accName}"][data-side="D"]`);
+      const credInputs = document.querySelectorAll(`input[data-account="${accName}"][data-side="C"]`);
+
+      let sumD = 0;
+      debInputs.forEach(inp => {
+        const val = parseFloat(inp.value);
+        if (!isNaN(val)) sumD += val;
+      });
+
+      let sumC = 0;
+      credInputs.forEach(inp => {
+        const val = parseFloat(inp.value);
+        if (!isNaN(val)) sumC += val;
+      });
+
+      document.getElementById(`sum-d-${accName}`).textContent = sumD.toFixed(0);
+      document.getElementById(`sum-c-${accName}`).textContent = sumC.toFixed(0);
+
+      showToast(`Colunas de ${accName.toUpperCase()} somadas: Σ D = ${sumD} | Σ C = ${sumC}!`, 'info');
+      return { sumD, sumC };
+    }
+
+    // 2. Subtrair (Maior - Menor) e transferir automaticamente para o Saldo Final com a natureza
+    function calculateNetBalance(accName) {
+      const { sumD, sumC } = autoSumAccount(accName);
+
+      const saldoInput = document.getElementById(`saldo-${accName}-val`);
+      const naturezaSelect = document.getElementById(`saldo-${accName}-natureza`);
+
+      const netBalance = Math.abs(sumD - sumC);
+      saldoInput.value = netBalance;
+
+      if (sumD >= sumC) {
+        naturezaSelect.value = 'D';
+      } else {
+        naturezaSelect.value = 'C';
+      }
+
+      showToast(`Conta de diminuir feita: ${Math.max(sumD, sumC)} - ${Math.min(sumD, sumC)} = ${netBalance} (${naturezaSelect.value})! Saldo transferido.`);
+    }
+
+    // FUNÇÕES DA EQUAÇÃO FUNDAMENTAL DO PATRIMÔNIO (ATIVO = PASSIVO + PL)
+    function autoPullBalancesToEquation() {
+      // Puxa os saldos digitados nos 7 razonetes
+      const caixa = parseFloat(document.getElementById('saldo-caixa-val').value) || 0;
+      const banco = parseFloat(document.getElementById('saldo-banco-val').value) || 0;
+      const equip = parseFloat(document.getElementById('saldo-equipamentos-val').value) || 0;
+      const estoque = parseFloat(document.getElementById('saldo-estoque-val').value) || 0;
+      const moveis = parseFloat(document.getElementById('saldo-moveis-val').value) || 0;
+      const fornecedores = parseFloat(document.getElementById('saldo-fornecedores-val').value) || 0;
+      const capital = parseFloat(document.getElementById('saldo-capital-val').value) || 0;
+
+      document.getElementById('eq-caixa').value = caixa > 0 ? caixa : '';
+      document.getElementById('eq-banco').value = banco > 0 ? banco : '';
+      document.getElementById('eq-equip').value = equip > 0 ? equip : '';
+      document.getElementById('eq-estoque').value = estoque > 0 ? estoque : '';
+      document.getElementById('eq-moveis').value = moveis > 0 ? moveis : '';
+      document.getElementById('eq-fornecedores').value = fornecedores > 0 ? fornecedores : '';
+      document.getElementById('eq-capital').value = capital > 0 ? capital : '';
+
+      sumAtivoEquation();
+      sumPassivoEquation();
+      verifyEquationMatch();
+      showToast('Saldos dos razonetes transferidos para a Equação Fundamental!');
+    }
+
+    function sumAtivoEquation() {
+      const caixa = parseFloat(document.getElementById('eq-caixa').value) || 0;
+      const banco = parseFloat(document.getElementById('eq-banco').value) || 0;
+      const equip = parseFloat(document.getElementById('eq-equip').value) || 0;
+      const estoque = parseFloat(document.getElementById('eq-estoque').value) || 0;
+      const moveis = parseFloat(document.getElementById('eq-moveis').value) || 0;
+
+      const total = caixa + banco + equip + estoque + moveis;
+      document.getElementById('eq-total-ativo').textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      return total;
+    }
+
+    function sumPassivoEquation() {
+      const fornecedores = parseFloat(document.getElementById('eq-fornecedores').value) || 0;
+      const capital = parseFloat(document.getElementById('eq-capital').value) || 0;
+
+      const total = fornecedores + capital;
+      document.getElementById('eq-total-passivo').textContent = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+      return total;
+    }
+
+    function verifyEquationMatch() {
+      const totAtivo = sumAtivoEquation();
+      const totPassivoPL = sumPassivoEquation();
+
+      const banner = document.getElementById('equationResultBanner');
+      const icon = document.getElementById('equationResultIcon');
+      const title = document.getElementById('equationResultTitle');
+      const msg = document.getElementById('equationResultMessage');
+      const badge = document.getElementById('equationResultBadge');
+
+      if (totAtivo === 0 && totPassivoPL === 0) {
+        banner.className = "p-4 rounded-xl border bg-slate-50 border-slate-200 flex items-center justify-between";
+        icon.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center flex-shrink-0";
+        icon.innerHTML = '<i data-lucide="help-circle" class="w-5 h-5"></i>';
+        title.textContent = "Preencha os valores e confira a igualdade patrimonial";
+        msg.textContent = "Os campos de Ativo e Passivo + PL ainda estão zerados.";
+        badge.textContent = "Pendente";
+        badge.className = "hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-slate-200 text-slate-700";
+        lucide.createIcons();
+        return false;
+      }
+
+      if (Math.abs(totAtivo - totPassivoPL) < 0.01 && Math.abs(totAtivo - 6000) < 0.01) {
+        banner.className = "p-4 rounded-xl border bg-emerald-50 border-emerald-300 flex items-center justify-between";
+        icon.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center flex-shrink-0";
+        icon.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i>';
+        title.textContent = "O BALANÇO BATEU! 🎉 Equação Perfeita!";
+        title.className = "text-xs sm:text-sm font-black text-emerald-900";
+        msg.textContent = `Ativo (R$ ${totAtivo.toFixed(2)}) é exatamente igual a Passivo + PL (R$ ${totPassivoPL.toFixed(2)})!`;
+        msg.className = "text-xs text-emerald-700";
+        badge.textContent = "Equilibrado (R$ 6.000,00)";
+        badge.className = "hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-200 text-emerald-900";
+        lucide.createIcons();
+        return true;
+      } else {
+        const diff = Math.abs(totAtivo - totPassivoPL);
+        banner.className = "p-4 rounded-xl border bg-amber-50 border-amber-300 flex items-center justify-between";
+        icon.className = "w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center flex-shrink-0";
+        icon.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i>';
+        title.textContent = "O Balanço ainda não bateu! ⚠️";
+        title.className = "text-xs sm:text-sm font-black text-amber-900";
+        title.textContent = "O Balanço ainda não bateu! ⚠️";
+        msg.textContent = `Diferença de R$ ${diff.toFixed(2)}. Ativo deu R$ ${totAtivo.toFixed(2)} e Passivo+PL deu R$ ${totPassivoPL.toFixed(2)}. Esperado: R$ 6.000,00.`;
+        msg.className = "text-xs text-amber-800";
+        badge.textContent = `Diferença R$ ${diff.toFixed(2)}`;
+        badge.className = "hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-200 text-amber-900";
+        lucide.createIcons();
+        return false;
+      }
+    }
+
+    // Preencher Fato (1) como modelo
+    function fillExampleFirstTransaction() {
+      const debCaixa = document.querySelector('input[data-account="caixa"][data-side="D"]');
+      const credCapital = document.querySelector('input[data-account="capital"][data-side="C"]');
+      if (debCaixa && credCapital) {
+        debCaixa.value = 5000;
+        credCapital.value = 5000;
+        autoSumAccount('caixa');
+        autoSumAccount('capital');
+        showToast('Fato (1) preenchido: D: Caixa R$ 5.000 | C: Capital Social R$ 5.000!', 'info');
+      }
+    }
+
+    function clearAllFields() {
+      document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
+      ['caixa', 'capital', 'banco', 'equipamentos', 'estoque', 'moveis', 'fornecedores'].forEach(acc => {
+        const sD = document.getElementById(`sum-d-${acc}`);
+        const sC = document.getElementById(`sum-c-${acc}`);
+        if (sD) sD.textContent = '0';
+        if (sC) sC.textContent = '0';
+      });
+      document.getElementById('eq-total-ativo').textContent = 'R$ 0,00';
+      document.getElementById('eq-total-passivo').textContent = 'R$ 0,00';
+      verifyEquationMatch();
+      document.getElementById('studentFeedbackCard').classList.add('hidden');
+      showToast('Todos os campos foram limpos.');
+    }
+
+    function getStudentAccountData(accName) {
+      const debInputs = document.querySelectorAll(`input[data-account="${accName}"][data-side="D"]`);
+      const credInputs = document.querySelectorAll(`input[data-account="${accName}"][data-side="C"]`);
+
+      const debitos = Array.from(debInputs).map(i => parseFloat(i.value)).filter(v => !isNaN(v) && v > 0);
+      const creditos = Array.from(credInputs).map(i => parseFloat(i.value)).filter(v => !isNaN(v) && v > 0);
+
+      const saldoInput = document.getElementById(`saldo-${accName}-val`);
+      const naturezaSelect = document.getElementById(`saldo-${accName}-natureza`);
+
+      const saldoVal = saldoInput ? (parseFloat(saldoInput.value) || 0) : 0;
+      const saldoNat = naturezaSelect ? naturezaSelect.value : 'D';
+
+      return { debitos, creditos, saldoVal, saldoNat };
+    }
+
+    // Avaliação e Envio do Aluno (Razonetes + Equação Fundamental)
+    function submitStudentExercise() {
+      const name = document.getElementById('studentNameInput').value.trim();
+      const turma = document.getElementById('studentClassInput').value;
+
+      if (!name) {
+        showToast('Por favor, informe seu Nome Completo antes de enviar!', 'error');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      const accounts = ['caixa', 'capital', 'banco', 'equipamentos', 'estoque', 'moveis', 'fornecedores'];
+      const studentAnswers = {};
+      accounts.forEach(acc => {
+        studentAnswers[acc] = getStudentAccountData(acc);
+      });
+
+      // Motor de Avaliação Pedagógica:
+      // - 7 Razonetes: 10 pontos cada (Total = 70 pts)
+      // - Equação Fundamental do Patrimônio: 30 pontos (Total = 30 pts)
+      // TOTAL: 100 PONTOS
+      let razonetesScore = 0;
+      const diagnostics = {};
+      const feedbackList = [];
+
+      accounts.forEach(acc => {
+        const student = studentAnswers[acc];
+        const correct = GABARITO[acc];
+
+        const dCorrectSorted = [...correct.debitos].sort((a,b) => a - b);
+        const dStudentSorted = [...student.debitos].sort((a,b) => a - b);
+        const debitsMatch = JSON.stringify(dCorrectSorted) === JSON.stringify(dStudentSorted);
+
+        const cCorrectSorted = [...correct.creditos].sort((a,b) => a - b);
+        const cStudentSorted = [...student.creditos].sort((a,b) => a - b);
+        const creditsMatch = JSON.stringify(cCorrectSorted) === JSON.stringify(cStudentSorted);
+
+        const balanceValMatch = Math.abs(student.saldoVal - correct.saldoVal) < 0.01;
+        const balanceNatMatch = student.saldoNat === correct.saldoNat;
+
+        let accScore = 0;
+        if (debitsMatch) accScore += 4; // 4 pts débito
+        if (creditsMatch) accScore += 4; // 4 pts crédito
+        if (balanceValMatch && balanceNatMatch) accScore += 2; // 2 pts saldo final
+
+        razonetesScore += accScore;
+
+        const isFull = debitsMatch && creditsMatch && balanceValMatch && balanceNatMatch;
+        diagnostics[acc] = {
+          score: accScore,
+          isFull,
+          debitsMatch,
+          creditsMatch,
+          balanceMatch: balanceValMatch && balanceNatMatch
+        };
+
+        if (isFull) {
+          feedbackList.push({
+            type: 'success',
+            text: `Conta ${correct.nome}: Lançamentos e saldo final apurados com perfeição!`
+          });
+        } else {
+          const errors = [];
+          if (!debitsMatch) errors.push('débito');
+          if (!creditsMatch) errors.push('crédito');
+          if (!balanceValMatch || !balanceNatMatch) errors.push(`saldo: R$ ${correct.saldoVal} (${correct.saldoNat})`);
+          feedbackList.push({
+            type: 'error',
+            text: `Conta ${correct.nome}: Rever ${errors.join(', ')}.`
+          });
+        }
+      });
+
+      // Validação da Equação Fundamental (30 Pontos)
+      const totAtivo = sumAtivoEquation();
+      const totPassivoPL = sumPassivoEquation();
+      const equationCorrect = Math.abs(totAtivo - 6000) < 0.01 && Math.abs(totPassivoPL - 6000) < 0.01;
+
+      let equationScore = 0;
+      if (Math.abs(totAtivo - 6000) < 0.01) equationScore += 15;
+      if (Math.abs(totPassivoPL - 6000) < 0.01) equationScore += 15;
+
+      const totalScore = Math.min(100, Math.round(razonetesScore + equationScore));
+
+      if (equationCorrect) {
+        feedbackList.push({
+          type: 'success',
+          text: 'Equação Fundamental do Patrimônio: Total do Ativo = Total Passivo + PL (R$ 6.000,00 = R$ 6.000,00). Balanço Bateu (+30 pts)!'
+        });
+      } else {
+        feedbackList.push({
+          type: 'error',
+          text: `Equação Fundamental do Patrimônio: Diferença encontrada. Ativo somou R$ ${totAtivo.toFixed(2)} e Passivo+PL somou R$ ${totPassivoPL.toFixed(2)}. O correto é R$ 6.000,00 em ambos os lados.`
+        });
+      }
+
+      const isBalanced = equationCorrect;
+
+      const studentData = {
+        name,
+        turma,
+        attendanceTime: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+        attendanceDate: new Date().toLocaleDateString('pt-BR'),
+        status: totalScore === 100 ? 'EXCELENTE' : (totalScore >= 60 ? 'BOM' : 'REVISAR'),
+        score: totalScore,
+        razonetesScore,
+        equationScore,
+        answers: studentAnswers,
+        diagnostics,
+        feedback: feedbackList,
+        ativoTotal: totAtivo,
+        passivoPLTotal: totPassivoPL,
+        equationCorrect,
+        isBalanced
+      };
+
+      localStorage.setItem(ACTIVE_STUDENT_KEY, JSON.stringify(studentData));
+      upsertStudent(studentData);
+      renderStudentFeedback(studentData);
+      verifyEquationMatch();
+      showToast(`Resolução enviada com sucesso! Nota: ${totalScore}/100.`);
+    }
+
+    function renderStudentFeedback(data) {
+      const card = document.getElementById('studentFeedbackCard');
+      const scoreVal = document.getElementById('feedbackScoreValue');
+      const scoreTitle = document.getElementById('feedbackScoreTitle');
+      const badgeIconContainer = document.getElementById('badgeIconContainer');
+      const list = document.getElementById('feedbackAccountList');
+      const spanAtivo = document.getElementById('feedbackAtivoTotal');
+      const spanPassivo = document.getElementById('feedbackPassivoTotal');
+      const balanceMsg = document.getElementById('feedbackBalanceMessage');
+
+      card.classList.remove('hidden');
+      scoreVal.textContent = `${data.score} / 100`;
+
+      if (data.score === 100) {
+        scoreTitle.textContent = "Nota 10! Razonetes e Equação Patrimonial Perfeitos!";
+        badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-emerald-600 shadow-md";
+        badgeIconContainer.innerHTML = '<i data-lucide="trophy" class="w-7 h-7"></i>';
+      } else if (data.score >= 60) {
+        scoreTitle.textContent = "Bom trabalho! Quase tudo fechadinho!";
+        badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-indigo-600 shadow-md";
+        badgeIconContainer.innerHTML = '<i data-lucide="award" class="w-7 h-7"></i>';
+      } else {
+        scoreTitle.textContent = "Atenção: Revise as continhas e a Equação Fundamental!";
+        badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-amber-500 shadow-md";
+        badgeIconContainer.innerHTML = '<i data-lucide="alert-circle" class="w-7 h-7"></i>';
+      }
+
+      list.innerHTML = '';
+      data.feedback.forEach(item => {
+        const li = document.createElement('li');
+        li.className = `flex items-start space-x-2 ${item.type === 'success' ? 'text-emerald-700 font-medium' : 'text-slate-700'}`;
+        li.innerHTML = `
+          <i data-lucide="${item.type === 'success' ? 'check' : 'alert-circle'}" class="w-4 h-4 flex-shrink-0 mt-0.5 ${item.type === 'success' ? 'text-emerald-500' : 'text-amber-500'}"></i>
+          <span>${item.text}</span>
+        `;
+        list.appendChild(li);
+      });
+
+      spanAtivo.textContent = `R$ ${data.ativoTotal.toFixed(2)}`;
+      spanPassivo.textContent = `R$ ${data.passivoPLTotal.toFixed(2)}`;
+
+      if (data.isBalanced) {
+        balanceMsg.textContent = "Parabéns! O Balanço bateu: Ativo (R$ 6.000,00) = Passivo + Patrimônio Líquido (R$ 6.000,00).";
+        balanceMsg.className = "text-emerald-700 font-semibold bg-emerald-50 p-2.5 rounded-lg border border-emerald-200 text-xs";
+      } else {
+        balanceMsg.textContent = "O Balanço não fechou em R$ 6.000,00. Puxe os saldos novamente ou verifique se algum razonete tem valor trocado.";
+        balanceMsg.className = "text-amber-700 font-medium bg-amber-50 p-2.5 rounded-lg border border-amber-200 text-xs";
+      }
+
+      lucide.createIcons();
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function getClassList() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) return [];
+      try {
+        return JSON.parse(stored);
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveClassList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function upsertStudent(student) {
+      const list = getClassList();
+      const idx = list.findIndex(s => s.name.toLowerCase() === student.name.toLowerCase());
+      if (idx >= 0) {
+        list[idx] = { ...list[idx], ...student };
+      } else {
+        list.push(student);
+      }
+      saveClassList(list);
+    }
+
+    function initDemoDataIfEmpty() {
+      const list = getClassList();
+      if (list.length === 0) {
+        loadDemoClassData(false);
+      }
+    }
+
+    function loadDemoClassData(notify = true) {
+      const demoList = [
+        {
+          name: "Enzo Gabriel",
+          turma: "1º Adm - Manhã",
+          attendanceDate: new Date().toLocaleDateString('pt-BR'),
+          attendanceTime: "07:35",
+          status: "EXCELENTE",
+          score: 100,
+          equationCorrect: true,
+          ativoTotal: 6000,
+          passivoPLTotal: 6000,
+          answers: GABARITO,
+          diagnostics: {
+            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: true },
+            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
+          },
+          feedback: [
+            { type: 'success', text: 'Todos os razonetes corretos com continhas calculadas.' },
+            { type: 'success', text: 'Equação Fundamental: Ativo = Passivo + PL (R$ 6.000,00 = R$ 6.000,00).' }
+          ]
+        },
+        {
+          name: "Lara Fernandes",
+          turma: "1º Adm - Manhã",
+          attendanceDate: new Date().toLocaleDateString('pt-BR'),
+          attendanceTime: "07:40",
+          status: "EXCELENTE",
+          score: 100,
+          equationCorrect: true,
+          ativoTotal: 6000,
+          passivoPLTotal: 6000,
+          answers: GABARITO,
+          diagnostics: {
+            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: true },
+            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
+          },
+          feedback: [
+            { type: 'success', text: 'Todos os razonetes corretos.' },
+            { type: 'success', text: 'Equação Fundamental validada com sucesso.' }
+          ]
+        },
+        {
+          name: "Matheus Vinicius",
+          turma: "1º Adm - Manhã",
+          attendanceDate: new Date().toLocaleDateString('pt-BR'),
+          attendanceTime: "07:42",
+          status: "BOM",
+          score: 75,
+          equationCorrect: false,
+          ativoTotal: 6500,
+          passivoPLTotal: 6000,
+          answers: {
+            ...GABARITO,
+            banco: { debitos: [3000], creditos: [2000], saldoVal: 1000, saldoNat: 'D' } // Esqueceu o Pix de R$ 500
+          },
+          diagnostics: {
+            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: false },
+            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
+          },
+          feedback: [
+            { type: 'error', text: 'Conta Banco c/ Movimento: Esqueceu o pagamento de R$ 500 do Fato (6).' },
+            { type: 'error', text: 'Equação Fundamental: Ativo deu R$ 6.500,00 vs R$ 6.000,00 de Passivo+PL.' }
+          ]
+        },
+        {
+          name: "Camila Rocha",
+          turma: "1º Adm - Manhã",
+          attendanceDate: new Date().toLocaleDateString('pt-BR'),
+          attendanceTime: "07:45",
+          status: "REVISAR",
+          score: 50,
+          equationCorrect: false,
+          ativoTotal: 5400,
+          passivoPLTotal: 7000,
+          answers: {
+            ...GABARITO,
+            caixa: { debitos: [5000, 600], creditos: [3000], saldoVal: 2600, saldoNat: 'D' },
+            fornecedores: { debitos: [], creditos: [1500, 500], saldoVal: 2000, saldoNat: 'C' }
+          },
+          diagnostics: {
+            caixa: { isFull: false }, capital: { isFull: true }, banco: { isFull: true },
+            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: false }
+          },
+          feedback: [{ type: 'error', text: 'Inverteu débitos e créditos no caixa e no passivo.' }]
+        },
+        {
+          name: "Pedro Henrique",
+          turma: "1º Adm - Tarde",
+          attendanceDate: new Date().toLocaleDateString('pt-BR'),
+          attendanceTime: "07:50",
+          status: "PENDING",
+          score: null,
+          equationCorrect: false,
+          ativoTotal: 0,
+          passivoPLTotal: 0,
+          answers: null,
+          diagnostics: null,
+          feedback: null
+        }
+      ];
+
+      saveClassList(demoList);
+      if (notify) {
+        showToast('5 alunos demonstrativos carregados na turma!');
+        renderTeacherDashboard();
+      }
+    }
+
+    function clearAllClassData() {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(ACTIVE_STUDENT_KEY);
+      showToast('Dados da turma zerados.', 'info');
+      renderTeacherDashboard();
+    }
+
+    function renderTeacherDashboard() {
+      const students = getClassList();
+
+      const totalStudents = students.length;
+      const submitted = students.filter(s => s.score !== null && s.score !== undefined);
+      const sumGrades = submitted.reduce((acc, s) => acc + s.score, 0);
+      const avgGrade = submitted.length > 0 ? Math.round(sumGrades / submitted.length) : 0;
+
+      const perfect = submitted.filter(s => s.score === 100).length;
+      const perfectPct = submitted.length > 0 ? Math.round((perfect / submitted.length) * 100) : 0;
+      const needHelp = submitted.filter(s => s.score < 100).length;
+
+      document.getElementById('metricStudentsCount').textContent = totalStudents;
+      document.getElementById('metricClassAverage').textContent = `${avgGrade} pts`;
+      document.getElementById('metricFullScoreCount').textContent = perfect;
+      document.getElementById('metricFullScorePct').textContent = `${perfectPct}% dos envios`;
+      document.getElementById('metricHelpCount').textContent = needHelp;
+
+      // Métrica de Sucesso na Equação Patrimonial
+      const eqSuccessCount = submitted.filter(s => s.equationCorrect === true).length;
+      const eqRate = submitted.length > 0 ? Math.round((eqSuccessCount / submitted.length) * 100) : 0;
+      document.getElementById('metricEquationSuccessRate').textContent = `${eqRate}% (${eqSuccessCount}/${submitted.length})`;
+
+      renderAccountAnalytics(submitted);
+      renderTeacherTable();
+    }
+
+    function renderAccountAnalytics(submitted) {
+      const container = document.getElementById('accountAnalyticsContainer');
+      container.innerHTML = '';
+
+      if (submitted.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-4">Aguardando entregas de alunos para gerar as estatísticas de acerto.</p>';
+        return;
+      }
+
+      const accKeys = Object.keys(GABARITO);
+      accKeys.forEach(key => {
+        let correctCount = 0;
+        submitted.forEach(s => {
+          if (s.diagnostics && s.diagnostics[key] && s.diagnostics[key].isFull) {
+            correctCount++;
+          }
+        });
+
+        const rate = Math.round((correctCount / submitted.length) * 100);
+        const isLow = rate < 70;
+
+        const card = document.createElement('div');
+        card.className = "p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5";
+        card.innerHTML = `
+          <div class="text-[11px] font-bold text-slate-700 truncate" title="${GABARITO[key].nome}">${GABARITO[key].nome}</div>
+          <div class="text-xs font-mono font-black ${isLow ? 'text-amber-600' : 'text-emerald-600'}">${rate}% acerto</div>
+          <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+            <div class="${isLow ? 'bg-amber-500' : 'bg-emerald-500'} h-1.5 rounded-full" style="width: ${rate}%"></div>
+          </div>
+          <p class="text-[10px] text-slate-400">${correctCount}/${submitted.length} alunos</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderTeacherTable() {
+      const students = getClassList();
+      const tbody = document.getElementById('teacherTableBody');
+      const emptyDiv = document.getElementById('teacherTableEmpty');
+      const search = (document.getElementById('teacherSearchFilter').value || '').toLowerCase();
+      const filter = document.getElementById('teacherStatusFilter').value;
+
+      tbody.innerHTML = '';
+
+      const filtered = students.filter(s => {
+        const matchSearch = s.name.toLowerCase().includes(search) || (s.turma && s.turma.toLowerCase().includes(search));
+        let matchStatus = true;
+        if (filter === '100') matchStatus = s.score === 100;
+        else if (filter === 'PARTIAL') matchStatus = s.score !== null && s.score < 100;
+        else if (filter === 'PENDING') matchStatus = s.score === null || s.score === undefined;
+        return matchSearch && matchStatus;
+      });
+
+      if (filtered.length === 0) {
+        emptyDiv.classList.remove('hidden');
+      } else {
+        emptyDiv.classList.add('hidden');
+      }
+
+      filtered.forEach(student => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition-colors";
+
+        let statusBadge = '';
+        if (student.score === 100) {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>100% Acerto</span>';
+        } else if (student.score !== null) {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>Inconsistências</span>';
+        } else {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Presente (Em Aberto)</span>';
+        }
+
+        const scoreText = student.score !== null ? `<span class="font-mono font-bold ${student.score === 100 ? 'text-emerald-600' : 'text-slate-800'}">${student.score} pts</span>` : '<span class="text-slate-400 font-mono">-</span>';
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-slate-900">${student.name}</td>
+          <td class="py-3 px-4 text-xs text-slate-600">${student.turma || 'Turma Adm'}</td>
+          <td class="py-3 px-4 font-mono text-xs text-slate-600">${student.attendanceDate || '--'} às ${student.attendanceTime || '--'}</td>
+          <td class="py-3 px-4">${statusBadge}</td>
+          <td class="py-3 px-4 text-center">${scoreText}</td>
+          <td class="py-3 px-4 text-right">
+            ${student.answers ? `
+              <button onclick="inspectStudent('${encodeURIComponent(student.name)}')" class="inline-flex items-center space-x-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1.5 rounded-xl transition">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                <span>Ver Resolução</span>
+              </button>
+            ` : `
+              <span class="text-xs text-slate-400 italic">Sem envio</span>
+            `}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      lucide.createIcons();
+    }
+
+    function inspectStudent(encodedName) {
+      const name = decodeURIComponent(encodedName);
+      const student = getClassList().find(s => s.name === name);
+      if (!student || !student.answers) {
+        showToast('Não há dados enviados para este estudante.', 'error');
+        return;
+      }
+
+      document.getElementById('modalStudentName').textContent = student.name;
+      document.getElementById('modalStudentClass').textContent = `${student.turma || 'Turma Regular'} • Presença registrada em ${student.attendanceDate} às ${student.attendanceTime}`;
+      document.getElementById('modalStudentScore').textContent = `${student.score} / 100 pts`;
+      document.getElementById('modalStudentStatus').textContent = student.score === 100 ? 'Perfeito (Aprovado)' : 'Com pendências de apuração';
+
+      const grid = document.getElementById('modalRazonetesGrid');
+      grid.innerHTML = '';
+
+      Object.keys(GABARITO).forEach(key => {
+        const ans = student.answers[key] || { debitos: [], creditos: [], saldoVal: 0, saldoNat: 'D' };
+        const isOk = student.diagnostics && student.diagnostics[key] ? student.diagnostics[key].isFull : false;
+
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-xl border ${isOk ? 'border-emerald-200 bg-emerald-50/40' : 'border-amber-200 bg-amber-50/40'} space-y-1.5`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between font-bold text-xs pb-1 border-b border-slate-200">
+            <span>${GABARITO[key].nome}</span>
+            <span class="text-[11px] font-mono ${isOk ? 'text-emerald-700' : 'text-amber-700'}">${isOk ? 'Correto' : 'Revisar'}</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+            <div>
+              <span class="text-[10px] text-slate-400 font-sans block">DÉBITO:</span>
+              <span>${ans.debitos.length ? ans.debitos.join('; ') : '-'}</span>
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-400 font-sans block">CRÉDITO:</span>
+              <span>${ans.creditos.length ? ans.creditos.join('; ') : '-'}</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-600 pt-1 border-t border-slate-200 flex justify-between font-mono">
+            <span>Saldo: R$ ${ans.saldoVal} (${ans.saldoNat})</span>
+            <span class="text-slate-400 font-sans text-[10px]">Esperado: ${GABARITO[key].saldoVal} (${GABARITO[key].saldoNat})</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      const fbUl = document.getElementById('modalFeedbackList');
+      fbUl.innerHTML = '';
+
+      // Adiciona card da Equação Patrimonial no modal
+      const eqLi = document.createElement('li');
+      eqLi.className = "flex items-start space-x-2 font-bold";
+      eqLi.innerHTML = `
+        <i data-lucide="${student.equationCorrect ? 'check-circle' : 'alert-triangle'}" class="w-4 h-4 mt-0.5 flex-shrink-0 ${student.equationCorrect ? 'text-emerald-600' : 'text-amber-600'}"></i>
+        <span>Equação Fundamental: Ativo (R$ ${(student.ativoTotal || 0).toFixed(2)}) = Passivo + PL (R$ ${(student.passivoPLTotal || 0).toFixed(2)}) • ${student.equationCorrect ? 'Balanço Bateu!' : 'Diferença no Balanço'}</span>
+      `;
+      fbUl.appendChild(eqLi);
+
+      if (student.feedback && student.feedback.length) {
+        student.feedback.forEach(fb => {
+          const li = document.createElement('li');
+          li.className = "flex items-start space-x-2";
+          li.innerHTML = `
+            <i data-lucide="${fb.type === 'success' ? 'check' : 'alert-circle'}" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${fb.type === 'success' ? 'text-emerald-600' : 'text-amber-600'}"></i>
+            <span>${fb.text}</span>
+          `;
+          fbUl.appendChild(li);
+        });
+      }
+
+      lucide.createIcons();
+      document.getElementById('studentDetailModal').classList.remove('hidden');
+    }
+
+    function closeStudentModal() {
+      document.getElementById('studentDetailModal').classList.add('hidden');
+    }
+
+    function exportTeacherDataToCSV() {
+      const students = getClassList();
+      if (students.length === 0) {
+        showToast('Nenhum dado cadastrado para exportar.', 'error');
+        return;
+      }
+
+      let csv = "data:text/csv;charset=utf-8,\uFEFF";
+      csv += "Aluno,Turma,Data Presenca,Hora Presenca,Status,Nota,Equacao Bateu,Total Ativo,Total Passivo PL,Caixa OK,Capital OK,Banco OK,Equipamentos OK,Estoque OK,Moveis OK,Fornecedores OK\n";
+
+      students.forEach(s => {
+        const diag = s.diagnostics || {};
+        const row = [
+          `"${s.name || ''}"`,
+          `"${s.turma || ''}"`,
+          `"${s.attendanceDate || ''}"`,
+          `"${s.attendanceTime || ''}"`,
+          `"${s.status || 'PENDING'}"`,
+          s.score !== null ? s.score : 'N/A',
+          s.equationCorrect ? 'SIM' : 'NÃO',
+          (s.ativoTotal || 0).toFixed(2),
+          (s.passivoPLTotal || 0).toFixed(2),
+          diag.caixa ? (diag.caixa.isFull ? 'SIM' : 'NÃO') : 'N/A',
+          diag.capital ? (diag.capital.isFull ? 'SIM' : 'NÃO') : 'N/A',
+          diag.banco ? (diag.banco.isFull ? 'SIM' : 'NÃO') : 'N/A',
+          diag.equipamentos ? (diag.equipamentos.isFull ? 'SIM' : 'NÃO') : 'N/A',
+          diag.estoque ? (diag.estoque.isFull ? 'SIM' : 'NÃO') : 'N/A',
+          diag.moveis ? (diag.moveis.isFull ? 'SIM' : 'NÃO') : 'N/A',
+          diag.fornecedores ? (diag.fornecedores.isFull ? 'SIM' : 'NÃO') : 'N/A'
+        ];
+        csv += row.join(",") + "\n";
+      });
+
+      const uri = encodeURI(csv);
+      const link = document.createElement("a");
+      link.setAttribute("href", uri);
+      link.setAttribute("download", `ArenaGamerZone_Relatorio_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast('Planilha CSV gerada com sucesso!');
+    }
+  </script>
+</body>
+</html>
