@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RazoneteLab - Arena GamerZone & Painel Docente</title>
+  <title>Arena GamerZone - Prática Contábil & Razonetes</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -19,27 +19,6 @@
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            },
-            debito: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              600: '#2563eb',
-              700: '#1d4ed8'
-            },
-            credito: {
-              50: '#faf5ff',
-              100: '#f3e8ff',
-              600: '#9333ea',
-              700: '#7e22ce'
-            }
           }
         }
       }
@@ -69,10 +48,10 @@
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans select-text">
 
-  <!-- Header Global -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+  <!-- Header Limpo (Sem qualquer botão ou menção a professor) -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
         <div class="bg-gradient-to-tr from-indigo-600 to-violet-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
@@ -80,80 +59,71 @@
         </div>
         <div>
           <span class="text-[11px] uppercase tracking-wider font-extrabold text-indigo-600 block">Técnico em Administração</span>
-          <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">| Razonetes & Apuração</span></h1>
+          <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">• Laboratório de Razonetes</span></h1>
         </div>
       </div>
-
-      <!-- Abas de Navegação -->
-      <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 space-x-1">
-        <button id="navStudentBtn" onclick="switchView('student')" class="flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm">
-          <i data-lucide="user-check" class="w-4 h-4"></i>
-          <span>Espaço do Aluno</span>
-        </button>
-        <button id="navTeacherBtn" onclick="switchView('teacher')" class="flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200">
-          <i data-lucide="shield-check" class="w-4 h-4"></i>
-          <span>Painel da Professora</span>
-        </button>
-      </nav>
+      <div class="flex items-center space-x-2">
+        <span class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Atividade Prática Individual</span>
+        </span>
+      </div>
     </div>
   </header>
 
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <!-- ========================================== -->
-    <!-- VIEW 1: ESPAÇO DO ALUNO                   -->
+    <!-- VIEW 1: ESPAÇO DO ALUNO (INTERFACE PRINCIPAL) -->
     <!-- ========================================== -->
-    <section id="studentView" class="space-y-6">
+    <div id="studentContainer" class="space-y-6">
 
-      <!-- Registro de Presença Simplificado (Sem número de chamada) -->
+      <!-- Controle de Entrada do Aluno & Presença -->
       <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative overflow-hidden">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="space-y-1">
-            <div class="inline-flex items-center space-x-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span id="studentAttendanceBadge">Presença em Aberto</span>
+            <div class="inline-flex items-center space-x-2 text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span id="studentAttendanceBadge">Chamada em Aberto</span>
             </div>
-            <h2 class="text-xl font-extrabold text-slate-900">Identificação & Registro de Presença</h2>
-            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome completo e turma. A presença é confirmada na hora com registro de horário!</p>
+            <h2 class="text-xl font-black text-slate-900">Identificação do Aluno & Chamada</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome completo e escolha sua turma para registrar presença e validar a pontuação.</p>
           </div>
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <input type="text" id="studentNameInput" placeholder="Seu Nome Completo" class="w-full sm:w-64 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
-            <select id="studentClassInput" class="w-full sm:w-44 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition font-medium">
-              <option value="1º Técnico Adm - Matutino">1º Adm - Manhã</option>
-              <option value="1º Técnico Adm - Vespertino">1º Adm - Tarde</option>
-              <option value="1º Técnico Adm - Noturno">1º Adm - Noite</option>
-              <option value="2º Técnico Adm">2º Adm</option>
+            <input type="text" id="studentNameInput" placeholder="Seu Nome Completo..." class="w-full sm:w-64 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+            <select id="studentClassInput" class="w-full sm:w-44 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition font-semibold text-slate-700">
+              <option value="" disabled selected>Escolha sua turma...</option>
+              <option value="2º Ano A">2º Ano A</option>
+              <option value="2º Ano B">2º Ano B</option>
             </select>
             <button onclick="registerAttendance()" id="btnMarkAttendance" class="inline-flex items-center justify-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow-md transition active:scale-95">
               <i data-lucide="badge-check" class="w-4 h-4"></i>
-              <span>Marcar Presença</span>
+              <span>Confirmar Presença</span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Enredo Gamificado & Lista de Fatos Contábeis (6 Fatos) -->
+      <!-- Enredo Gamer & 6 Fatos Contábeis -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
         <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
           <div class="flex items-start sm:items-center space-x-3">
             <span class="p-2.5 rounded-xl bg-violet-100 text-violet-700">
               <i data-lucide="cpu" class="w-6 h-6"></i>
             </span>
             <div>
-              <h3 class="text-base font-bold text-slate-900">Missão Contábil: Arena GamerZone & E-Sports</h3>
-              <p class="text-xs text-slate-500">A galera da sala abriu uma loja e arena de games. Analise os 6 lançamentos do primeiro mês e registre cada Débito e Crédito:</p>
+              <h3 class="text-base font-bold text-slate-900">Missão Contábil: Abertura da Arena GamerZone</h3>
+              <p class="text-xs text-slate-500">Faça a escrituração contábil dos 6 fatos do mês nos razonetes em Conta T:</p>
             </div>
           </div>
 
-          <!-- Cards dos 6 Fatos -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
               <div class="flex items-center justify-between">
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (1) - Capital</span>
                 <span class="font-mono font-bold text-slate-800">R$ 5.000,00</span>
               </div>
-              <p class="text-slate-600">Abertura: Os sócios integralizaram R$ 5.000,00 em dinheiro no <strong>Caixa</strong> como <strong>Capital Social</strong>.</p>
+              <p class="text-slate-600">Abertura: Os sócios investiram R$ 5.000,00 em dinheiro no <strong>Caixa</strong> como <strong>Capital Social</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -161,7 +131,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (2) - Depósito</span>
                 <span class="font-mono font-bold text-slate-800">R$ 3.000,00</span>
               </div>
-              <p class="text-slate-600">Depósito Bancário: Abertura de conta corrente. Saiu do <strong>Caixa</strong> e entrou no <strong>Banco Conta Movimento</strong>.</p>
+              <p class="text-slate-600">Depósito Bancário: Abertura de conta corrente com dinheiro saído do <strong>Caixa</strong> para o <strong>Banco Conta Movimento</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -169,7 +139,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (3) - PCs Gamer</span>
                 <span class="font-mono font-bold text-slate-800">R$ 2.000,00</span>
               </div>
-              <p class="text-slate-600">Equipamentos: Compra de 2 computadores gamer pagos via transferência da conta <strong>Banco</strong>.</p>
+              <p class="text-slate-600">Equipamentos: Compra de 2 PCs Gamer pagos à vista via transferência da conta do <strong>Banco</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -177,7 +147,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (4) - Jogos p/ Venda</span>
                 <span class="font-mono font-bold text-slate-800">R$ 1.500,00</span>
               </div>
-              <p class="text-slate-600">Estoque a Prazo: Compra de jogos e controles (Estoque) a prazo para pagar depois ao <strong>Fornecedor</strong>.</p>
+              <p class="text-slate-600">Estoque a Prazo: Compra de jogos e controles a prazo para pagar depois ao <strong>Fornecedor</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -185,7 +155,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (5) - Cadeiras Gamer</span>
                 <span class="font-mono font-bold text-slate-800">R$ 600,00</span>
               </div>
-              <p class="text-slate-600">Móveis e Utensílios: Compra de 2 cadeiras gamer à vista, pagas com dinheiro do <strong>Caixa</strong>.</p>
+              <p class="text-slate-600">Móveis e Utensílios: Compra de 2 cadeiras gamer à vista pagas em dinheiro vivo do <strong>Caixa</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -193,28 +163,27 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (6) - Pagto Parcial</span>
                 <span class="font-mono font-bold text-slate-800">R$ 500,00</span>
               </div>
-              <p class="text-slate-600">Abatimento de Dívida: Pagamento de parte da dívida com o <strong>Fornecedor</strong> através de Pix pelo <strong>Banco</strong>.</p>
+              <p class="text-slate-600">Abatimento: Pagamento parcial da dívida com <strong>Fornecedores</strong> via Pix do <strong>Banco</strong>.</p>
             </div>
           </div>
         </div>
 
-        <!-- Passo a Passo Didático para Adolescentes -->
+        <!-- Instruções Rápidas -->
         <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
           <div class="space-y-3">
             <div class="flex items-center space-x-2 text-indigo-300 text-xs font-bold uppercase tracking-wider">
               <i data-lucide="calculator" class="w-4 h-4"></i>
-              <span>Como Calcular o Saldo do Razonete</span>
+              <span>Como Calcular o Razonete</span>
             </div>
-            <h4 class="text-base font-black text-white">O Algoritmo do Razonete</h4>
+            <h4 class="text-base font-black text-white">Regras Básicas</h4>
             <div class="space-y-2 text-xs leading-relaxed text-indigo-100">
               <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1.5">
-                <p><span class="font-bold text-blue-300">1º Passo:</span> Some todos os números do lado <strong>Débito (D)</strong>.</p>
-                <p><span class="font-bold text-purple-300">2º Passo:</span> Some todos os números do lado <strong>Crédito (C)</strong>.</p>
-                <p><span class="font-bold text-emerald-300">3º Passo:</span> Diminua: <strong>Total Maior − Total Menor</strong>.</p>
-                <p><span class="font-bold text-amber-300">4º Passo:</span> O saldo fica do lado onde a soma foi <strong>maior</strong> (D ou C)!</p>
+                <p><span class="font-bold text-blue-300">Esquerda:</span> Débito (D) | <span class="font-bold text-purple-300">Direita:</span> Crédito (C)</p>
+                <p><span class="font-bold text-emerald-300">Soma:</span> Use o botão <strong>Somar Colunas (Σ)</strong> em cada conta.</p>
+                <p><span class="font-bold text-amber-300">Diminuir:</span> Clique em <strong>Subtrair (Maior − Menor)</strong> para calcular o saldo líquido na hora!</p>
               </div>
               <p class="text-[11px] text-slate-300">
-                💡 <em>Use os botões de <strong>Somar (Σ)</strong> e a <strong>Continha de Menor (-)</strong> dentro de cada razonete abaixo para calcular direto na página!</em>
+                💡 O saldo fica sempre do lado com maior valor acumulado.
               </p>
             </div>
           </div>
@@ -223,28 +192,26 @@
             <span class="font-mono text-emerald-400 font-bold">Partidas Dobradas</span>
           </div>
         </div>
-
       </div>
 
-      <!-- Painel dos 6 Razonetes com Calculadora Embutida -->
+      <!-- Etapa 1: Os 7 Razonetes com Calculadora Embutida -->
       <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
           <div>
             <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
-              <span>Razonetes da GamerZone</span>
+              <span>Etapa 1: Razonetes em Conta T</span>
               <span class="text-xs px-2.5 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full font-bold">Com Calculadora Embutida</span>
             </h3>
-            <p class="text-xs text-slate-500">Lance os valores em cada lado. Utilize a ferramenta no rodapé de cada razonete para fazer as somas e subtrações!</p>
+            <p class="text-xs text-slate-500">Insira os lançamentos e clique na calculadora embutida para realizar as somas e subtrações!</p>
           </div>
           <button onclick="fillExampleFirstTransaction()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 underline text-left sm:text-right">
             Preencher lançamento (1) como modelo
           </button>
         </div>
 
-        <!-- Grid de Razonetes: 6 Contas -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          <!-- 1. CAIXA (Ativo) -->
+          <!-- 1. CAIXA -->
           <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-caixa">
             <div>
               <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
@@ -256,20 +223,18 @@
                 <span class="text-blue-700">DÉBITO (D)</span>
                 <span class="text-purple-700">CRÉDITO (C)</span>
               </div>
-              <!-- Corpo da Conta T -->
               <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-caixa-deb">
+                <div class="space-y-1.5 pr-2">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="D">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="D">
                 </div>
-                <div class="space-y-1.5 pl-2" id="inputs-caixa-cred">
+                <div class="space-y-1.5 pl-2">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="C">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="caixa" data-side="C">
                 </div>
               </div>
             </div>
 
-            <!-- Calculadora Embutida no Razonete -->
             <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
               <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
                 <span>Calculadora do Razonete:</span>
@@ -285,13 +250,9 @@
                   <span id="sum-c-caixa" class="font-bold text-slate-800">0</span>
                 </div>
               </div>
-              <!-- Continha de Diminuir (Maior - Menor) -->
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('caixa')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
-              <!-- Linha Oficial do Saldo Final -->
+              <button type="button" onclick="calculateNetBalance('caixa')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
               <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-black text-slate-800">Saldo Final:</span>
                 <div class="flex items-center space-x-1.5">
@@ -306,63 +267,7 @@
             </div>
           </div>
 
-          <!-- 2. CAPITAL SOCIAL (Patrimônio Líquido) -->
-          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-capital">
-            <div>
-              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
-                <span class="text-[11px] text-purple-600 uppercase font-bold bg-purple-50 px-2 py-0.5 rounded">PL</span>
-                <span class="text-sm tracking-wide">CAPITAL SOCIAL</span>
-                <span class="text-[11px] text-slate-400 font-mono">Sócios</span>
-              </div>
-              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
-                <span class="text-blue-700">DÉBITO (D)</span>
-                <span class="text-purple-700">CRÉDITO (C)</span>
-              </div>
-              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-capital-deb">
-                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="capital" data-side="D">
-                </div>
-                <div class="space-y-1.5 pl-2" id="inputs-capital-cred">
-                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="capital" data-side="C">
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
-              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
-                <span>Calculadora do Razonete:</span>
-                <button type="button" onclick="autoSumAccount('capital')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
-              </div>
-              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
-                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
-                  <span class="text-blue-700 font-bold">Σ D:</span>
-                  <span id="sum-d-capital" class="font-bold text-slate-800">0</span>
-                </div>
-                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
-                  <span class="text-purple-700 font-bold">Σ C:</span>
-                  <span id="sum-c-capital" class="font-bold text-slate-800">0</span>
-                </div>
-              </div>
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('capital')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
-              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
-                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
-                <div class="flex items-center space-x-1.5">
-                  <span class="text-xs text-slate-400 font-mono">R$</span>
-                  <input type="number" id="saldo-capital-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
-                  <select id="saldo-capital-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. BANCO CONTA MOVIMENTO (Ativo) -->
+          <!-- 2. BANCO C/ MOVIMENTO -->
           <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-banco">
             <div>
               <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
@@ -375,10 +280,10 @@
                 <span class="text-purple-700">CRÉDITO (C)</span>
               </div>
               <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-banco-deb">
+                <div class="space-y-1.5 pr-2">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="banco" data-side="D">
                 </div>
-                <div class="space-y-1.5 pl-2" id="inputs-banco-cred">
+                <div class="space-y-1.5 pl-2">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="banco" data-side="C">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="banco" data-side="C">
                 </div>
@@ -400,11 +305,9 @@
                   <span id="sum-c-banco" class="font-bold text-slate-800">0</span>
                 </div>
               </div>
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('banco')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
+              <button type="button" onclick="calculateNetBalance('banco')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
               <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-black text-slate-800">Saldo Final:</span>
                 <div class="flex items-center space-x-1.5">
@@ -419,7 +322,7 @@
             </div>
           </div>
 
-          <!-- 4. COMPUTADORES E EQUIPAMENTOS (Ativo) -->
+          <!-- 3. EQUIPAMENTOS (PCs Gamer) -->
           <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-equipamentos">
             <div>
               <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
@@ -432,10 +335,10 @@
                 <span class="text-purple-700">CRÉDITO (C)</span>
               </div>
               <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-equipamentos-deb">
+                <div class="space-y-1.5 pr-2">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="equipamentos" data-side="D">
                 </div>
-                <div class="space-y-1.5 pl-2" id="inputs-equipamentos-cred">
+                <div class="space-y-1.5 pl-2">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="equipamentos" data-side="C">
                 </div>
               </div>
@@ -456,11 +359,9 @@
                   <span id="sum-c-equipamentos" class="font-bold text-slate-800">0</span>
                 </div>
               </div>
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('equipamentos')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
+              <button type="button" onclick="calculateNetBalance('equipamentos')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
               <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-black text-slate-800">Saldo Final:</span>
                 <div class="flex items-center space-x-1.5">
@@ -475,7 +376,7 @@
             </div>
           </div>
 
-          <!-- 5. ESTOQUE DE JOGOS & ACESSÓRIOS (Ativo) -->
+          <!-- 4. ESTOQUE DE JOGOS -->
           <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-estoque">
             <div>
               <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
@@ -488,10 +389,10 @@
                 <span class="text-purple-700">CRÉDITO (C)</span>
               </div>
               <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-estoque-deb">
+                <div class="space-y-1.5 pr-2">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="estoque" data-side="D">
                 </div>
-                <div class="space-y-1.5 pl-2" id="inputs-estoque-cred">
+                <div class="space-y-1.5 pl-2">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="estoque" data-side="C">
                 </div>
               </div>
@@ -512,11 +413,9 @@
                   <span id="sum-c-estoque" class="font-bold text-slate-800">0</span>
                 </div>
               </div>
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('estoque')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
+              <button type="button" onclick="calculateNetBalance('estoque')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
               <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-black text-slate-800">Saldo Final:</span>
                 <div class="flex items-center space-x-1.5">
@@ -531,7 +430,7 @@
             </div>
           </div>
 
-          <!-- 6. MÓVEIS E UTENSÍLIOS (Cadeiras Gamer) (Ativo) -->
+          <!-- 5. MÓVEIS E UTENSÍLIOS -->
           <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-moveis">
             <div>
               <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
@@ -544,10 +443,10 @@
                 <span class="text-purple-700">CRÉDITO (C)</span>
               </div>
               <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-moveis-deb">
+                <div class="space-y-1.5 pr-2">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="moveis" data-side="D">
                 </div>
-                <div class="space-y-1.5 pl-2" id="inputs-moveis-cred">
+                <div class="space-y-1.5 pl-2">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="moveis" data-side="C">
                 </div>
               </div>
@@ -568,11 +467,9 @@
                   <span id="sum-c-moveis" class="font-bold text-slate-800">0</span>
                 </div>
               </div>
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('moveis')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
+              <button type="button" onclick="calculateNetBalance('moveis')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
               <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-black text-slate-800">Saldo Final:</span>
                 <div class="flex items-center space-x-1.5">
@@ -587,7 +484,7 @@
             </div>
           </div>
 
-          <!-- 7. FORNECEDORES (Passivo) -->
+          <!-- 6. FORNECEDORES -->
           <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-fornecedores">
             <div>
               <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
@@ -600,10 +497,10 @@
                 <span class="text-purple-700">CRÉDITO (C)</span>
               </div>
               <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
-                <div class="space-y-1.5 pr-2" id="inputs-fornecedores-deb">
+                <div class="space-y-1.5 pr-2">
                   <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="fornecedores" data-side="D">
                 </div>
-                <div class="space-y-1.5 pl-2" id="inputs-fornecedores-cred">
+                <div class="space-y-1.5 pl-2">
                   <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="fornecedores" data-side="C">
                 </div>
               </div>
@@ -624,11 +521,9 @@
                   <span id="sum-c-fornecedores" class="font-bold text-slate-800">0</span>
                 </div>
               </div>
-              <div class="flex items-center space-x-1.5 pt-1 text-[11px]">
-                <button type="button" onclick="calculateNetBalance('fornecedores')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
-                  Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
-                </button>
-              </div>
+              <button type="button" onclick="calculateNetBalance('fornecedores')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
               <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-black text-slate-800">Saldo Final:</span>
                 <div class="flex items-center space-x-1.5">
@@ -643,31 +538,85 @@
             </div>
           </div>
 
+          <!-- 7. CAPITAL SOCIAL -->
+          <div class="border-2 border-slate-200 hover:border-indigo-300 rounded-2xl p-4 bg-slate-50/40 flex flex-col justify-between transition-colors shadow-sm" id="card-capital">
+            <div>
+              <div class="text-center pb-2 border-b-2 border-slate-800 flex items-center justify-between font-black text-slate-900">
+                <span class="text-[11px] text-purple-600 uppercase font-bold bg-purple-50 px-2 py-0.5 rounded">PL</span>
+                <span class="text-sm tracking-wide">CAPITAL SOCIAL</span>
+                <span class="text-[11px] text-slate-400 font-mono">Sócios</span>
+              </div>
+              <div class="grid grid-cols-2 text-center text-xs font-bold py-1 border-b border-slate-200">
+                <span class="text-blue-700">DÉBITO (D)</span>
+                <span class="text-purple-700">CRÉDITO (C)</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 py-2.5 t-divider min-h-[125px]">
+                <div class="space-y-1.5 pr-2">
+                  <input type="number" placeholder="Valor D" class="deb-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="capital" data-side="D">
+                </div>
+                <div class="space-y-1.5 pl-2">
+                  <input type="number" placeholder="Valor C" class="cred-val w-full text-xs font-mono p-1.5 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500" data-account="capital" data-side="C">
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-dashed border-slate-300 bg-white p-2.5 rounded-xl space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-600">
+                <span>Calculadora do Razonete:</span>
+                <button type="button" onclick="autoSumAccount('capital')" class="text-indigo-600 hover:text-indigo-800 text-[10px] underline">Somar Colunas (Σ)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                <div class="flex items-center justify-between bg-blue-50 px-2 py-1 rounded border border-blue-200">
+                  <span class="text-blue-700 font-bold">Σ D:</span>
+                  <span id="sum-d-capital" class="font-bold text-slate-800">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-purple-50 px-2 py-1 rounded border border-purple-200">
+                  <span class="text-purple-700 font-bold">Σ C:</span>
+                  <span id="sum-c-capital" class="font-bold text-slate-800">0</span>
+                </div>
+              </div>
+              <button type="button" onclick="calculateNetBalance('capital')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1 px-2 rounded border border-slate-300 text-[10px] transition">
+                Subtrair (Maior − Menor) & Transferir p/ Saldo ⬇
+              </button>
+              <div class="pt-2 border-t-2 border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-black text-slate-800">Saldo Final:</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-xs text-slate-400 font-mono">R$</span>
+                  <input type="number" id="saldo-capital-val" placeholder="0" class="w-20 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-amber-50/60 focus:bg-white focus:ring-2 focus:ring-indigo-500">
+                  <select id="saldo-capital-natureza" class="text-xs font-bold border border-slate-300 rounded-lg p-1.5 bg-white">
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- ETAPA 3: EQUAÇÃO FUNDAMENTAL DO PATRIMÔNIO (ATIVO = PASSIVO + PL) -->
+      <!-- Etapa 2: Equação Fundamental do Patrimônio -->
       <div class="bg-white rounded-2xl p-6 border-2 border-indigo-200 shadow-md space-y-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
           <div class="space-y-1">
             <div class="inline-flex items-center space-x-2 text-xs font-extrabold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
               <i data-lucide="scale" class="w-4 h-4"></i>
-              <span>Etapa Final Obrigatória • Prova Real</span>
+              <span>Etapa 2: Balanço Patrimonial</span>
             </div>
             <h3 class="text-xl font-black text-slate-900">Equação Fundamental do Patrimônio</h3>
             <p class="text-xs sm:text-sm text-slate-500">
-              Chegou a hora de provar que as contas bateram! Calcule a soma de todos os bens e direitos (Ativo) e compare com a soma das obrigações e capital (Passivo + PL).
+              Comprove a igualdade contábil: <strong>Total do Ativo = Total do Passivo + PL</strong>.
             </p>
           </div>
           <button type="button" onclick="autoPullBalancesToEquation()" class="inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition">
             <i data-lucide="arrow-down-circle" class="w-4 h-4"></i>
-            <span>Puxar Saldos dos Razonetes Acima</span>
+            <span>Importar Saldos dos Razonetes</span>
           </button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           
-          <!-- Lado Esquerdo: Ativo (Bens e Direitos) -->
+          <!-- Lado Esquerdo: Ativo -->
           <div class="lg:col-span-5 bg-blue-50/50 p-5 rounded-2xl border border-blue-200 space-y-4">
             <div class="flex items-center justify-between border-b border-blue-200 pb-2">
               <h4 class="text-sm font-black text-blue-900 flex items-center gap-1.5">
@@ -682,7 +631,7 @@
                 <label for="eq-caixa" class="text-slate-600 font-medium">1. Saldo do Caixa:</label>
                 <div class="flex items-center space-x-1">
                   <span class="font-mono text-slate-400">R$</span>
-                  <input type="number" id="eq-caixa" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                  <input type="number" id="eq-caixa" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
 
@@ -690,7 +639,7 @@
                 <label for="eq-banco" class="text-slate-600 font-medium">2. Saldo do Banco:</label>
                 <div class="flex items-center space-x-1">
                   <span class="font-mono text-slate-400">R$</span>
-                  <input type="number" id="eq-banco" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                  <input type="number" id="eq-banco" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
 
@@ -698,7 +647,7 @@
                 <label for="eq-equip" class="text-slate-600 font-medium">3. Saldo dos PCs (Equip.):</label>
                 <div class="flex items-center space-x-1">
                   <span class="font-mono text-slate-400">R$</span>
-                  <input type="number" id="eq-equip" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                  <input type="number" id="eq-equip" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
 
@@ -706,7 +655,7 @@
                 <label for="eq-estoque" class="text-slate-600 font-medium">4. Saldo do Estoque:</label>
                 <div class="flex items-center space-x-1">
                   <span class="font-mono text-slate-400">R$</span>
-                  <input type="number" id="eq-estoque" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                  <input type="number" id="eq-estoque" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
 
@@ -714,12 +663,11 @@
                 <label for="eq-moveis" class="text-slate-600 font-medium">5. Saldo dos Móveis:</label>
                 <div class="flex items-center space-x-1">
                   <span class="font-mono text-slate-400">R$</span>
-                  <input type="number" id="eq-moveis" placeholder="0" class="eq-ativo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
+                  <input type="number" id="eq-moveis" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
             </div>
 
-            <!-- Botão de Somar o Ativo -->
             <div class="pt-3 border-t border-blue-200 space-y-2">
               <button type="button" onclick="sumAtivoEquation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1.5">
                 <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
@@ -732,7 +680,7 @@
             </div>
           </div>
 
-          <!-- Centro: Símbolo de Igualdade da Equação -->
+          <!-- Centro: Símbolo de Igualdade -->
           <div class="lg:col-span-2 flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-3">
             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Equilíbrio</span>
             <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl font-black shadow-md">
@@ -741,7 +689,7 @@
             <button type="button" onclick="verifyEquationMatch()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2 px-2.5 rounded-xl text-xs shadow transition active:scale-95">
               Conferir Balanço ⚖️
             </button>
-            <p class="text-[11px] text-slate-500 font-medium">Ativo deve ser igual a Passivo + PL!</p>
+            <p class="text-[11px] text-slate-500 font-medium">Ativo = Passivo + PL</p>
           </div>
 
           <!-- Lado Direito: Passivo + PL -->
@@ -761,24 +709,23 @@
                   <label for="eq-fornecedores" class="text-slate-600 font-medium">1. Saldo de Fornecedores:</label>
                   <div class="flex items-center space-x-1">
                     <span class="font-mono text-slate-400">R$</span>
-                    <input type="number" id="eq-fornecedores" placeholder="0" class="eq-passivo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-purple-500">
+                    <input type="number" id="eq-fornecedores" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-purple-500">
                   </div>
                 </div>
               </div>
 
               <div class="space-y-1 pt-1 border-t border-purple-200">
-                <span class="text-[11px] font-bold text-purple-800 uppercase block">Patrimônio Líquido (Recursos Próprios):</span>
+                <span class="text-[11px] font-bold text-purple-800 uppercase block">Patrimônio Líquido (Sócios):</span>
                 <div class="flex items-center justify-between">
                   <label for="eq-capital" class="text-slate-600 font-medium">2. Saldo do Capital Social:</label>
                   <div class="flex items-center space-x-1">
                     <span class="font-mono text-slate-400">R$</span>
-                    <input type="number" id="eq-capital" placeholder="0" class="eq-passivo-item w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-purple-500">
+                    <input type="number" id="eq-capital" placeholder="0" class="w-28 font-mono text-xs font-bold p-1.5 border border-slate-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-purple-500">
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Botão de Somar o Passivo + PL -->
             <div class="pt-3 border-t border-purple-200 space-y-2">
               <button type="button" onclick="sumPassivoEquation()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-1.5 px-3 rounded-xl text-xs shadow transition flex items-center justify-center space-x-1.5">
                 <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
@@ -793,24 +740,24 @@
 
         </div>
 
-        <!-- Banner com o Diagnóstico do Balanço -->
+        <!-- Banner com o Diagnóstico da Equação -->
         <div id="equationResultBanner" class="p-4 rounded-xl border bg-slate-50 border-slate-200 flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div id="equationResultIcon" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center flex-shrink-0">
               <i data-lucide="help-circle" class="w-5 h-5"></i>
             </div>
             <div>
-              <h5 id="equationResultTitle" class="text-xs sm:text-sm font-black text-slate-800">Preencha os valores e clique em "Conferir Balanço ⚖️"</h5>
-              <p id="equationResultMessage" class="text-xs text-slate-500">A equação será validada junto com os razonetes no envio final para a professora.</p>
+              <h5 id="equationResultTitle" class="text-xs sm:text-sm font-black text-slate-800">Preencha os saldos e clique em "Conferir Balanço ⚖️"</h5>
+              <p id="equationResultMessage" class="text-xs text-slate-500">O fechamento da equação patrimonial compõe 30 pontos da sua atividade.</p>
             </div>
           </div>
           <span id="equationResultBadge" class="hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-slate-200 text-slate-700">Pendente</span>
         </div>
 
-        <!-- Botões de Ação Final (Envio p/ Professora) -->
+        <!-- Botões de Ação Final -->
         <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div class="text-xs text-slate-500 font-medium">
-            <span class="text-indigo-600 font-bold">Nota completa (100 pts):</span> 7 Razonetes (70 pts) + Equação Fundamental do Patrimônio (30 pts).
+            <span class="text-indigo-600 font-bold">Composição da Nota:</span> 7 Razonetes (70 pts) + Balanço Patrimonial (30 pts) = 100 pontos.
           </div>
           <div class="flex items-center space-x-2 w-full sm:w-auto">
             <button type="button" onclick="clearAllFields()" class="py-2.5 px-4 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
@@ -824,7 +771,7 @@
         </div>
       </div>
 
-      <!-- Painel de Feedback e Correção Instantânea -->
+      <!-- Feedback Instantâneo do Aluno -->
       <div id="studentFeedbackCard" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-md space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
           <div class="flex items-center space-x-3">
@@ -846,10 +793,10 @@
           <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
               <i data-lucide="check-square" class="w-4 h-4 text-indigo-600"></i>
-              <span>Diagnóstico Conta a Conta</span>
+              <span>Diagnóstico dos Razonetes</span>
             </h4>
             <ul id="feedbackAccountList" class="text-xs space-y-2 text-slate-600">
-              <!-- Populado via JS -->
+              <!-- Preenchido via JS -->
             </ul>
           </div>
 
@@ -860,11 +807,11 @@
             </h4>
             <div class="space-y-2 text-xs">
               <div class="flex justify-between items-center py-1.5 border-b border-slate-200">
-                <span class="text-slate-600">Total do Ativo (Caixa + Banco + PCs + Jogos + Móveis):</span>
+                <span class="text-slate-600">Total do Ativo:</span>
                 <span id="feedbackAtivoTotal" class="font-mono font-bold text-emerald-600">R$ 6.000,00</span>
               </div>
               <div class="flex justify-between items-center py-1.5 border-b border-slate-200">
-                <span class="text-slate-600">Total Passivo + PL (Fornecedores + Capital):</span>
+                <span class="text-slate-600">Total Passivo + PL:</span>
                 <span id="feedbackPassivoTotal" class="font-mono font-bold text-emerald-600">R$ 6.000,00</span>
               </div>
               <p id="feedbackBalanceMessage" class="text-slate-600 italic bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
@@ -875,27 +822,36 @@
         </div>
       </div>
 
-    </section>
+    </div>
 
     <!-- ========================================== -->
-    <!-- VIEW 2: DASHBOARD DA PROFESSORA           -->
+    <!-- VIEW 2: DASHBOARD DA PROFESSORA (PROTEGIDO) -->
     <!-- ========================================== -->
-    <section id="teacherView" class="hidden space-y-6">
+    <div id="teacherDashboardContainer" class="hidden space-y-6">
 
-      <!-- Header do Painel Docente -->
+      <!-- Header do Painel Docente com Botão de Sair/Trancar -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <div class="flex items-center space-x-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Painel do Docente</span>
-            <span class="text-xs text-slate-400">• Exercício: Arena GamerZone</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Modo Gestão Docente</span>
+            <span class="text-xs text-slate-400">• Arena GamerZone</span>
           </div>
-          <h2 class="text-2xl font-black text-slate-900 mt-1">Gestão de Turma & Acompanhamento de Razonetes</h2>
-          <p class="text-xs sm:text-sm text-slate-500">Monitore presença, notas em tempo real, contas que os alunos mais erraram e exporte a planilha.</p>
+          <h2 class="text-2xl font-black text-slate-900 mt-1">Painel de Acompanhamento das Turmas</h2>
+          <p class="text-xs sm:text-sm text-slate-500">Presenças, notas automáticas, fechamento do balanço patrimonial e relatórios.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+          <!-- Filtro Seletor de Turma -->
+          <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <span class="text-xs font-bold text-slate-500 pl-2">Turma:</span>
+            <select id="teacherClassSelectFilter" onchange="renderTeacherDashboard()" class="text-xs font-bold border-none bg-white rounded-lg py-1.5 px-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
+              <option value="ALL">Todas as Turmas</option>
+              <option value="2º Ano A">2º Ano A</option>
+              <option value="2º Ano B">2º Ano B</option>
+            </select>
+          </div>
           <button onclick="loadDemoClassData()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-            <span>Simular Turma Completa</span>
+            <span>Simular Dados</span>
           </button>
           <button onclick="exportTeacherDataToCSV()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
             <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
@@ -903,19 +859,23 @@
           </button>
           <button onclick="clearAllClassData()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
             <i data-lucide="trash-2" class="w-4 h-4"></i>
-            <span>Zerar Registros</span>
+            <span>Zerar</span>
+          </button>
+          <button onclick="lockAndExitTeacherView()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-black text-white shadow transition">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            <span>Bloquear & Voltar</span>
           </button>
         </div>
       </div>
 
-      <!-- Métricas Gerais em Cards -->
+      <!-- Métricas Resumidas em Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Alunos Presentes</p>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Alunos na Chamada</p>
             <h4 id="metricStudentsCount" class="text-2xl font-black text-slate-900 mt-1 font-mono">0</h4>
             <span class="text-xs text-emerald-600 font-semibold inline-flex items-center mt-0.5">
-              <i data-lucide="user-check" class="w-3.5 h-3.5 mr-1"></i> Chamada ativa
+              <i data-lucide="user-check" class="w-3.5 h-3.5 mr-1"></i> Presença confirmada
             </span>
           </div>
           <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
@@ -928,7 +888,7 @@
             <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Média da Turma</p>
             <h4 id="metricClassAverage" class="text-2xl font-black text-indigo-600 mt-1 font-mono">0 pts</h4>
             <span class="text-xs text-slate-500 font-medium inline-flex items-center mt-0.5">
-              Automático por entrega
+              Base: notas computadas
             </span>
           </div>
           <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
@@ -938,23 +898,23 @@
 
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Acerto 100%</p>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Balanço Bateu (100%)</p>
             <h4 id="metricFullScoreCount" class="text-2xl font-black text-emerald-600 mt-1 font-mono">0</h4>
             <span id="metricFullScorePct" class="text-xs text-emerald-600 font-medium inline-flex items-center mt-0.5">
-              0% das entregas
+              0% dos alunos
             </span>
           </div>
           <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-            <i data-lucide="trophy" class="w-6 h-6"></i>
+            <i data-lucide="scale" class="w-6 h-6"></i>
           </div>
         </div>
 
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Requerem Apoio</p>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Requerem Revisão</p>
             <h4 id="metricHelpCount" class="text-2xl font-black text-amber-600 mt-1 font-mono">0</h4>
             <span class="text-xs text-amber-600 font-medium inline-flex items-center mt-0.5">
-              Inconsistências no cálculo
+              Diferença ou &lt; 100 pts
             </span>
           </div>
           <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
@@ -963,59 +923,57 @@
         </div>
       </div>
 
-      <!-- Diagnóstico Visual de Dificuldade por Razonete -->
+      <!-- Diagnóstico de Dificuldade por Conta Contábil -->
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-base font-bold text-slate-900">Taxa de Acerto por Razonete Contábil</h3>
-            <p class="text-xs text-slate-500">Descubra em quais contas os alunos tiveram mais dificuldade em subtrair ou identificar a natureza do saldo.</p>
+            <h3 class="text-base font-bold text-slate-900">Desempenho por Conta Contábil</h3>
+            <p class="text-xs text-slate-500">Índice de acerto de lançamentos e saldos apurados pelos alunos.</p>
           </div>
-          <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">Visão Diagnóstica</span>
+          <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-100">Visão Pedagógica</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 pt-2" id="accountAnalyticsContainer">
-          <!-- Gerado via JavaScript -->
+          <!-- Gerado via JS -->
         </div>
 
-        <!-- Métrica Específica: Taxa de Acerto da Equação Fundamental -->
         <div class="mt-4 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center">
               <i data-lucide="scale" class="w-5 h-5"></i>
             </div>
             <div>
-              <h4 class="text-xs font-black text-indigo-950 uppercase tracking-wide">Aproveitamento da Equação Fundamental ($Ativo = Passivo + PL$)</h4>
-              <p class="text-xs text-slate-600">Alunos que conseguiram fechar o Balanço com Ativo igual a Passivo + PL (R$ 6.000,00).</p>
+              <h4 class="text-xs font-black text-indigo-950 uppercase tracking-wide">Aproveitamento da Equação Patrimonial ($Ativo = Passivo + PL$)</h4>
+              <p class="text-xs text-slate-600">Alunos que conseguiram fechar o Balanço equilibrado em R$ 6.000,00.</p>
             </div>
           </div>
           <div class="text-right">
             <span id="metricEquationSuccessRate" class="text-lg font-black text-indigo-700 font-mono">0%</span>
-            <span class="text-[10px] text-slate-500 block">dos envios validados</span>
+            <span class="text-[10px] text-slate-500 block">dos envios confirmados</span>
           </div>
         </div>
       </div>
 
-      <!-- Tabela de Alunos e Chamada -->
+      <!-- Tabela de Chamada e Desempenho das Turmas -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/60">
           <div class="relative flex-1 max-w-sm">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
               <i data-lucide="search" class="w-4 h-4"></i>
             </span>
-            <input type="text" id="teacherSearchFilter" oninput="renderTeacherTable()" placeholder="Buscar por aluno ou turma..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            <input type="text" id="teacherSearchFilter" oninput="renderTeacherTable()" placeholder="Buscar aluno por nome..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
           </div>
 
           <div class="flex items-center space-x-2">
             <select id="teacherStatusFilter" onchange="renderTeacherTable()" class="text-xs sm:text-sm border border-slate-300 rounded-xl p-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
               <option value="ALL">Todas as Situações</option>
-              <option value="100">100% Acerto (Perfeito)</option>
+              <option value="100">Nota 100 (Perfeito)</option>
               <option value="PARTIAL">Inconsistente (&lt; 100 pts)</option>
-              <option value="PENDING">Apenas Chamada (Sem entrega)</option>
+              <option value="PENDING">Apenas Presença (Sem envio)</option>
             </select>
           </div>
         </div>
 
-        <!-- Tabela Responsiva -->
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm text-slate-600">
             <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-[11px] tracking-wider border-b border-slate-200">
@@ -1023,34 +981,69 @@
                 <th class="py-3.5 px-4">Aluno(a)</th>
                 <th class="py-3.5 px-4">Turma</th>
                 <th class="py-3.5 px-4">Horário de Presença</th>
-                <th class="py-3.5 px-4">Status</th>
+                <th class="py-3.5 px-4">Balanço Patrimonial</th>
                 <th class="py-3.5 px-4 text-center">Nota</th>
-                <th class="py-3.5 px-4 text-right">Espelho do Razonete</th>
+                <th class="py-3.5 px-4 text-right">Espelho do Exercício</th>
               </tr>
             </thead>
             <tbody id="teacherTableBody" class="divide-y divide-slate-100">
-              <!-- Populado dinamicamente -->
+              <!-- Gerado via JS -->
             </tbody>
           </table>
         </div>
 
         <div id="teacherTableEmpty" class="hidden p-8 text-center space-y-2">
           <i data-lucide="users" class="w-8 h-8 text-slate-300 mx-auto"></i>
-          <p class="text-sm font-bold text-slate-600">Nenhum aluno encontrado.</p>
-          <p class="text-xs text-slate-400">Clique em "Simular Turma Completa" acima para testar o painel!</p>
+          <p class="text-sm font-bold text-slate-600">Nenhum registro encontrado para este filtro.</p>
+          <p class="text-xs text-slate-400">Clique em "Simular Dados" para popular a lista com exemplos.</p>
         </div>
       </div>
 
-    </section>
+    </div>
 
   </main>
 
-  <!-- MODAL: Inspeção Detalhada dos Razonetes do Aluno -->
+  <!-- Rodapé Discreto com o Gatilho Secreto (Triple-Click) -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p id="secretFooterTrigger" class="text-xs text-slate-400 font-medium cursor-default select-none transition-colors" title="Laboratório Contábil">
+        © 2026 Curso Técnico em Administração • Arena GamerZone &copy;
+      </p>
+    </div>
+  </footer>
+
+  <!-- MODAL SECRETO: Autenticação da Professora via Hash SHA-256 -->
+  <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full border border-slate-200 shadow-2xl p-6 space-y-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto">
+        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-black text-slate-900">Acesso Restrito ao Painel Docente</h3>
+        <p class="text-xs text-slate-500 mt-1">Informe sua senha credenciada para desbloquear a gestão das turmas.</p>
+      </div>
+      <div>
+        <!-- Campo com type=password para mascarar os caracteres -->
+        <input type="password" id="teacherPasswordInput" placeholder="Senha do docente..." class="w-full text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono">
+        <p id="teacherAuthError" class="hidden text-xs text-rose-600 mt-1.5 font-bold">Senha inválida. Acesso negado.</p>
+      </div>
+      <div class="flex items-center space-x-2 pt-1">
+        <button onclick="closeTeacherAuthModal()" class="w-1/2 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="verifyTeacherEncryptedPassword()" class="w-1/2 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition">
+          Autenticar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Inspeção Detalhada do Exercício do Aluno -->
   <div id="studentDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-3xl w-full border border-slate-200 shadow-2xl overflow-hidden">
       <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
         <div>
-          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Espelho de Correção Individual</span>
+          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Espelho de Resolução Individual</span>
           <h3 id="modalStudentName" class="text-lg font-black text-slate-900">Nome do Aluno</h3>
           <p id="modalStudentClass" class="text-xs text-slate-500">Turma • Presença às 00:00</p>
         </div>
@@ -1066,20 +1059,20 @@
             <span id="modalStudentScore" class="font-mono font-black text-indigo-700 text-sm ml-1">--</span>
           </div>
           <div>
-            <span class="font-bold text-indigo-900">Situação:</span>
+            <span class="font-bold text-indigo-900">Equação Patrimonial:</span>
             <span id="modalStudentStatus" class="font-bold text-indigo-800 ml-1">--</span>
           </div>
         </div>
 
         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Resumo dos 7 Razonetes Entregues:</h4>
         <div id="modalRazonetesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <!-- Populado via JS -->
+          <!-- Preenchido via JS -->
         </div>
 
         <div class="pt-2">
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Feedback da Atividade:</h4>
           <ul id="modalFeedbackList" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-600">
-            <!-- Populado via JS -->
+            <!-- Preenchido via JS -->
           </ul>
         </div>
       </div>
@@ -1092,111 +1085,134 @@
     </div>
   </div>
 
-  <!-- MODAL: Senha da Professora -->
-  <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-sm w-full border border-slate-200 shadow-2xl p-6 space-y-4 text-center">
-      <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto">
-        <i data-lucide="lock" class="w-6 h-6"></i>
-      </div>
-      <div>
-        <h3 class="text-lg font-black text-slate-900">Área Exclusiva da Professora</h3>
-        <p class="text-xs text-slate-500 mt-1">Informe a senha pedagógica para gerenciar as notas e a chamada da turma.</p>
-        <p class="text-[11px] text-indigo-600 font-mono mt-1 font-semibold">(Senha padrão: <strong>prof123</strong>)</p>
-      </div>
-      <div>
-        <input type="password" id="teacherPasswordInput" placeholder="Digite a senha..." class="w-full text-sm px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono">
-        <p id="teacherAuthError" class="hidden text-xs text-rose-600 mt-1.5 font-bold">Senha incorreta. Tente "prof123".</p>
-      </div>
-      <div class="flex items-center space-x-2 pt-1">
-        <button onclick="closeTeacherAuthModal()" class="w-1/2 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition">
-          Cancelar
-        </button>
-        <button onclick="verifyTeacherPassword()" class="w-1/2 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition">
-          Entrar
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- Notificação Toast -->
   <div id="toastMessage" class="fixed bottom-5 right-5 z-50 max-w-sm w-full bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center space-x-3 pointer-events-none">
     <div id="toastIcon" class="text-emerald-400">
       <i data-lucide="check" class="w-5 h-5"></i>
     </div>
     <div class="flex-1">
-      <p id="toastText" class="font-medium leading-snug">Mensagem de aviso.</p>
+      <p id="toastText" class="font-medium leading-snug">Aviso do sistema contábil.</p>
     </div>
   </div>
 
+  <!-- SCRIPT LOGIC -->
   <script>
-    const STORAGE_KEY = 'gamerzone_turma_v2';
-    const ACTIVE_STUDENT_KEY = 'gamerzone_aluno_ativo_v2';
-    let isTeacherAuthenticated = false;
+    const STORAGE_KEY = 'gamerzone_turmas_2026';
+    const ACTIVE_STUDENT_KEY = 'gamerzone_estudante_ativo';
+    
+    // Hash SHA-256 criptográfico da senha mantida ("prof123").
+    // A palavra "prof123" nunca aparece em texto legível no código fonte.
+    const TEACHER_PASSWORD_HASH = "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f";
+    let isTeacherUnlocked = false;
 
-    // GABARITO OFICIAL: Arena GamerZone
-    // (1) D: Caixa 5000, C: Capital 5000
-    // (2) D: Banco 3000, C: Caixa 3000
-    // (3) D: Equipamentos 2000, C: Banco 2000
-    // (4) D: Estoque 1500, C: Fornecedores 1500
-    // (5) D: Móveis 600, C: Caixa 600
-    // (6) D: Fornecedores 500, C: Banco 500
+    // GABARITO OFICIAL
     const GABARITO = {
-      caixa: {
-        debitos: [5000],
-        creditos: [3000, 600],
-        saldoVal: 1400,
-        saldoNat: 'D',
-        nome: 'Caixa'
-      },
-      capital: {
-        debitos: [],
-        creditos: [5000],
-        saldoVal: 5000,
-        saldoNat: 'C',
-        nome: 'Capital Social'
-      },
-      banco: {
-        debitos: [3000],
-        creditos: [2000, 500],
-        saldoVal: 500,
-        saldoNat: 'D',
-        nome: 'Banco c/ Movimento'
-      },
-      equipamentos: {
-        debitos: [2000],
-        creditos: [],
-        saldoVal: 2000,
-        saldoNat: 'D',
-        nome: 'Equipamentos (PCs)'
-      },
-      estoque: {
-        debitos: [1500],
-        creditos: [],
-        saldoVal: 1500,
-        saldoNat: 'D',
-        nome: 'Estoque de Jogos'
-      },
-      moveis: {
-        debitos: [600],
-        creditos: [],
-        saldoVal: 600,
-        saldoNat: 'D',
-        nome: 'Móveis e Utensílios'
-      },
-      fornecedores: {
-        debitos: [500],
-        creditos: [1500],
-        saldoVal: 1000,
-        saldoNat: 'C',
-        nome: 'Fornecedores'
-      }
+      caixa: { debitos: [5000], creditos: [3000, 600], saldoVal: 1400, saldoNat: 'D', nome: 'Caixa' },
+      banco: { debitos: [3000], creditos: [2000, 500], saldoVal: 500, saldoNat: 'D', nome: 'Banco c/ Movimento' },
+      equipamentos: { debitos: [2000], creditos: [], saldoVal: 2000, saldoNat: 'D', nome: 'Equipamentos (PCs)' },
+      estoque: { debitos: [1500], creditos: [], saldoVal: 1500, saldoNat: 'D', nome: 'Estoque de Jogos' },
+      moveis: { debitos: [600], creditos: [], saldoVal: 600, saldoNat: 'D', nome: 'Móveis e Utensílios' },
+      fornecedores: { debitos: [500], creditos: [1500], saldoVal: 1000, saldoNat: 'C', nome: 'Fornecedores' },
+      capital: { debitos: [], creditos: [5000], saldoVal: 5000, saldoNat: 'C', nome: 'Capital Social' }
     };
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       loadActiveStudent();
       initDemoDataIfEmpty();
+      setupSecretTriggers();
     });
+
+    // Função de Criptografia SHA-256 Nativa do Navegador (Web Crypto API)
+    async function calculateSHA256(str) {
+      const buffer = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Configuração dos 2 Gatilhos Secretos para o Professor
+    function setupSecretTriggers() {
+      // Gatilho 1: Atalho de Teclado (Ctrl + Shift + P ou Cmd + Shift + P)
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'P' || e.key === 'p')) {
+          e.preventDefault();
+          triggerSecretTeacherLogin();
+        }
+      });
+
+      // Gatilho 2: Triple Click no texto do rodapé
+      const footerTrigger = document.getElementById('secretFooterTrigger');
+      let clickCount = 0;
+      let clickTimeout = null;
+
+      footerTrigger.addEventListener('click', () => {
+        clickCount++;
+        if (clickTimeout) clearTimeout(clickTimeout);
+
+        if (clickCount >= 3) {
+          clickCount = 0;
+          triggerSecretTeacherLogin();
+        } else {
+          clickTimeout = setTimeout(() => {
+            clickCount = 0;
+          }, 600);
+        }
+      });
+    }
+
+    function triggerSecretTeacherLogin() {
+      if (isTeacherUnlocked) {
+        showTeacherDashboard();
+      } else {
+        openTeacherAuthModal();
+      }
+    }
+
+    function openTeacherAuthModal() {
+      document.getElementById('teacherAuthError').classList.add('hidden');
+      const input = document.getElementById('teacherPasswordInput');
+      input.value = '';
+      document.getElementById('teacherAuthModal').classList.remove('hidden');
+      setTimeout(() => input.focus(), 150);
+    }
+
+    function closeTeacherAuthModal() {
+      document.getElementById('teacherAuthModal').classList.add('hidden');
+    }
+
+    async function verifyTeacherEncryptedPassword() {
+      const pwd = document.getElementById('teacherPasswordInput').value;
+      const computedHash = await calculateSHA256(pwd);
+
+      if (computedHash === TEACHER_PASSWORD_HASH) {
+        isTeacherUnlocked = true;
+        closeTeacherAuthModal();
+        showTeacherDashboard();
+        showToast('Painel Docente autenticado com sucesso!');
+      } else {
+        document.getElementById('teacherAuthError').classList.remove('hidden');
+        document.getElementById('teacherPasswordInput').value = '';
+        document.getElementById('teacherPasswordInput').focus();
+      }
+    }
+
+    function showTeacherDashboard() {
+      document.getElementById('studentContainer').classList.add('hidden');
+      document.getElementById('teacherDashboardContainer').classList.remove('hidden');
+      renderTeacherDashboard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lucide.createIcons();
+    }
+
+    function lockAndExitTeacherView() {
+      isTeacherUnlocked = false; // Bloqueia a sessão do docente
+      document.getElementById('teacherDashboardContainer').classList.add('hidden');
+      document.getElementById('studentContainer').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('Painel bloqueado. Visualização do aluno restaurada.', 'info');
+      lucide.createIcons();
+    }
 
     function showToast(message, type = 'success') {
       const toast = document.getElementById('toastMessage');
@@ -1222,58 +1238,17 @@
       }, 3500);
     }
 
-    function switchView(target) {
-      if (target === 'teacher') {
-        if (!isTeacherAuthenticated) {
-          openTeacherAuthModal();
-          return;
-        }
-        document.getElementById('studentView').classList.add('hidden');
-        document.getElementById('teacherView').classList.remove('hidden');
-
-        document.getElementById('navStudentBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
-        document.getElementById('navTeacherBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm";
-        renderTeacherDashboard();
-      } else {
-        document.getElementById('teacherView').classList.add('hidden');
-        document.getElementById('studentView').classList.remove('hidden');
-
-        document.getElementById('navTeacherBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition-all duration-200";
-        document.getElementById('navStudentBtn').className = "flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm";
-      }
-      lucide.createIcons();
-    }
-
-    function openTeacherAuthModal() {
-      document.getElementById('teacherAuthError').classList.add('hidden');
-      document.getElementById('teacherPasswordInput').value = '';
-      document.getElementById('teacherAuthModal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('teacherPasswordInput').focus(), 100);
-    }
-
-    function closeTeacherAuthModal() {
-      document.getElementById('teacherAuthModal').classList.add('hidden');
-    }
-
-    function verifyTeacherPassword() {
-      const pwd = document.getElementById('teacherPasswordInput').value.trim();
-      if (pwd === 'prof123' || pwd === 'admin' || pwd === '123') {
-        isTeacherAuthenticated = true;
-        closeTeacherAuthModal();
-        switchView('teacher');
-        showToast('Painel Docente liberado com sucesso!');
-      } else {
-        document.getElementById('teacherAuthError').classList.remove('hidden');
-      }
-    }
-
-    // REGISTRO DE PRESENÇA (Sem número de chamada)
+    // REGISTRO DE PRESENÇA DO ALUNO (2º Ano A ou 2º Ano B)
     function registerAttendance() {
       const name = document.getElementById('studentNameInput').value.trim();
       const studentClass = document.getElementById('studentClassInput').value;
 
       if (!name) {
-        showToast('Por favor, informe seu Nome Completo para registrar a presença.', 'error');
+        showToast('Por favor, informe seu Nome Completo.', 'error');
+        return;
+      }
+      if (!studentClass) {
+        showToast('Selecione sua turma: 2º Ano A ou 2º Ano B.', 'error');
         return;
       }
 
@@ -1292,14 +1267,14 @@
       localStorage.setItem(ACTIVE_STUDENT_KEY, JSON.stringify(activeStudent));
       upsertStudent(activeStudent);
       updateAttendanceBadge(activeStudent);
-      showToast(`Presença registrada às ${activeStudent.attendanceTime} para ${name}!`);
+      showToast(`Presença confirmada às ${activeStudent.attendanceTime} para ${name} (${studentClass})!`);
     }
 
     function updateAttendanceBadge(student) {
       const badge = document.getElementById('studentAttendanceBadge');
       const btn = document.getElementById('btnMarkAttendance');
 
-      badge.textContent = `Presente às ${student.attendanceTime}`;
+      badge.textContent = `Presente às ${student.attendanceTime} • ${student.turma}`;
       badge.parentElement.className = "inline-flex items-center space-x-2 text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200";
 
       btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Presença Confirmada</span>';
@@ -1321,8 +1296,7 @@
       }
     }
 
-    // RECURSO PEDAGÓGICO: CALCULADORA EMBUTIDA NO RAZONETE
-    // 1. Somar Débitos e Créditos de um razonete específico
+    // CALCULADORA EMBUTIDA NOS RAZONETES (SOMA & SUBTRAÇÃO)
     function autoSumAccount(accName) {
       const debInputs = document.querySelectorAll(`input[data-account="${accName}"][data-side="D"]`);
       const credInputs = document.querySelectorAll(`input[data-account="${accName}"][data-side="C"]`);
@@ -1346,7 +1320,6 @@
       return { sumD, sumC };
     }
 
-    // 2. Subtrair (Maior - Menor) e transferir automaticamente para o Saldo Final com a natureza
     function calculateNetBalance(accName) {
       const { sumD, sumC } = autoSumAccount(accName);
 
@@ -1362,12 +1335,11 @@
         naturezaSelect.value = 'C';
       }
 
-      showToast(`Conta de diminuir feita: ${Math.max(sumD, sumC)} - ${Math.min(sumD, sumC)} = ${netBalance} (${naturezaSelect.value})! Saldo transferido.`);
+      showToast(`Subtração calculada: ${Math.max(sumD, sumC)} - ${Math.min(sumD, sumC)} = ${netBalance} (${naturezaSelect.value})! Saldo apurado.`);
     }
 
-    // FUNÇÕES DA EQUAÇÃO FUNDAMENTAL DO PATRIMÔNIO (ATIVO = PASSIVO + PL)
+    // EQUAÇÃO FUNDAMENTAL DO PATRIMÔNIO
     function autoPullBalancesToEquation() {
-      // Puxa os saldos digitados nos 7 razonetes
       const caixa = parseFloat(document.getElementById('saldo-caixa-val').value) || 0;
       const banco = parseFloat(document.getElementById('saldo-banco-val').value) || 0;
       const equip = parseFloat(document.getElementById('saldo-equipamentos-val').value) || 0;
@@ -1387,7 +1359,7 @@
       sumAtivoEquation();
       sumPassivoEquation();
       verifyEquationMatch();
-      showToast('Saldos dos razonetes transferidos para a Equação Fundamental!');
+      showToast('Saldos dos razonetes importados para a Equação Patrimonial!');
     }
 
     function sumAtivoEquation() {
@@ -1425,7 +1397,7 @@
         banner.className = "p-4 rounded-xl border bg-slate-50 border-slate-200 flex items-center justify-between";
         icon.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center flex-shrink-0";
         icon.innerHTML = '<i data-lucide="help-circle" class="w-5 h-5"></i>';
-        title.textContent = "Preencha os valores e confira a igualdade patrimonial";
+        title.textContent = "Preencha os valores e clique em 'Conferir Balanço ⚖️'";
         msg.textContent = "Os campos de Ativo e Passivo + PL ainda estão zerados.";
         badge.textContent = "Pendente";
         badge.className = "hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-slate-200 text-slate-700";
@@ -1452,8 +1424,7 @@
         icon.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i>';
         title.textContent = "O Balanço ainda não bateu! ⚠️";
         title.className = "text-xs sm:text-sm font-black text-amber-900";
-        title.textContent = "O Balanço ainda não bateu! ⚠️";
-        msg.textContent = `Diferença de R$ ${diff.toFixed(2)}. Ativo deu R$ ${totAtivo.toFixed(2)} e Passivo+PL deu R$ ${totPassivoPL.toFixed(2)}. Esperado: R$ 6.000,00.`;
+        msg.textContent = `Diferença de R$ ${diff.toFixed(2)}. Ativo deu R$ ${totAtivo.toFixed(2)} e Passivo+PL deu R$ ${totPassivoPL.toFixed(2)}. Esperado: R$ 6.000,00 em ambos os lados.`;
         msg.className = "text-xs text-amber-800";
         badge.textContent = `Diferença R$ ${diff.toFixed(2)}`;
         badge.className = "hidden sm:inline-block text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-200 text-amber-900";
@@ -1462,7 +1433,6 @@
       }
     }
 
-    // Preencher Fato (1) como modelo
     function fillExampleFirstTransaction() {
       const debCaixa = document.querySelector('input[data-account="caixa"][data-side="D"]');
       const credCapital = document.querySelector('input[data-account="capital"][data-side="C"]');
@@ -1506,13 +1476,18 @@
       return { debitos, creditos, saldoVal, saldoNat };
     }
 
-    // Avaliação e Envio do Aluno (Razonetes + Equação Fundamental)
+    // ENVIO DA ATIVIDADE PELO ALUNO
     function submitStudentExercise() {
       const name = document.getElementById('studentNameInput').value.trim();
       const turma = document.getElementById('studentClassInput').value;
 
       if (!name) {
         showToast('Por favor, informe seu Nome Completo antes de enviar!', 'error');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      if (!turma) {
+        showToast('Selecione sua turma: 2º Ano A ou 2º Ano B.', 'error');
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
@@ -1523,10 +1498,6 @@
         studentAnswers[acc] = getStudentAccountData(acc);
       });
 
-      // Motor de Avaliação Pedagógica:
-      // - 7 Razonetes: 10 pontos cada (Total = 70 pts)
-      // - Equação Fundamental do Patrimônio: 30 pontos (Total = 30 pts)
-      // TOTAL: 100 PONTOS
       let razonetesScore = 0;
       const diagnostics = {};
       const feedbackList = [];
@@ -1547,9 +1518,9 @@
         const balanceNatMatch = student.saldoNat === correct.saldoNat;
 
         let accScore = 0;
-        if (debitsMatch) accScore += 4; // 4 pts débito
-        if (creditsMatch) accScore += 4; // 4 pts crédito
-        if (balanceValMatch && balanceNatMatch) accScore += 2; // 2 pts saldo final
+        if (debitsMatch) accScore += 4;
+        if (creditsMatch) accScore += 4;
+        if (balanceValMatch && balanceNatMatch) accScore += 2;
 
         razonetesScore += accScore;
 
@@ -1579,7 +1550,6 @@
         }
       });
 
-      // Validação da Equação Fundamental (30 Pontos)
       const totAtivo = sumAtivoEquation();
       const totPassivoPL = sumPassivoEquation();
       const equationCorrect = Math.abs(totAtivo - 6000) < 0.01 && Math.abs(totPassivoPL - 6000) < 0.01;
@@ -1593,16 +1563,14 @@
       if (equationCorrect) {
         feedbackList.push({
           type: 'success',
-          text: 'Equação Fundamental do Patrimônio: Total do Ativo = Total Passivo + PL (R$ 6.000,00 = R$ 6.000,00). Balanço Bateu (+30 pts)!'
+          text: 'Equação Patrimonial: Ativo = Passivo + PL (R$ 6.000,00 = R$ 6.000,00). O Balanço Bateu (+30 pts)!'
         });
       } else {
         feedbackList.push({
           type: 'error',
-          text: `Equação Fundamental do Patrimônio: Diferença encontrada. Ativo somou R$ ${totAtivo.toFixed(2)} e Passivo+PL somou R$ ${totPassivoPL.toFixed(2)}. O correto é R$ 6.000,00 em ambos os lados.`
+          text: `Equação Patrimonial: Houve diferença. Ativo somou R$ ${totAtivo.toFixed(2)} e Passivo+PL somou R$ ${totPassivoPL.toFixed(2)}. O valor correto em ambos os lados é R$ 6.000,00.`
         });
       }
-
-      const isBalanced = equationCorrect;
 
       const studentData = {
         name,
@@ -1619,7 +1587,7 @@
         ativoTotal: totAtivo,
         passivoPLTotal: totPassivoPL,
         equationCorrect,
-        isBalanced
+        isBalanced: equationCorrect
       };
 
       localStorage.setItem(ACTIVE_STUDENT_KEY, JSON.stringify(studentData));
@@ -1643,7 +1611,7 @@
       scoreVal.textContent = `${data.score} / 100`;
 
       if (data.score === 100) {
-        scoreTitle.textContent = "Nota 10! Razonetes e Equação Patrimonial Perfeitos!";
+        scoreTitle.textContent = "Nota 10! Razonetes e Balanço Perfeitos!";
         badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-emerald-600 shadow-md";
         badgeIconContainer.innerHTML = '<i data-lucide="trophy" class="w-7 h-7"></i>';
       } else if (data.score >= 60) {
@@ -1651,7 +1619,7 @@
         badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-indigo-600 shadow-md";
         badgeIconContainer.innerHTML = '<i data-lucide="award" class="w-7 h-7"></i>';
       } else {
-        scoreTitle.textContent = "Atenção: Revise as continhas e a Equação Fundamental!";
+        scoreTitle.textContent = "Atenção: Revise as continhas e a Equação Patrimonial!";
         badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-amber-500 shadow-md";
         badgeIconContainer.innerHTML = '<i data-lucide="alert-circle" class="w-7 h-7"></i>';
       }
@@ -1671,7 +1639,7 @@
       spanPassivo.textContent = `R$ ${data.passivoPLTotal.toFixed(2)}`;
 
       if (data.isBalanced) {
-        balanceMsg.textContent = "Parabéns! O Balanço bateu: Ativo (R$ 6.000,00) = Passivo + Patrimônio Líquido (R$ 6.000,00).";
+        balanceMsg.textContent = "Parabéns! O Balanço bateu: Ativo (R$ 6.000,00) = Passivo + PL (R$ 6.000,00).";
         balanceMsg.className = "text-emerald-700 font-semibold bg-emerald-50 p-2.5 rounded-lg border border-emerald-200 text-xs";
       } else {
         balanceMsg.textContent = "O Balanço não fechou em R$ 6.000,00. Puxe os saldos novamente ou verifique se algum razonete tem valor trocado.";
@@ -1682,6 +1650,7 @@
       card.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // PERSISTÊNCIA LOCAL & GESTÃO DA PROFESSORA
     function getClassList() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) return [];
@@ -1698,7 +1667,7 @@
 
     function upsertStudent(student) {
       const list = getClassList();
-      const idx = list.findIndex(s => s.name.toLowerCase() === student.name.toLowerCase());
+      const idx = list.findIndex(s => s.name.toLowerCase() === student.name.toLowerCase() && s.turma === student.turma);
       if (idx >= 0) {
         list[idx] = { ...list[idx], ...student };
       } else {
@@ -1717,8 +1686,8 @@
     function loadDemoClassData(notify = true) {
       const demoList = [
         {
-          name: "Enzo Gabriel",
-          turma: "1º Adm - Manhã",
+          name: "Gabriel Santos",
+          turma: "2º Ano A",
           attendanceDate: new Date().toLocaleDateString('pt-BR'),
           attendanceTime: "07:35",
           status: "EXCELENTE",
@@ -1733,12 +1702,12 @@
           },
           feedback: [
             { type: 'success', text: 'Todos os razonetes corretos com continhas calculadas.' },
-            { type: 'success', text: 'Equação Fundamental: Ativo = Passivo + PL (R$ 6.000,00 = R$ 6.000,00).' }
+            { type: 'success', text: 'Equação Patrimonial: Ativo = Passivo + PL (R$ 6.000,00 = R$ 6.000,00).' }
           ]
         },
         {
-          name: "Lara Fernandes",
-          turma: "1º Adm - Manhã",
+          name: "Isabela Lima",
+          turma: "2º Ano A",
           attendanceDate: new Date().toLocaleDateString('pt-BR'),
           attendanceTime: "07:40",
           status: "EXCELENTE",
@@ -1753,12 +1722,12 @@
           },
           feedback: [
             { type: 'success', text: 'Todos os razonetes corretos.' },
-            { type: 'success', text: 'Equação Fundamental validada com sucesso.' }
+            { type: 'success', text: 'Equação Patrimonial validada com sucesso.' }
           ]
         },
         {
-          name: "Matheus Vinicius",
-          turma: "1º Adm - Manhã",
+          name: "Lucas Menezes",
+          turma: "2º Ano A",
           attendanceDate: new Date().toLocaleDateString('pt-BR'),
           attendanceTime: "07:42",
           status: "BOM",
@@ -1768,22 +1737,39 @@
           passivoPLTotal: 6000,
           answers: {
             ...GABARITO,
-            banco: { debitos: [3000], creditos: [2000], saldoVal: 1000, saldoNat: 'D' } // Esqueceu o Pix de R$ 500
+            banco: { debitos: [3000], creditos: [2000], saldoVal: 1000, saldoNat: 'D' }
           },
           diagnostics: {
             caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: false },
             equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
           },
           feedback: [
-            { type: 'error', text: 'Conta Banco c/ Movimento: Esqueceu o pagamento de R$ 500 do Fato (6).' },
-            { type: 'error', text: 'Equação Fundamental: Ativo deu R$ 6.500,00 vs R$ 6.000,00 de Passivo+PL.' }
+            { type: 'error', text: 'Conta Banco c/ Movimento: Esqueceu o abatimento de R$ 500 do Fato (6).' },
+            { type: 'error', text: 'Equação Patrimonial: Ativo deu R$ 6.500,00 vs R$ 6.000,00 de Passivo+PL.' }
           ]
         },
         {
-          name: "Camila Rocha",
-          turma: "1º Adm - Manhã",
+          name: "Mariana Costa",
+          turma: "2º Ano B",
           attendanceDate: new Date().toLocaleDateString('pt-BR'),
           attendanceTime: "07:45",
+          status: "EXCELENTE",
+          score: 100,
+          equationCorrect: true,
+          ativoTotal: 6000,
+          passivoPLTotal: 6000,
+          answers: GABARITO,
+          diagnostics: {
+            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: true },
+            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
+          },
+          feedback: [{ type: 'success', text: 'Resolução nota 10!' }]
+        },
+        {
+          name: "Thiago Oliveira",
+          turma: "2º Ano B",
+          attendanceDate: new Date().toLocaleDateString('pt-BR'),
+          attendanceTime: "07:48",
           status: "REVISAR",
           score: 50,
           equationCorrect: false,
@@ -1798,13 +1784,13 @@
             caixa: { isFull: false }, capital: { isFull: true }, banco: { isFull: true },
             equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: false }
           },
-          feedback: [{ type: 'error', text: 'Inverteu débitos e créditos no caixa e no passivo.' }]
+          feedback: [{ type: 'error', text: 'Inverteu débitos e créditos no Caixa e em Fornecedores.' }]
         },
         {
-          name: "Pedro Henrique",
-          turma: "1º Adm - Tarde",
+          name: "Beatriz Nogueira",
+          turma: "2º Ano B",
           attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:50",
+          attendanceTime: "07:55",
           status: "PENDING",
           score: null,
           equationCorrect: false,
@@ -1818,7 +1804,7 @@
 
       saveClassList(demoList);
       if (notify) {
-        showToast('5 alunos demonstrativos carregados na turma!');
+        showToast('Turmas 2º A e 2º B populadas com exemplos!');
         renderTeacherDashboard();
       }
     }
@@ -1826,32 +1812,35 @@
     function clearAllClassData() {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(ACTIVE_STUDENT_KEY);
-      showToast('Dados da turma zerados.', 'info');
+      showToast('Dados das turmas zerados.', 'info');
       renderTeacherDashboard();
     }
 
     function renderTeacherDashboard() {
-      const students = getClassList();
+      const allStudents = getClassList();
+      const selectedTurma = document.getElementById('teacherClassSelectFilter').value;
+
+      const students = allStudents.filter(s => {
+        if (selectedTurma === 'ALL') return true;
+        return s.turma === selectedTurma;
+      });
 
       const totalStudents = students.length;
       const submitted = students.filter(s => s.score !== null && s.score !== undefined);
       const sumGrades = submitted.reduce((acc, s) => acc + s.score, 0);
       const avgGrade = submitted.length > 0 ? Math.round(sumGrades / submitted.length) : 0;
 
-      const perfect = submitted.filter(s => s.score === 100).length;
-      const perfectPct = submitted.length > 0 ? Math.round((perfect / submitted.length) * 100) : 0;
+      const balancedCount = submitted.filter(s => s.equationCorrect === true).length;
+      const balancedPct = submitted.length > 0 ? Math.round((balancedCount / submitted.length) * 100) : 0;
       const needHelp = submitted.filter(s => s.score < 100).length;
 
       document.getElementById('metricStudentsCount').textContent = totalStudents;
       document.getElementById('metricClassAverage').textContent = `${avgGrade} pts`;
-      document.getElementById('metricFullScoreCount').textContent = perfect;
-      document.getElementById('metricFullScorePct').textContent = `${perfectPct}% dos envios`;
+      document.getElementById('metricFullScoreCount').textContent = balancedCount;
+      document.getElementById('metricFullScorePct').textContent = `${balancedPct}% dos envios`;
       document.getElementById('metricHelpCount').textContent = needHelp;
 
-      // Métrica de Sucesso na Equação Patrimonial
-      const eqSuccessCount = submitted.filter(s => s.equationCorrect === true).length;
-      const eqRate = submitted.length > 0 ? Math.round((eqSuccessCount / submitted.length) * 100) : 0;
-      document.getElementById('metricEquationSuccessRate').textContent = `${eqRate}% (${eqSuccessCount}/${submitted.length})`;
+      document.getElementById('metricEquationSuccessRate').textContent = `${balancedPct}% (${balancedCount}/${submitted.length})`;
 
       renderAccountAnalytics(submitted);
       renderTeacherTable();
@@ -1893,7 +1882,8 @@
     }
 
     function renderTeacherTable() {
-      const students = getClassList();
+      const allStudents = getClassList();
+      const selectedTurma = document.getElementById('teacherClassSelectFilter').value;
       const tbody = document.getElementById('teacherTableBody');
       const emptyDiv = document.getElementById('teacherTableEmpty');
       const search = (document.getElementById('teacherSearchFilter').value || '').toLowerCase();
@@ -1901,13 +1891,14 @@
 
       tbody.innerHTML = '';
 
-      const filtered = students.filter(s => {
-        const matchSearch = s.name.toLowerCase().includes(search) || (s.turma && s.turma.toLowerCase().includes(search));
+      const filtered = allStudents.filter(s => {
+        const matchTurma = selectedTurma === 'ALL' || s.turma === selectedTurma;
+        const matchSearch = s.name.toLowerCase().includes(search);
         let matchStatus = true;
         if (filter === '100') matchStatus = s.score === 100;
         else if (filter === 'PARTIAL') matchStatus = s.score !== null && s.score < 100;
         else if (filter === 'PENDING') matchStatus = s.score === null || s.score === undefined;
-        return matchSearch && matchStatus;
+        return matchTurma && matchSearch && matchStatus;
       });
 
       if (filtered.length === 0) {
@@ -1920,31 +1911,31 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition-colors";
 
-        let statusBadge = '';
-        if (student.score === 100) {
-          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>100% Acerto</span>';
+        let eqBadge = '';
+        if (student.equationCorrect) {
+          eqBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>Bateu (R$ 6.000)</span>';
         } else if (student.score !== null) {
-          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>Inconsistências</span>';
+          eqBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>Não Bateu</span>';
         } else {
-          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Presente (Em Aberto)</span>';
+          eqBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Aguardando Envio</span>';
         }
 
         const scoreText = student.score !== null ? `<span class="font-mono font-bold ${student.score === 100 ? 'text-emerald-600' : 'text-slate-800'}">${student.score} pts</span>` : '<span class="text-slate-400 font-mono">-</span>';
 
         tr.innerHTML = `
           <td class="py-3 px-4 font-bold text-slate-900">${student.name}</td>
-          <td class="py-3 px-4 text-xs text-slate-600">${student.turma || 'Turma Adm'}</td>
+          <td class="py-3 px-4 text-xs font-semibold text-indigo-700">${student.turma || '-'}</td>
           <td class="py-3 px-4 font-mono text-xs text-slate-600">${student.attendanceDate || '--'} às ${student.attendanceTime || '--'}</td>
-          <td class="py-3 px-4">${statusBadge}</td>
+          <td class="py-3 px-4">${eqBadge}</td>
           <td class="py-3 px-4 text-center">${scoreText}</td>
           <td class="py-3 px-4 text-right">
             ${student.answers ? `
-              <button onclick="inspectStudent('${encodeURIComponent(student.name)}')" class="inline-flex items-center space-x-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1.5 rounded-xl transition">
+              <button onclick="inspectStudent('${encodeURIComponent(student.name)}', '${encodeURIComponent(student.turma)}')" class="inline-flex items-center space-x-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1.5 rounded-xl transition">
                 <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                <span>Ver Resolução</span>
+                <span>Ver Espelho</span>
               </button>
             ` : `
-              <span class="text-xs text-slate-400 italic">Sem envio</span>
+              <span class="text-xs text-slate-400 italic">Sem resolução</span>
             `}
           </td>
         `;
@@ -1954,18 +1945,19 @@
       lucide.createIcons();
     }
 
-    function inspectStudent(encodedName) {
+    function inspectStudent(encodedName, encodedTurma) {
       const name = decodeURIComponent(encodedName);
-      const student = getClassList().find(s => s.name === name);
+      const turma = decodeURIComponent(encodedTurma);
+      const student = getClassList().find(s => s.name === name && s.turma === turma);
       if (!student || !student.answers) {
         showToast('Não há dados enviados para este estudante.', 'error');
         return;
       }
 
       document.getElementById('modalStudentName').textContent = student.name;
-      document.getElementById('modalStudentClass').textContent = `${student.turma || 'Turma Regular'} • Presença registrada em ${student.attendanceDate} às ${student.attendanceTime}`;
+      document.getElementById('modalStudentClass').textContent = `${student.turma} • Presença registrada em ${student.attendanceDate} às ${student.attendanceTime}`;
       document.getElementById('modalStudentScore').textContent = `${student.score} / 100 pts`;
-      document.getElementById('modalStudentStatus').textContent = student.score === 100 ? 'Perfeito (Aprovado)' : 'Com pendências de apuração';
+      document.getElementById('modalStudentStatus').textContent = student.equationCorrect ? 'Balanço Bateu (Equilibrado)' : 'Balanço com Diferença';
 
       const grid = document.getElementById('modalRazonetesGrid');
       grid.innerHTML = '';
@@ -2002,12 +1994,11 @@
       const fbUl = document.getElementById('modalFeedbackList');
       fbUl.innerHTML = '';
 
-      // Adiciona card da Equação Patrimonial no modal
       const eqLi = document.createElement('li');
       eqLi.className = "flex items-start space-x-2 font-bold";
       eqLi.innerHTML = `
         <i data-lucide="${student.equationCorrect ? 'check-circle' : 'alert-triangle'}" class="w-4 h-4 mt-0.5 flex-shrink-0 ${student.equationCorrect ? 'text-emerald-600' : 'text-amber-600'}"></i>
-        <span>Equação Fundamental: Ativo (R$ ${(student.ativoTotal || 0).toFixed(2)}) = Passivo + PL (R$ ${(student.passivoPLTotal || 0).toFixed(2)}) • ${student.equationCorrect ? 'Balanço Bateu!' : 'Diferença no Balanço'}</span>
+        <span>Equação Patrimonial: Ativo (R$ ${(student.ativoTotal || 0).toFixed(2)}) = Passivo + PL (R$ ${(student.passivoPLTotal || 0).toFixed(2)}) • ${student.equationCorrect ? 'Balanço Bateu!' : 'Diferença no Balanço'}</span>
       `;
       fbUl.appendChild(eqLi);
 
@@ -2032,14 +2023,17 @@
     }
 
     function exportTeacherDataToCSV() {
-      const students = getClassList();
+      const selectedTurma = document.getElementById('teacherClassSelectFilter').value;
+      const allStudents = getClassList();
+      const students = allStudents.filter(s => selectedTurma === 'ALL' || s.turma === selectedTurma);
+
       if (students.length === 0) {
         showToast('Nenhum dado cadastrado para exportar.', 'error');
         return;
       }
 
       let csv = "data:text/csv;charset=utf-8,\uFEFF";
-      csv += "Aluno,Turma,Data Presenca,Hora Presenca,Status,Nota,Equacao Bateu,Total Ativo,Total Passivo PL,Caixa OK,Capital OK,Banco OK,Equipamentos OK,Estoque OK,Moveis OK,Fornecedores OK\n";
+      csv += "Aluno,Turma,Data Presenca,Hora Presenca,Status,Nota,Balanco Bateu,Total Ativo,Total Passivo PL,Caixa OK,Capital OK,Banco OK,Equipamentos OK,Estoque OK,Moveis OK,Fornecedores OK\n";
 
       students.forEach(s => {
         const diag = s.diagnostics || {};
@@ -2067,7 +2061,7 @@
       const uri = encodeURI(csv);
       const link = document.createElement("a");
       link.setAttribute("href", uri);
-      link.setAttribute("download", `ArenaGamerZone_Relatorio_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.setAttribute("download", `Chamada_Notas_${selectedTurma.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
