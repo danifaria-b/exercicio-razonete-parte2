@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Estampas - Contabilidade Prática</title>
+  <style>
+    :root {
+      --primary: #004a8f;
+      --secondary: #f68b20;
+      --light-bg: #f8f9fa;
+      --border: #cfd8dc;
+      --text: #263238;
+      --success: #2e7d32;
+      --danger: #c62828;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #eceff1; color: var(--text); padding: 20px; line-height: 1.5; }
+    .container { max-width: 860px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h1 { color: var(--primary); font-size: 1.6rem; margin-bottom: 10px; }
+    h2 { color: var(--primary); font-size: 1.2rem; margin: 20px 0 10px; border-left: 4px solid var(--secondary); padding-left: 8px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.95rem; }
+    input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; }
+    .btn { background: var(--secondary); color: white; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; }
+    .btn:hover { background: #e07b19; }
+    .btn-primary { background: var(--primary); }
+    .btn-primary:hover { background: #003366; }
+    .transaction-card { background: var(--light-bg); border-left: 4px solid var(--primary); padding: 12px; margin-bottom: 8px; border-radius: 4px; font-size: 0.9rem; }
+    .grid-razonetes { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 15px; margin-top: 15px; }
+    .t-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .t-title { background: var(--primary); color: white; text-align: center; padding: 8px; font-weight: bold; }
+    .t-header { display: flex; justify-content: space-between; background: #eceff1; padding: 4px 10px; font-size: 0.8rem; font-weight: bold; border-bottom: 2px solid #333; }
+    .t-body { display: flex; }
+    .t-side { flex: 1; padding: 8px; }
+    .t-side.debit { border-right: 2px solid #333; }
+    .t-row { display: flex; align-items: center; margin-bottom: 4px; }
+    .t-row span { font-size: 0.8rem; color: #555; width: 25px; }
+    .t-row input { text-align: right; padding: 4px; }
+    .t-footer { background: #fafafa; padding: 8px; border-top: 2px solid #333; }
+    .btn-calc { background: #607d8b; color: white; border: none; padding: 6px; width: 100%; border-radius: 3px; font-size: 0.8rem; cursor: pointer; margin-bottom: 6px; }
+    .saldo-display { display: flex; justify-content: space-between; font-weight: bold; font-size: 0.9rem; }
+    .saldo-display input { width: 110px; font-weight: bold; text-align: right; }
+    .eq-box { background: #e8f5e9; border: 1px solid var(--success); padding: 15px; border-radius: 6px; margin-top: 20px; text-align: center; }
+    .eq-fields { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .receipt-box { background: #fff8e1; border: 1px solid #ffe082; padding: 20px; border-radius: 6px; margin-top: 20px; text-align: center; }
+    textarea { width: 100%; height: 90px; margin-top: 10px; padding: 8px; font-family: monospace; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ETAPA 1: IDENTIFICAÇÃO -->
+  <div id="step-login" class="screen active">
+    <h1>Top Estampas - Início da Atividade</h1>
+    <p>Insira a sua identificação para registar a presença antes de começar o exercício contábil.</p>
+    
+    <div style="margin-top: 20px;">
+      <div class="form-group">
+        <label for="student-name">Nome Completo do Aluno:</label>
+        <input type="text" id="student-name" placeholder="Ex.: Maria Eduarda Santos">
+      </div>
+      <div class="form-group">
+        <label for="student-class">Turma:</label>
+        <select id="student-class">
+          <option value="">Selecione a turma...</option>
+          <option value="2A">2º Ano A</option>
+          <option value="2B">2º Ano B</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" onclick="startExercise()">Registar Presença e Abrir Atividade</button>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: EXERCÍCIO -->
+  <div id="step-quiz" class="screen">
+    <div style="display:flex; justify-content:space-between; border-bottom:1px solid #ccc; padding-bottom:8px;">
+      <div><strong>Estudante:</strong> <span id="lbl-name"></span></div>
+      <div><strong>Turma:</strong> <span id="lbl-class"></span> | <strong>Acesso:</strong> <span id="lbl-time"></span></div>
+    </div>
+
+    <h2>Transações da Loja "Top Estampas"</h2>
+    <div class="transaction-card"><strong>(1) Abertura:</strong> Sócios investem <strong>R$ 1.000,00</strong> em dinheiro vivo (Capital Social).</div>
+    <div class="transaction-card"><strong>(2) Máquina de Estampar:</strong> Compra de máquina por <strong>R$ 300,00</strong> paga à vista em dinheiro.</div>
+    <div class="transaction-card"><strong>(3) Matéria-Prima:</strong> Compra de tintas e tecidos por <strong>R$ 200,00</strong> a prazo (Fornecedores).</div>
+    <div class="transaction-card"><strong>(4) Pagamento de Dívida:</strong> Pagamento de <strong>R$ 100,00</strong> da dívida ao fornecedor usando dinheiro do caixa.</div>
+
+    <h2>Razonetes (Contas em T)</h2>
+    <div class="grid-razonetes">
+      
+      <!-- Caixa -->
+      <div class="t-card">
+        <div class="t-title">Caixa (Ativo)</div>
+        <div class="t-header"><span>DÉBITO (+)</span><span>CRÉDITO (-)</span></div>
+        <div class="t-body">
+          <div class="t-side debit">
+            <div class="t-row"><span>(1)</span><input type="number" id="cx-d1" placeholder="0"></div>
+            <div class="t-row"><span>( )</span><input type="number" id="cx-d2" placeholder="0"></div>
+          </div>
+          <div class="t-side credit">
+            <div class="t-row"><span>(2)</span><input type="number" id="cx-c1" placeholder="0"></div>
+            <div class="t-row"><span>(4)</span><input type="number" id="cx-c2" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="t-footer">
+          <button class="btn-calc" onclick="calcAccount('cx', 'ativo')">Calcular Saldo Final (D - C)</button>
+          <div class="saldo-display"><span>Saldo:</span><span>R$ <input type="number" id="cx-saldo" readonly></span></div>
+        </div>
+      </div>
+
+      <!-- Capital Social -->
+      <div class="t-card">
+        <div class="t-title">Capital Social (PL)</div>
+        <div class="t-header"><span>DÉBITO (-)</span><span>CRÉDITO (+)</span></div>
+        <div class="t-body">
+          <div class="t-side debit">
+            <div class="t-row"><span>( )</span><input type="number" id="pl-d1" placeholder="0"></div>
+          </div>
+          <div class="t-side credit">
+            <div class="t-row"><span>(1)</span><input type="number" id="pl-c1" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="t-footer">
+          <button class="btn-calc" onclick="calcAccount('pl', 'passivo')">Calcular Saldo Final (C - D)</button>
+          <div class="saldo-display"><span>Saldo:</span><span>R$ <input type="number" id="pl-saldo" readonly></span></div>
+        </div>
+      </div>
+
+      <!-- Equipamentos e Estoques -->
+      <div class="t-card">
+        <div class="t-title">Equipamentos / Estoques (Ativo)</div>
+        <div class="t-header"><span>DÉBITO (+)</span><span>CRÉDITO (-)</span></div>
+        <div class="t-body">
+          <div class="t-side debit">
+            <div class="t-row"><span>(2)</span><input type="number" id="eq-d1" placeholder="0"></div>
+            <div class="t-row"><span>(3)</span><input type="number" id="eq-d2" placeholder="0"></div>
+          </div>
+          <div class="t-side credit">
+            <div class="t-row"><span>( )</span><input type="number" id="eq-c1" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="t-footer">
+          <button class="btn-calc" onclick="calcAccount('eq', 'ativo')">Calcular Saldo Final (D - C)</button>
+          <div class="saldo-display"><span>Saldo:</span><span>R$ <input type="number" id="eq-saldo" readonly></span></div>
+        </div>
+      </div>
+
+      <!-- Fornecedores -->
+      <div class="t-card">
+        <div class="t-title">Fornecedores (Passivo)</div>
+        <div class="t-header"><span>DÉBITO (-)</span><span>CRÉDITO (+)</span></div>
+        <div class="t-body">
+          <div class="t-side debit">
+            <div class="t-row"><span>(4)</span><input type="number" id="fn-d1" placeholder="0"></div>
+          </div>
+          <div class="t-side credit">
+            <div class="t-row"><span>(3)</span><input type="number" id="fn-c1" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="t-footer">
+          <button class="btn-calc" onclick="calcAccount('fn', 'passivo')">Calcular Saldo Final (C - D)</button>
+          <div class="saldo-display"><span>Saldo:</span><span>R$ <input type="number" id="fn-saldo" readonly></span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Equação Fundamental -->
+    <div class="eq-box">
+      <strong>Equação Fundamental do Patrimônio</strong>
+      <p style="font-size:0.85rem; margin-top:4px;">Preencha os valores consolidados finais:</p>
+      <div class="eq-fields">
+        <div><label>Total Ativo</label><input type="number" id="total-ativo" style="width:110px;"></div>
+        <span style="font-size:1.4rem; font-weight:bold; margin-top:20px;">=</span>
+        <div><label>Total Passivo</label><input type="number" id="total-passivo" style="width:110px;"></div>
+        <span style="font-size:1.4rem; font-weight:bold; margin-top:20px;">+</span>
+        <div><label>Total PL</label><input type="number" id="total-pl" style="width:110px;"></div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="submitWork()">Validar e Concluir Atividade</button>
+
+    <!-- Comprovativo de Conclusão -->
+    <div id="receipt-container" class="receipt-box" style="display:none;">
+      <h3 style="color:var(--primary);">Comprovativo de Conclusão e Presença</h3>
+      <p style="font-size:0.9rem; margin-top:5px;">Copie o texto abaixo e envie à professora como prova da entrega:</p>
+      <textarea id="receipt-text" readonly></textarea>
+      <button class="btn btn-primary" onclick="copyReceipt()">Copiar Texto de Comprovação</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let sessionData = {};
+
+  function startExercise() {
+    const name = document.getElementById('student-name').value.trim();
+    const studentClass = document.getElementById('student-class').value;
+
+    if (!name || !studentClass) {
+      alert("Por favor, preencha o Nome e selecione a Turma antes de avançar.");
+      return;
+    }
+
+    sessionData = {
+      nome: name,
+      turma: studentClass,
+      horaEntrada: new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit', second:'2-digit'}),
+      data: new Date().toLocaleDateString('pt-BR')
+    };
+
+    document.getElementById('lbl-name').innerText = sessionData.nome;
+    document.getElementById('lbl-class').innerText = sessionData.turma;
+    document.getElementById('lbl-time').innerText = sessionData.horaEntrada;
+
+    document.getElementById('step-login').classList.remove('active');
+    document.getElementById('step-quiz').classList.add('active');
+  }
+
+  function calcAccount(prefix, type) {
+    let d1 = Number(document.getElementById(`${prefix}-d1`)?.value) || 0;
+    let d2 = Number(document.getElementById(`${prefix}-d2`)?.value) || 0;
+    let c1 = Number(document.getElementById(`${prefix}-c1`)?.value) || 0;
+    let c2 = Number(document.getElementById(`${prefix}-c2`)?.value) || 0;
+
+    let somaD = d1 + d2;
+    let somaC = c1 + c2;
+    let saldo = (type === 'ativo') ? (somaD - somaC) : (somaC - somaD);
+
+    document.getElementById(`${prefix}-saldo`).value = saldo;
+  }
+
+  function submitWork() {
+    const cx = Number(document.getElementById('cx-saldo').value);
+    const pl = Number(document.getElementById('pl-saldo').value);
+    const eq = Number(document.getElementById('eq-saldo').value);
+    const fn = Number(document.getElementById('fn-saldo').value);
+
+    const atv = Number(document.getElementById('total-ativo').value);
+    const pas = Number(document.getElementById('total-passivo').value);
+    const pat = Number(document.getElementById('total-pl').value);
+
+    // Gabarito Oficial:
+    // Caixa = 600 | Capital = 1000 | Equip/Estoque = 500 | Fornecedor = 100
+    // Ativo (1100) = Passivo (100) + PL (1000)
+    const razonetesOk = (cx === 600 && pl === 1000 && eq === 500 && fn === 100);
+    const equacaoOk = (atv === 1100 && pas === 100 && pat === 1000);
+
+    let resultado = "";
+    if (razonetesOk && equacaoOk) {
+      resultado = "APROVADO (100% CORRETO)";
+      alert("Excelente! Todos os razonetes e a Equação Fundamental estão corretos.");
+    } else {
+      resultado = "REVISÃO NECESSÁRIA (HÁ ERROS)";
+      alert("Atenção: existem valores incorretos nos razonetes ou na Equação Fundamental. Verifique os cálculos antes de enviar o comprovativo.");
+    }
+
+    const comprovativo = `--- REGISTO DE PRESENÇA E ENTREGA ---\n` +
+      `Estudante: ${sessionData.nome}\n` +
+      `Turma: ${sessionData.turma}\n` +
+      `Data: ${sessionData.data} às ${sessionData.horaEntrada}\n` +
+      `Resultado: ${resultado}\n` +
+      `Saldos Apurados: Caixa=R$${cx} | PL=R$${pl} | Equip=R$${eq} | Fornec=R$${fn}\n` +
+      `Equação: R$${atv} = R$${pas} + R$${pat}\n` +
+      `Código de Autenticação: TP-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+
+    document.getElementById('receipt-text').value = comprovativo;
+    document.getElementById('receipt-container').style.display = 'block';
+    document.getElementById('receipt-container').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function copyReceipt() {
+    const txt = document.getElementById('receipt-text');
+    txt.select();
+    navigator.clipboard.writeText(txt.value);
+    alert("Comprovativo copiado com sucesso! Pode agora enviá-lo pelo WhatsApp ou colocá-lo na plataforma da turma.");
+  }
+</script>
+
+</body>
+</html>
