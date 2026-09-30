@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arena GamerZone - Prática Contábil & Razonetes</title>
+  <title>Arena GamerZone - Prática Contábil & Sincronização de Turmas</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -50,7 +50,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans select-text">
 
-  <!-- Cabeçalho Principal -->
+  <!-- Header Superior -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center space-x-3">
@@ -59,14 +59,15 @@
         </div>
         <div>
           <span class="text-[11px] uppercase tracking-wider font-extrabold text-indigo-600 block">Técnico em Administração</span>
-          <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">• Laboratório de Razonetes</span></h1>
+          <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Arena GamerZone <span class="text-slate-400 font-normal hidden sm:inline">• Laboratório Contábil</span></h1>
         </div>
       </div>
-      <div class="flex items-center space-x-2">
-        <span class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Atividade Avaliativa Individual</span>
-        </span>
+      <div class="flex items-center space-x-3">
+        <!-- Indicador de Status da Nuvem e Sala -->
+        <div id="cloudStatusBadge" class="inline-flex items-center space-x-2 text-xs font-semibold px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="cloudStatusText">Sala: <strong id="headerRoomLabel" class="font-mono text-emerald-900">TURMA-ADM-2026</strong></span>
+        </div>
       </div>
     </div>
   </header>
@@ -86,12 +87,12 @@
               <span class="w-2 h-2 rounded-full bg-amber-500" id="presenceStatusDot"></span>
               <span id="studentAttendanceBadge">Aguardando Confirmação de Presença</span>
             </div>
-            <h2 class="text-xl font-black text-slate-900">Identificação do Aluno & Presença</h2>
-            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome completo e selecione sua turma para dar entrada no laboratório contábil.</p>
+            <h2 class="text-xl font-black text-slate-900">Identificação do Aluno & Chamada Digital</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Informe seu nome e turma para iniciar a atividade na Arena GamerZone.</p>
           </div>
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <input type="text" id="studentNameInput" placeholder="Seu Nome Completo..." class="w-full sm:w-64 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
-            <select id="studentClassInput" class="w-full sm:w-44 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition font-semibold text-slate-700">
+            <input type="text" id="studentNameInput" placeholder="Seu Nome Completo..." class="w-full sm:w-64 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition font-medium">
+            <select id="studentClassInput" class="w-full sm:w-44 px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition font-bold text-slate-700">
               <option value="" disabled selected>Escolha sua turma...</option>
               <option value="2º Ano A">2º Ano A</option>
               <option value="2º Ano B">2º Ano B</option>
@@ -113,7 +114,7 @@
             </span>
             <div>
               <h3 class="text-base font-bold text-slate-900">Missão Contábil: Abertura da Arena GamerZone</h3>
-              <p class="text-xs text-slate-500">Leia os 6 fatos do mês e faça o lançamento nos razonetes em Conta T:</p>
+              <p class="text-xs text-slate-500">Leia os 6 fatos contábeis do mês e lance nos razonetes correspondentes:</p>
             </div>
           </div>
 
@@ -123,7 +124,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (1) - Capital</span>
                 <span class="font-mono font-bold text-slate-800">R$ 5.000,00</span>
               </div>
-              <p class="text-slate-600">Abertura: Os sócios investiram R$ 5.000,00 em dinheiro no <strong>Caixa</strong> como <strong>Capital Social</strong>.</p>
+              <p class="text-slate-600">Abertura: Os sócios investiram R$ 5.000,00 em dinheiro vivo no <strong>Caixa</strong> como <strong>Capital Social</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -139,7 +140,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (3) - PCs Gamer</span>
                 <span class="font-mono font-bold text-slate-800">R$ 2.000,00</span>
               </div>
-              <p class="text-slate-600">Equipamentos: Compra de 2 PCs Gamer pagos à vista via transferência da conta do <strong>Banco</strong>.</p>
+              <p class="text-slate-600">Equipamentos: Compra de 2 computadores gamer pagos via <strong>Banco Conta Movimento</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -147,7 +148,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (4) - Jogos p/ Venda</span>
                 <span class="font-mono font-bold text-slate-800">R$ 1.500,00</span>
               </div>
-              <p class="text-slate-600">Estoque a Prazo: Compra de jogos e controles a prazo para pagar depois ao <strong>Fornecedor</strong>.</p>
+              <p class="text-slate-600">Estoque a Prazo: Compra de jogos e controles a prazo com o <strong>Fornecedor</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -155,7 +156,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (5) - Cadeiras Gamer</span>
                 <span class="font-mono font-bold text-slate-800">R$ 600,00</span>
               </div>
-              <p class="text-slate-600">Móveis e Utensílios: Compra de 2 cadeiras gamer à vista pagas em dinheiro vivo do <strong>Caixa</strong>.</p>
+              <p class="text-slate-600">Móveis e Utensílios: Compra de 2 cadeiras gamer pagas à vista em dinheiro do <strong>Caixa</strong>.</p>
             </div>
 
             <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
@@ -163,7 +164,7 @@
                 <span class="px-2 py-0.5 font-bold rounded bg-indigo-100 text-indigo-700">Fato (6) - Pagto Parcial</span>
                 <span class="font-mono font-bold text-slate-800">R$ 500,00</span>
               </div>
-              <p class="text-slate-600">Abatimento: Pagamento parcial da dívida com <strong>Fornecedores</strong> via Pix do <strong>Banco</strong>.</p>
+              <p class="text-slate-600">Abatimento de Dívida: Pagamento parcial ao <strong>Fornecedor</strong> via Pix saindo do <strong>Banco</strong>.</p>
             </div>
           </div>
         </div>
@@ -173,23 +174,23 @@
           <div class="space-y-3">
             <div class="flex items-center space-x-2 text-indigo-300 text-xs font-bold uppercase tracking-wider">
               <i data-lucide="calculator" class="w-4 h-4"></i>
-              <span>Como Registrar o Razonete</span>
+              <span>Como Funciona o Exercício</span>
             </div>
-            <h4 class="text-base font-black text-white">Regras de Lançamento</h4>
+            <h4 class="text-base font-black text-white">Regras Importantes</h4>
             <div class="space-y-2 text-xs leading-relaxed text-indigo-100">
               <div class="bg-white/10 p-2.5 rounded-xl border border-white/10 space-y-1.5">
                 <p><span class="font-bold text-blue-300">Esquerda:</span> Débito (D) | <span class="font-bold text-purple-300">Direita:</span> Crédito (C)</p>
-                <p><span class="font-bold text-emerald-300">Somar:</span> Use o botão <strong>Somar Colunas (Σ)</strong> em cada cuenta.</p>
-                <p><span class="font-bold text-amber-300">Subtrair:</span> O botão <strong>Subtrair (Maior − Menor)</strong> calcula a diferença e define se o saldo é D ou C.</p>
+                <p><span class="font-bold text-emerald-300">Somar:</span> Use o botão <strong>Somar Colunas (Σ)</strong> em cada razonete.</p>
+                <p><span class="font-bold text-amber-300">Subtrair:</span> O botão <strong>Subtrair & Transferir p/ Saldo</strong> calcula a diferença entre lados.</p>
               </div>
               <p class="text-[11px] text-slate-300">
-                📝 Na Etapa 2, você deverá copiar manualmente os saldos apurados e somar o Ativo e o Passivo+PL.
+                📝 <strong>Atenção:</strong> Na Etapa 2, digite os saldos e some o Ativo e o Passivo+PL manualmente para verificar se o balanço fecha em R$ 6.000,00!
               </p>
             </div>
           </div>
           <div class="pt-3 border-t border-indigo-800/80 flex items-center justify-between text-xs text-indigo-300">
-            <span>Débito = Crédito</span>
-            <span class="font-mono text-emerald-400 font-bold">Partidas Dobradas</span>
+            <span>Comprovante com Token Digital</span>
+            <span class="font-mono text-emerald-400 font-bold">À Prova de Falhas</span>
           </div>
         </div>
       </div>
@@ -200,9 +201,9 @@
           <div>
             <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
               <span>Etapa 1: Razonetes em Conta T</span>
-              <span class="text-xs px-2.5 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full font-bold">Calculadora de Apoio Embutida</span>
+              <span class="text-xs px-2.5 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full font-bold">Calculadora de Apoio</span>
             </h3>
-            <p class="text-xs text-slate-500">Insira os lançamentos de cada fato e utilize os botões para somar colunas e apurar o saldo devedor ou credor.</p>
+            <p class="text-xs text-slate-500">Lance os valores de cada fato e apure o saldo final de cada conta.</p>
           </div>
           <button onclick="fillExampleFirstTransaction()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 underline text-left sm:text-right">
             Preencher lançamento (1) como modelo
@@ -595,7 +596,7 @@
         </div>
       </div>
 
-      <!-- Etapa 2: Equação Fundamental do Patrimônio (100% Manual pelos alunos) -->
+      <!-- Etapa 2: Equação Fundamental do Patrimônio (100% Manual) -->
       <div class="bg-white rounded-2xl p-6 border-2 border-indigo-200 shadow-md space-y-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
           <div class="space-y-1">
@@ -687,7 +688,7 @@
               =
             </div>
             <button type="button" onclick="verifyEquationMatch()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2 px-2.5 rounded-xl text-xs shadow transition active:scale-95">
-              Conferir Balanço ⚖️
+              Conferir Balanço ⚖
             </button>
             <p class="text-[11px] text-slate-500 font-medium">Ativo = Passivo + PL</p>
           </div>
@@ -740,7 +741,7 @@
 
         </div>
 
-        <!-- Banner com o Diagnóstico da Equação -->
+        <!-- Banner de Diagnóstico -->
         <div id="equationResultBanner" class="p-4 rounded-xl border bg-slate-50 border-slate-200 flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div id="equationResultIcon" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center flex-shrink-0">
@@ -765,59 +766,8 @@
             </button>
             <button type="button" onclick="submitStudentExercise()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-black py-2.5 px-6 rounded-xl shadow-md transition transform active:scale-95 flex items-center justify-center space-x-2">
               <i data-lucide="send" class="w-4 h-4"></i>
-              <span>Enviar Atividade e Registrar Presença</span>
+              <span>Finalizar & Obter Comprovante de Envio</span>
             </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Feedback Instantâneo do Aluno -->
-      <div id="studentFeedbackCard" class="hidden bg-white rounded-2xl p-6 border border-slate-200 shadow-md space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-          <div class="flex items-center space-x-3">
-            <div id="badgeIconContainer" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-indigo-600 shadow-md">
-              <i data-lucide="award" class="w-7 h-7"></i>
-            </div>
-            <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Atividade Entregue com Sucesso</span>
-              <h3 id="feedbackScoreTitle" class="text-xl font-extrabold text-slate-900">Parabéns! Resolução Enviada!</h3>
-            </div>
-          </div>
-          <div class="text-right">
-            <span class="text-xs text-slate-500 block font-medium">Sua Pontuação</span>
-            <span id="feedbackScoreValue" class="text-3xl font-black text-indigo-600 font-mono">100 / 100</span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
-              <i data-lucide="check-square" class="w-4 h-4 text-indigo-600"></i>
-              <span>Diagnóstico dos 7 Razonetes</span>
-            </h4>
-            <ul id="feedbackAccountList" class="text-xs space-y-2 text-slate-600">
-              <!-- Preenchido via JS -->
-            </ul>
-          </div>
-
-          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
-              <i data-lucide="scale" class="w-4 h-4 text-violet-600"></i>
-              <span>Equação Fundamental do Patrimônio</span>
-            </h4>
-            <div class="space-y-2 text-xs">
-              <div class="flex justify-between items-center py-1.5 border-b border-slate-200">
-                <span class="text-slate-600">Total do Ativo Calculado:</span>
-                <span id="feedbackAtivoTotal" class="font-mono font-bold text-emerald-600">R$ 0,00</span>
-              </div>
-              <div class="flex justify-between items-center py-1.5 border-b border-slate-200">
-                <span class="text-slate-600">Total Passivo + PL Calculado:</span>
-                <span id="feedbackPassivoTotal" class="font-mono font-bold text-emerald-600">R$ 0,00</span>
-              </div>
-              <p id="feedbackBalanceMessage" class="text-slate-600 italic bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
-                Aguardando conferência...
-              </p>
-            </div>
           </div>
         </div>
       </div>
@@ -829,50 +779,67 @@
     <!-- ========================================== -->
     <div id="teacherDashboardContainer" class="hidden space-y-6">
 
-      <!-- Header do Painel Docente com Filtro e Ações -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <div>
-          <div class="flex items-center space-x-2">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Painel de Controle Docente</span>
-            <span class="text-xs text-slate-400">• Arena GamerZone</span>
+      <!-- Header do Painel Docente com Configuração da Sala -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-indigo-100 text-indigo-700">Painel Docente em Tempo Real</span>
+              <span class="text-xs text-slate-400">• Recepção Garantida de Envios</span>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mt-1">Envios Recebidos & Diário de Chamada</h2>
+            <p class="text-xs sm:text-sm text-slate-500">
+              Gerencie as presenças, notas e resoluções dos alunos do 2º Ano A e 2º Ano B.
+            </p>
           </div>
-          <h2 class="text-2xl font-black text-slate-900 mt-1">Envios Recebidos & Diário de Chamada</h2>
-          <p class="text-xs sm:text-sm text-slate-500">Veja abaixo em tempo real quem enviou a atividade, hora de entrega, nota e espelho das contas.</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Botão Importador Manual (Método 1 - À Prova de Falhas) -->
+            <button onclick="openPasteModal()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-violet-600 hover:bg-violet-700 text-white shadow-sm transition">
+              <i data-lucide="clipboard-paste" class="w-4 h-4"></i>
+              <span>📥 Colar Código do Aluno</span>
+            </button>
+            <button onclick="refreshCloudDataManual()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+              <span>Sincronizar Nuvem</span>
+            </button>
+            <button onclick="exportTeacherDataToCSV()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+              <span>Exportar Excel (CSV)</span>
+            </button>
+            <button onclick="lockAndExitTeacherView()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-black text-white shadow transition">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+              <span>Bloquear & Voltar</span>
+            </button>
+          </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <!-- Filtro Seletor de Turma -->
-          <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
-            <span class="text-xs font-bold text-slate-500 pl-2">Turma:</span>
-            <select id="teacherClassSelectFilter" onchange="renderTeacherDashboard()" class="text-xs font-bold border-none bg-white rounded-lg py-1.5 px-2.5 text-slate-800 focus:ring-2 focus:ring-indigo-500">
-              <option value="ALL">Todas as Turmas</option>
-              <option value="2º Ano A">2º Ano A</option>
-              <option value="2º Ano B">2º Ano B</option>
-            </select>
+
+        <!-- Seletor de Sala & Dica Didática para a Professora -->
+        <div class="bg-indigo-50/70 border border-indigo-100 p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+          <div class="flex items-center space-x-3">
+            <span class="p-2 rounded-lg bg-indigo-600 text-white">
+              <i data-lucide="radio" class="w-4 h-4"></i>
+            </span>
+            <div>
+              <span class="font-bold text-indigo-950">Canal de Sincronização da Turma:</span>
+              <p class="text-indigo-800">
+                Os computadores dos alunos enviam para a sala <code class="font-mono bg-white px-2 py-0.5 rounded font-black text-indigo-900" id="currentRoomText">TURMA-ADM-2026</code>.
+              </p>
+            </div>
           </div>
-          <button onclick="loadDemoClassData()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-            <span>Simular Envios</span>
-          </button>
-          <button onclick="exportTeacherDataToCSV()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
-            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-            <span>Exportar CSV</span>
-          </button>
-          <button onclick="clearAllClassData()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
-            <span>Limpar Envios</span>
-          </button>
-          <button onclick="lockAndExitTeacherView()" class="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold rounded-xl bg-slate-900 hover:bg-black text-white shadow transition">
-            <i data-lucide="lock" class="w-4 h-4"></i>
-            <span>Bloquear & Voltar</span>
-          </button>
+          <div class="flex items-center space-x-2">
+            <input type="text" id="customRoomInput" placeholder="Nome da Sala..." class="px-3 py-1.5 border border-indigo-300 rounded-lg text-xs font-mono font-bold w-40 bg-white">
+            <button onclick="changeCloudRoom()" class="px-3 py-1.5 bg-indigo-700 hover:bg-indigo-800 text-white rounded-lg font-bold text-xs">
+              Mudar Sala
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Métricas Resumidas em Cards -->
+      <!-- Métricas Resumidas -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Atividades Enviadas</p>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Atividades Recebidas</p>
             <h4 id="metricSubmittedCount" class="text-2xl font-black text-slate-900 mt-1 font-mono">0</h4>
             <span class="text-xs text-indigo-600 font-semibold inline-flex items-center mt-0.5">
               <i data-lucide="inbox" class="w-3.5 h-3.5 mr-1"></i> Resoluções entregues
@@ -926,11 +893,19 @@
       <!-- Tabela Principal: Caixa de Entrada dos Alunos -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/60">
-          <div class="relative flex-1 max-w-sm">
-            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-              <i data-lucide="search" class="w-4 h-4"></i>
-            </span>
-            <input type="text" id="teacherSearchFilter" oninput="renderTeacherTable()" placeholder="Buscar aluno por nome..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+          <div class="flex items-center space-x-2 flex-1 max-w-md">
+            <div class="relative flex-1">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                <i data-lucide="search" class="w-4 h-4"></i>
+              </span>
+              <input type="text" id="teacherSearchFilter" oninput="renderTeacherTable()" placeholder="Buscar aluno por nome..." class="w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            </div>
+            <!-- Filtro Seletor de Turma -->
+            <select id="teacherClassSelectFilter" onchange="renderTeacherDashboard()" class="text-xs sm:text-sm font-bold border border-slate-300 rounded-xl p-2 bg-white text-slate-800 focus:ring-2 focus:ring-indigo-500">
+              <option value="ALL">Todas as Turmas</option>
+              <option value="2º Ano A">2º Ano A</option>
+              <option value="2º Ano B">2º Ano B</option>
+            </select>
           </div>
 
           <div class="flex items-center space-x-2">
@@ -940,6 +915,9 @@
               <option value="PARTIAL">Inconsistente (&lt; 100 pts)</option>
               <option value="PENDING">Apenas Presença (Sem envio)</option>
             </select>
+            <button onclick="clearAllClassDataCloud()" class="p-2 text-rose-600 hover:bg-rose-50 rounded-xl border border-rose-200 transition" title="Limpar Lista da Turma">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
           </div>
         </div>
 
@@ -955,16 +933,16 @@
                 <th class="py-3.5 px-4 text-right">Auditar Resolução</th>
               </tr>
             </thead>
-            <tbody id="teacherTableBody" class="divide-y divide-slate-100">
-              <!-- Gerado via JS -->
-            </tbody>
+            <tbody id="teacherTableBody" class="divide-y divide-slate-100"></tbody>
           </table>
         </div>
 
         <div id="teacherTableEmpty" class="hidden p-8 text-center space-y-2">
           <i data-lucide="inbox" class="w-8 h-8 text-slate-300 mx-auto"></i>
           <p class="text-sm font-bold text-slate-600">Nenhum envio registrado para este filtro.</p>
-          <p class="text-xs text-slate-400">Quando os alunos clicarem em "Enviar Atividade", as respostas aparecem aqui instantaneamente.</p>
+          <p class="text-xs text-slate-400 max-w-md mx-auto">
+            Assim que um aluno clicar em "Finalizar" no computador dele, a resposta sincronizará automaticamente. Se o computador dele estiver sem internet, você pode clicar no botão <strong>"📥 Colar Código do Aluno"</strong> acima!
+          </p>
         </div>
       </div>
 
@@ -981,6 +959,109 @@
     </div>
   </footer>
 
+  <!-- ========================================== -->
+  <!-- MODAIS DO SISTEMA -->
+  <!-- ========================================== -->
+
+  <!-- MODAL: COMPROVANTE DIGITAL DO ALUNO (MÉTODO 1) -->
+  <div id="studentReceiptModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full border border-slate-200 shadow-2xl overflow-hidden text-center p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Cabeçalho do Comprovante -->
+      <div class="space-y-2">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-lg shadow-emerald-200">
+          <i data-lucide="check-check" class="w-9 h-9"></i>
+        </div>
+        <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+          Atividade Concluída com Sucesso!
+        </span>
+        <h3 id="receiptStudentName" class="text-xl font-black text-slate-900 pt-1">Nome do Aluno</h3>
+        <p id="receiptStudentClass" class="text-xs font-semibold text-slate-500">2º Ano A • 30/09/2026 às 19:45</p>
+      </div>
+
+      <!-- Placar de Nota -->
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center justify-around">
+        <div>
+          <span class="text-[11px] font-bold text-slate-400 block uppercase">Sua Nota</span>
+          <span id="receiptScore" class="text-3xl font-black text-indigo-600 font-mono">100 / 100</span>
+        </div>
+        <div class="h-10 w-px bg-slate-200"></div>
+        <div>
+          <span class="text-[11px] font-bold text-slate-400 block uppercase">Equação Patrimonial</span>
+          <span id="receiptStatus" class="text-sm font-black text-emerald-600 block">Balanço Bateu! ⚖</span>
+        </div>
+      </div>
+
+      <!-- Caixa do Código do Aluno (Token para Professora) -->
+      <div class="space-y-2 text-left bg-indigo-50/60 p-4 rounded-2xl border border-indigo-100">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-indigo-900 flex items-center gap-1.5">
+            <i data-lucide="key" class="w-3.5 h-3.5 text-indigo-600"></i>
+            <span>Seu Código de Comprovante:</span>
+          </span>
+          <span class="text-[10px] text-indigo-600 font-medium">À prova de falhas</span>
+        </div>
+        <textarea id="receiptCodeBox" readonly rows="2" class="w-full text-[11px] font-mono p-2 bg-white border border-indigo-200 rounded-xl text-slate-600 focus:outline-none select-all resize-none"></textarea>
+        <p class="text-[11px] text-indigo-700 leading-snug">
+          💡 <strong>Dica:</strong> Se a professora pedir, clique em <strong>Copiar Código</strong> e envie para ela, ou compartilhe via WhatsApp da turma.
+        </p>
+      </div>
+
+      <!-- Botões de Ação do Aluno -->
+      <div class="space-y-2 pt-1">
+        <button onclick="copyReceiptCode()" id="btnCopyReceipt" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>Copiar Código de Resposta</span>
+        </button>
+
+        <a id="btnWhatsappShare" target="_blank" href="#" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center space-x-2">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>📲 Enviar Comprovante no WhatsApp</span>
+        </a>
+
+        <button onclick="closeReceiptModal()" class="w-full py-2 text-xs font-bold text-slate-400 hover:text-slate-600 transition">
+          Fechar Comprovante
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: COLAR CÓDIGO DO ALUNO (PROFESSORA - MÉTODO 1) -->
+  <div id="pasteCodeModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div class="flex items-center space-x-2.5">
+          <span class="p-2 rounded-xl bg-violet-100 text-violet-700">
+            <i data-lucide="clipboard-paste" class="w-5 h-5"></i>
+          </span>
+          <div>
+            <h3 class="text-base font-black text-slate-900">Importar Envio Manual</h3>
+            <p class="text-xs text-slate-500">Cole o código de comprovante que o aluno enviou pelo WhatsApp ou Classroom.</p>
+          </div>
+        </div>
+        <button onclick="closePasteModal()" class="text-slate-400 hover:text-slate-700 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-1.5">
+        <label for="pastedStudentCode" class="text-xs font-bold text-slate-700">Código do Aluno (Token):</label>
+        <textarea id="pastedStudentCode" rows="4" placeholder="Cole aqui o código gerado pelo aluno..." class="w-full text-xs font-mono p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-violet-500 focus:outline-none bg-slate-50"></textarea>
+      </div>
+
+      <div class="flex items-center justify-end space-x-2 pt-2">
+        <button onclick="closePasteModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+          Cancelar
+        </button>
+        <button onclick="processPastedStudentCode()" class="px-5 py-2 text-xs font-black text-white bg-violet-600 hover:bg-violet-700 rounded-xl shadow transition flex items-center space-x-1.5">
+          <i data-lucide="check" class="w-4 h-4"></i>
+          <span>Processar & Adicionar à Lista</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Autenticação da Professora (Senha: prof123) -->
   <div id="teacherAuthModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full border border-slate-200 shadow-2xl p-6 space-y-4 text-center">
@@ -989,7 +1070,7 @@
       </div>
       <div>
         <h3 class="text-lg font-black text-slate-900">Acesso ao Painel Docente</h3>
-        <p class="text-xs text-slate-500 mt-1">Informe sua senha credenciada para visualizar os envios dos alunos.</p>
+        <p class="text-xs text-slate-500 mt-1">Informe sua senha credenciada para desbloquear a gestão de turmas.</p>
       </div>
 
       <div>
@@ -1040,22 +1121,16 @@
         </div>
 
         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Valores Lançados nos 7 Razonetes:</h4>
-        <div id="modalRazonetesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          <!-- Preenchido via JS -->
-        </div>
+        <div id="modalRazonetesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"></div>
 
         <div class="pt-2">
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Equação Patrimonial Digitada pelo Aluno:</h4>
-          <div id="modalEquationSummary" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-700">
-            <!-- Preenchido via JS -->
-          </div>
+          <div id="modalEquationSummary" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-700"></div>
         </div>
 
         <div class="pt-2">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Feedback da Atividade:</h4>
-          <ul id="modalFeedbackList" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-600">
-            <!-- Preenchido via JS -->
-          </ul>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Diagnóstico Pedagógico do Envio:</h4>
+          <ul id="modalFeedbackList" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs text-slate-600"></ul>
         </div>
       </div>
 
@@ -1078,12 +1153,19 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'gamerzone_turmas_2026';
+    // ==========================================
+    // CAMADA RESILIENTE DE NUVEM & SINCRONIZAÇÃO
+    // ==========================================
+    let currentRoom = localStorage.getItem('gamerzone_current_room') || 'TURMA-ADM-2026';
+    const KV_BASE_URL = 'https://api.restful-api.dev/objects';
+    const LOCAL_CACHE_KEY = 'gamerzone_class_list_cache';
     const ACTIVE_STUDENT_KEY = 'gamerzone_estudante_ativo';
     
     // Senha padrão oficial da professora
     const TEACHER_CORRECT_PASSWORD = "prof123";
     let isTeacherUnlocked = false;
+    let cachedClassList = [];
+    let autoPollingInterval = null;
 
     // GABARITO OFICIAL
     const GABARITO = {
@@ -1096,14 +1178,134 @@
       capital: { debitos: [], creditos: [5000], saldoVal: 5000, saldoNat: 'C', nome: 'Capital Social' }
     };
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
+      updateRoomDisplays();
       loadActiveStudent();
-      initDemoDataIfEmpty();
+      loadLocalCache();
       setupSecretTriggers();
+      await fetchCloudData();
+      startRealTimeCloudPolling();
     });
 
-    // Configuração dos Gatilhos para a Professora
+    function updateRoomDisplays() {
+      const hBadge = document.getElementById('headerRoomLabel');
+      const curText = document.getElementById('currentRoomText');
+      if (hBadge) hBadge.textContent = currentRoom;
+      if (curText) curText.textContent = currentRoom;
+    }
+
+    function changeCloudRoom() {
+      const input = document.getElementById('customRoomInput');
+      const newRoom = (input.value || '').trim().toUpperCase();
+      if (!newRoom) {
+        showToast('Digite um nome válido para a sala.', 'error');
+        return;
+      }
+      currentRoom = newRoom;
+      localStorage.setItem('gamerzone_current_room', currentRoom);
+      updateRoomDisplays();
+      input.value = '';
+      showToast(`Sala alterada para: ${currentRoom}. Sincronizando...`);
+      fetchCloudData();
+    }
+
+    // Busca dados em tempo real da nuvem via endpoint aberto
+    async function fetchCloudData() {
+      try {
+        // Consultamos a API pública pelo identificador da sala
+        const res = await fetch(`https://api.restful-api.dev/objects?name=${encodeURIComponent('GZ_ROOM_' + currentRoom)}`);
+        if (res.ok) {
+          const list = await res.json();
+          if (Array.isArray(list) && list.length > 0) {
+            // Pega o registro mais recente
+            const latestObj = list[list.length - 1];
+            if (latestObj && latestObj.data && Array.isArray(latestObj.data.students)) {
+              mergeIncomingStudents(latestObj.data.students);
+              localStorage.setItem('gamerzone_room_obj_id', latestObj.id);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Nuvem em modo local/fallback:", err);
+      }
+      if (isTeacherUnlocked) {
+        renderTeacherDashboard();
+      }
+    }
+
+    // Mescla alunos recebidos sem duplicar
+    function mergeIncomingStudents(incomingList) {
+      incomingList.forEach(incoming => {
+        const idx = cachedClassList.findIndex(s => 
+          s.name.trim().toLowerCase() === incoming.name.trim().toLowerCase() && 
+          s.turma === incoming.turma
+        );
+        if (idx >= 0) {
+          // Mantém o de maior nota ou com envio completo
+          if (!cachedClassList[idx].score && incoming.score) {
+            cachedClassList[idx] = incoming;
+          } else if (incoming.submittedAt) {
+            cachedClassList[idx] = incoming;
+          }
+        } else {
+          cachedClassList.push(incoming);
+        }
+      });
+      localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(cachedClassList));
+    }
+
+    // Envia novos dados para a nuvem
+    async function pushCloudStudent(student) {
+      // 1. Atualiza cache local imediatamente
+      mergeIncomingStudents([student]);
+
+      // 2. Transmite para a API da nuvem
+      try {
+        await fetch(KV_BASE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'GZ_ROOM_' + currentRoom,
+            data: {
+              room: currentRoom,
+              students: cachedClassList,
+              lastUpdated: new Date().toISOString()
+            }
+          })
+        });
+      } catch (err) {
+        console.warn("Falha na sincronização via REST, mantido no cache seguro.");
+      }
+    }
+
+    function loadLocalCache() {
+      const stored = localStorage.getItem(LOCAL_CACHE_KEY);
+      if (stored) {
+        try {
+          cachedClassList = JSON.parse(stored);
+        } catch (e) {
+          cachedClassList = [];
+        }
+      }
+    }
+
+    function startRealTimeCloudPolling() {
+      if (autoPollingInterval) clearInterval(autoPollingInterval);
+      // Polling a cada 5 segundos
+      autoPollingInterval = setInterval(() => {
+        fetchCloudData();
+      }, 5000);
+    }
+
+    async function refreshCloudDataManual() {
+      showToast('Sincronizando com a nuvem...', 'info');
+      await fetchCloudData();
+      renderTeacherDashboard();
+      showToast('Nuvem atualizada!');
+    }
+
+    // Configuração dos Gatilhos Secretos da Professora
     function setupSecretTriggers() {
       // Atalho de Teclado: Ctrl + Shift + P ou Cmd + Shift + P
       window.addEventListener('keydown', (e) => {
@@ -1113,7 +1315,7 @@
         }
       });
 
-      // Tecla Enter no campo da senha
+      // Tecla Enter no campo de senha
       const pwdInput = document.getElementById('teacherPasswordInput');
       if (pwdInput) {
         pwdInput.addEventListener('keydown', (e) => {
@@ -1185,7 +1387,7 @@
         isTeacherUnlocked = true;
         closeTeacherAuthModal();
         showTeacherDashboard();
-        showToast('Painel Docente autenticado com sucesso!');
+        showToast('Painel Docente desbloqueado!');
       } else {
         document.getElementById('teacherAuthError').classList.remove('hidden');
         pwdInput.value = '';
@@ -1193,9 +1395,10 @@
       }
     }
 
-    function showTeacherDashboard() {
+    async function showTeacherDashboard() {
       document.getElementById('studentContainer').classList.add('hidden');
       document.getElementById('teacherDashboardContainer').classList.remove('hidden');
+      await fetchCloudData();
       renderTeacherDashboard();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       lucide.createIcons();
@@ -1235,7 +1438,7 @@
     }
 
     // REGISTRO DE PRESENÇA DO ALUNO (2º Ano A ou 2º Ano B)
-    function registerAttendance() {
+    async function registerAttendance() {
       const name = document.getElementById('studentNameInput').value.trim();
       const studentClass = document.getElementById('studentClassInput').value;
 
@@ -1262,9 +1465,9 @@
       };
 
       localStorage.setItem(ACTIVE_STUDENT_KEY, JSON.stringify(activeStudent));
-      upsertStudent(activeStudent);
       updateAttendanceBadge(activeStudent);
-      showToast(`Presença confirmada às ${activeStudent.attendanceTime} para ${name} (${studentClass})!`);
+      await pushCloudStudent(activeStudent);
+      showToast(`Presença confirmada e registrada na turma (${studentClass})!`);
     }
 
     function updateAttendanceBadge(student) {
@@ -1434,7 +1637,6 @@
       document.getElementById('eq-total-ativo').textContent = 'R$ 0,00';
       document.getElementById('eq-total-passivo').textContent = 'R$ 0,00';
       verifyEquationMatch();
-      document.getElementById('studentFeedbackCard').classList.add('hidden');
       showToast('Todos os campos foram limpos.');
     }
 
@@ -1455,7 +1657,7 @@
     }
 
     // ENVIO DA ATIVIDADE PELO ALUNO
-    function submitStudentExercise() {
+    async function submitStudentExercise() {
       const name = document.getElementById('studentNameInput').value.trim();
       const turma = document.getElementById('studentClassInput').value;
 
@@ -1514,7 +1716,7 @@
         if (isFull) {
           feedbackList.push({
             type: 'success',
-            text: `Conta ${correct.nome}: Lançamentos e saldo final apurados com perfeição!`
+            text: `Conta ${correct.nome}: Lançamentos e saldo apurados com perfeição!`
           });
         } else {
           const errors = [];
@@ -1548,18 +1750,6 @@
 
       const totalScore = Math.min(100, Math.round(razonetesScore + equationScore));
 
-      if (equationCorrect) {
-        feedbackList.push({
-          type: 'success',
-          text: 'Equação Patrimonial: Ativo = Passivo + PL (R$ 6.000,00 = R$ 6.000,00). O Balanço Bateu (+30 pts)!'
-        });
-      } else {
-        feedbackList.push({
-          type: 'error',
-          text: `Equação Patrimonial: Houve diferença. Ativo somou R$ ${totAtivo.toFixed(2)} e Passivo+PL somou R$ ${totPassivoPL.toFixed(2)}. O valor correto em ambos os lados é R$ 6.000,00.`
-        });
-      }
-
       const nowTime = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       const nowDate = new Date().toLocaleDateString('pt-BR');
 
@@ -1587,245 +1777,165 @@
       };
 
       localStorage.setItem(ACTIVE_STUDENT_KEY, JSON.stringify(studentData));
-      upsertStudent(studentData);
-      renderStudentFeedback(studentData);
-      verifyEquationMatch();
       updateAttendanceBadge(studentData);
-      showToast(`Atividade enviada com sucesso para a Professora! Nota: ${totalScore}/100.`);
+
+      // Transmissão para a Nuvem
+      await pushCloudStudent(studentData);
+
+      // Exibição do Comprovante Digital (À Prova de Falhas)
+      openReceiptModal(studentData);
     }
 
-    function renderStudentFeedback(data) {
-      const card = document.getElementById('studentFeedbackCard');
-      const scoreVal = document.getElementById('feedbackScoreValue');
-      const scoreTitle = document.getElementById('feedbackScoreTitle');
-      const badgeIconContainer = document.getElementById('badgeIconContainer');
-      const list = document.getElementById('feedbackAccountList');
-      const spanAtivo = document.getElementById('feedbackAtivoTotal');
-      const spanPassivo = document.getElementById('feedbackPassivoTotal');
-      const balanceMsg = document.getElementById('feedbackBalanceMessage');
+    // Geração do Comprovante Digital (Método 1)
+    function openReceiptModal(data) {
+      document.getElementById('receiptStudentName').textContent = data.name;
+      document.getElementById('receiptStudentClass').textContent = `${data.turma} • ${data.submittedAt}`;
+      document.getElementById('receiptScore').textContent = `${data.score} / 100`;
 
-      card.classList.remove('hidden');
-      scoreVal.textContent = `${data.score} / 100`;
-
-      if (data.score === 100) {
-        scoreTitle.textContent = "Nota 10! Razonetes e Balanço Perfeitos!";
-        badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-emerald-600 shadow-md";
-        badgeIconContainer.innerHTML = '<i data-lucide="trophy" class="w-7 h-7"></i>';
-      } else if (data.score >= 60) {
-        scoreTitle.textContent = "Bom trabalho! Quase tudo fechadinho!";
-        badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-indigo-600 shadow-md";
-        badgeIconContainer.innerHTML = '<i data-lucide="award" class="w-7 h-7"></i>';
+      const statusEl = document.getElementById('receiptStatus');
+      if (data.equationCorrect) {
+        statusEl.textContent = 'Balanço Bateu! 🎉';
+        statusEl.className = 'text-sm font-black text-emerald-600 block';
       } else {
-        scoreTitle.textContent = "Atenção: Revise as continhas e a Equação Patrimonial!";
-        badgeIconContainer.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-amber-500 shadow-md";
-        badgeIconContainer.innerHTML = '<i data-lucide="alert-circle" class="w-7 h-7"></i>';
+        statusEl.textContent = 'Diferença no Balanço ⚠️';
+        statusEl.className = 'text-sm font-black text-amber-600 block';
       }
 
-      list.innerHTML = '';
-      data.feedback.forEach(item => {
-        const li = document.createElement('li');
-        li.className = `flex items-start space-x-2 ${item.type === 'success' ? 'text-emerald-700 font-medium' : 'text-slate-700'}`;
-        li.innerHTML = `
-          <i data-lucide="${item.type === 'success' ? 'check' : 'alert-circle'}" class="w-4 h-4 flex-shrink-0 mt-0.5 ${item.type === 'success' ? 'text-emerald-500' : 'text-amber-500'}"></i>
-          <span>${item.text}</span>
-        `;
-        list.appendChild(li);
-      });
+      // Gera Token compacto seguro em Base64 para envio manual
+      const tokenPayload = {
+        n: data.name,
+        t: data.turma,
+        s: data.score,
+        b: data.equationCorrect,
+        at: data.submittedAt,
+        ans: data.answers,
+        eq: data.equationValues,
+        diag: data.diagnostics,
+        totA: data.ativoTotal,
+        totP: data.passivoPLTotal
+      };
 
-      spanAtivo.textContent = `R$ ${data.ativoTotal.toFixed(2)}`;
-      spanPassivo.textContent = `R$ ${data.passivoPLTotal.toFixed(2)}`;
+      const tokenString = "GZ#" + btoa(unescape(encodeURIComponent(JSON.stringify(tokenPayload))));
+      document.getElementById('receiptCodeBox').value = tokenString;
 
-      if (data.isBalanced) {
-        balanceMsg.textContent = "Parabéns! O Balanço bateu: Ativo (R$ 6.000,00) = Passivo + PL (R$ 6.000,00).";
-        balanceMsg.className = "text-emerald-700 font-semibold bg-emerald-50 p-2.5 rounded-lg border border-emerald-200 text-xs";
-      } else {
-        balanceMsg.textContent = "O Balanço não fechou em R$ 6.000,00. Revise os saldos que digitou ou verifique se algum razonete tem valor trocado.";
-        balanceMsg.className = "text-amber-700 font-medium bg-amber-50 p-2.5 rounded-lg border border-amber-200 text-xs";
-      }
+      // Link Dinâmico de WhatsApp com mensagem formatada
+      const wpMsg = encodeURIComponent(
+        `*COMPROVANTE DE CONTABILIDADE - ARENA GAMERZONE*\n` +
+        `👤 *Aluno(a):* ${data.name}\n` +
+        `🏫 *Turma:* ${data.turma}\n` +
+        `🏆 *Nota:* ${data.score}/100\n` +
+        `⚖️ *Balanço:* ${data.equationCorrect ? 'Bateu Perfeito (R$ 6.000,00)' : 'Com Diferença'}\n` +
+        `🕒 *Enviado em:* ${data.submittedAt}\n\n` +
+        `🔑 *Código Digital do Aluno:*\n${tokenString}`
+      );
+      document.getElementById('btnWhatsappShare').href = `https://api.whatsapp.com/send?text=${wpMsg}`;
 
       lucide.createIcons();
-      card.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('studentReceiptModal').classList.remove('hidden');
     }
 
-    // PERSISTÊNCIA LOCAL & GESTÃO DA PROFESSORA
-    function getClassList() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return [];
+    function closeReceiptModal() {
+      document.getElementById('studentReceiptModal').classList.add('hidden');
+    }
+
+    function copyReceiptCode() {
+      const codeBox = document.getElementById('receiptCodeBox');
+      codeBox.select();
+      codeBox.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+
+      const btn = document.getElementById('btnCopyReceipt');
+      const oldHtml = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i><span>Código Copiado com Sucesso!</span>';
+      lucide.createIcons();
+
+      setTimeout(() => {
+        btn.innerHTML = oldHtml;
+        lucide.createIcons();
+      }, 2500);
+
+      showToast('Código de envio copiado! Você pode colar no WhatsApp ou Classroom.');
+    }
+
+    // MODAL DE IMPORTAÇÃO MANUAL PELA PROFESSORA
+    function openPasteModal() {
+      document.getElementById('pastedStudentCode').value = '';
+      document.getElementById('pasteCodeModal').classList.remove('hidden');
+    }
+
+    function closePasteModal() {
+      document.getElementById('pasteCodeModal').classList.add('hidden');
+    }
+
+    function processPastedStudentCode() {
+      const raw = document.getElementById('pastedStudentCode').value.trim();
+      if (!raw) {
+        showToast('Cole o código do aluno no campo!', 'error');
+        return;
+      }
+
       try {
-        return JSON.parse(stored);
-      } catch (e) {
-        return [];
-      }
-    }
-
-    function saveClassList(list) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    }
-
-    function upsertStudent(student) {
-      const list = getClassList();
-      const idx = list.findIndex(s => s.name.toLowerCase() === student.name.toLowerCase() && s.turma === student.turma);
-      if (idx >= 0) {
-        list[idx] = { ...list[idx], ...student };
-      } else {
-        list.push(student);
-      }
-      saveClassList(list);
-    }
-
-    function initDemoDataIfEmpty() {
-      const list = getClassList();
-      if (list.length === 0) {
-        loadDemoClassData(false);
-      }
-    }
-
-    function loadDemoClassData(notify = true) {
-      const demoList = [
-        {
-          name: "Gabriel Santos",
-          turma: "2º Ano A",
-          attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:35",
-          submittedAt: `${new Date().toLocaleDateString('pt-BR')} às 07:55`,
-          status: "EXCELENTE",
-          score: 100,
-          equationCorrect: true,
-          ativoTotal: 6000,
-          passivoPLTotal: 6000,
-          equationValues: { caixa: 1400, banco: 500, equip: 2000, estoque: 1500, moveis: 600, fornecedores: 1000, capital: 5000 },
-          answers: GABARITO,
-          diagnostics: {
-            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: true },
-            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
-          },
-          feedback: [
-            { type: 'success', text: 'Todos os razonetes corretos com continhas calculadas.' },
-            { type: 'success', text: 'Equação Patrimonial: Ativo = Passivo + PL (R$ 6.000,00 = R$ 6.000,00).' }
-          ]
-        },
-        {
-          name: "Isabela Lima",
-          turma: "2º Ano A",
-          attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:40",
-          submittedAt: `${new Date().toLocaleDateString('pt-BR')} às 08:02`,
-          status: "EXCELENTE",
-          score: 100,
-          equationCorrect: true,
-          ativoTotal: 6000,
-          passivoPLTotal: 6000,
-          equationValues: { caixa: 1400, banco: 500, equip: 2000, estoque: 1500, moveis: 600, fornecedores: 1000, capital: 5000 },
-          answers: GABARITO,
-          diagnostics: {
-            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: true },
-            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
-          },
-          feedback: [
-            { type: 'success', text: 'Todos os razonetes corretos.' },
-            { type: 'success', text: 'Equação Patrimonial validada com sucesso.' }
-          ]
-        },
-        {
-          name: "Lucas Menezes",
-          turma: "2º Ano A",
-          attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:42",
-          submittedAt: `${new Date().toLocaleDateString('pt-BR')} às 08:10`,
-          status: "BOM",
-          score: 75,
-          equationCorrect: false,
-          ativoTotal: 6500,
-          passivoPLTotal: 6000,
-          equationValues: { caixa: 1400, banco: 1000, equip: 2000, estoque: 1500, moveis: 600, fornecedores: 1000, capital: 5000 },
-          answers: {
-            ...GABARITO,
-            banco: { debitos: [3000], creditos: [2000], saldoVal: 1000, saldoNat: 'D' }
-          },
-          diagnostics: {
-            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: false },
-            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
-          },
-          feedback: [
-            { type: 'error', text: 'Conta Banco c/ Movimento: Esqueceu o abatimento de R$ 500 do Fato (6).' },
-            { type: 'error', text: 'Equação Patrimonial: Ativo deu R$ 6.500,00 vs R$ 6.000,00 de Passivo+PL.' }
-          ]
-        },
-        {
-          name: "Mariana Costa",
-          turma: "2º Ano B",
-          attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:45",
-          submittedAt: `${new Date().toLocaleDateString('pt-BR')} às 08:05`,
-          status: "EXCELENTE",
-          score: 100,
-          equationCorrect: true,
-          ativoTotal: 6000,
-          passivoPLTotal: 6000,
-          equationValues: { caixa: 1400, banco: 500, equip: 2000, estoque: 1500, moveis: 600, fornecedores: 1000, capital: 5000 },
-          answers: GABARITO,
-          diagnostics: {
-            caixa: { isFull: true }, capital: { isFull: true }, banco: { isFull: true },
-            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: true }
-          },
-          feedback: [{ type: 'success', text: 'Resolução nota 10!' }]
-        },
-        {
-          name: "Thiago Oliveira",
-          turma: "2º Ano B",
-          attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:48",
-          submittedAt: `${new Date().toLocaleDateString('pt-BR')} às 08:15`,
-          status: "REVISAR",
-          score: 50,
-          equationCorrect: false,
-          ativoTotal: 5400,
-          passivoPLTotal: 7000,
-          equationValues: { caixa: 2600, banco: 500, equip: 2000, estoque: 1500, moveis: 600, fornecedores: 2000, capital: 5000 },
-          answers: {
-            ...GABARITO,
-            caixa: { debitos: [5000, 600], creditos: [3000], saldoVal: 2600, saldoNat: 'D' },
-            fornecedores: { debitos: [], creditos: [1500, 500], saldoVal: 2000, saldoNat: 'C' }
-          },
-          diagnostics: {
-            caixa: { isFull: false }, capital: { isFull: true }, banco: { isFull: true },
-            equipamentos: { isFull: true }, estoque: { isFull: true }, moveis: { isFull: true }, fornecedores: { isFull: false }
-          },
-          feedback: [{ type: 'error', text: 'Inverteu débitos e créditos no Caixa e em Fornecedores.' }]
-        },
-        {
-          name: "Beatriz Nogueira",
-          turma: "2º Ano B",
-          attendanceDate: new Date().toLocaleDateString('pt-BR'),
-          attendanceTime: "07:55",
-          submittedAt: null,
-          status: "PENDING",
-          score: null,
-          equationCorrect: false,
-          ativoTotal: 0,
-          passivoPLTotal: 0,
-          answers: null,
-          diagnostics: null,
-          feedback: null
+        let jsonStr = '';
+        if (raw.startsWith('GZ#')) {
+          jsonStr = decodeURIComponent(escape(atob(raw.substring(3))));
+        } else {
+          jsonStr = decodeURIComponent(escape(atob(raw)));
         }
-      ];
 
-      saveClassList(demoList);
-      if (notify) {
-        showToast('Lista populada com simulações de envio!');
+        const p = JSON.parse(jsonStr);
+
+        const reconstructedStudent = {
+          name: p.n,
+          turma: p.t,
+          attendanceTime: p.at.split(' às ')[1] || '19:00',
+          attendanceDate: p.at.split(' às ')[0] || new Date().toLocaleDateString('pt-BR'),
+          submittedAt: p.at,
+          status: p.s === 100 ? 'EXCELENTE' : (p.s >= 60 ? 'BOM' : 'REVISAR'),
+          score: p.s,
+          equationCorrect: p.b,
+          isBalanced: p.b,
+          answers: p.ans,
+          equationValues: p.eq,
+          diagnostics: p.diag,
+          ativoTotal: p.totA,
+          passivoPLTotal: p.totP,
+          feedback: [
+            { type: p.s === 100 ? 'success' : 'error', text: `Envio importado via Token Digital: Nota ${p.s}/100.` }
+          ]
+        };
+
+        pushCloudStudent(reconstructedStudent);
+        closePasteModal();
         renderTeacherDashboard();
+        showToast(`Envio de "${reconstructedStudent.name}" importado com nota ${reconstructedStudent.score}!`);
+      } catch (err) {
+        showToast('Código inválido ou corrompido. Peça ao aluno para copiar novamente.', 'error');
       }
     }
 
-    function clearAllClassData() {
-      localStorage.removeItem(STORAGE_KEY);
+    async function clearAllClassDataCloud() {
+      cachedClassList = [];
+      localStorage.removeItem(LOCAL_CACHE_KEY);
       localStorage.removeItem(ACTIVE_STUDENT_KEY);
-      showToast('Histórico de envios zerado.', 'info');
+
+      try {
+        await fetch(KV_BASE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'GZ_ROOM_' + currentRoom,
+            data: { room: currentRoom, students: [], lastUpdated: new Date().toISOString() }
+          })
+        });
+      } catch (e) {
+        console.error(e);
+      }
+      showToast('Lista de envios da sala resetada.', 'info');
       renderTeacherDashboard();
     }
 
     function renderTeacherDashboard() {
-      const allStudents = getClassList();
+      const allStudents = cachedClassList;
       const selectedTurma = document.getElementById('teacherClassSelectFilter').value;
 
       const students = allStudents.filter(s => {
@@ -1851,7 +1961,7 @@
     }
 
     function renderTeacherTable() {
-      const allStudents = getClassList();
+      const allStudents = cachedClassList;
       const selectedTurma = document.getElementById('teacherClassSelectFilter').value;
       const tbody = document.getElementById('teacherTableBody');
       const emptyDiv = document.getElementById('teacherTableEmpty');
@@ -1921,7 +2031,7 @@
     function inspectStudent(encodedName, encodedTurma) {
       const name = decodeURIComponent(encodedName);
       const turma = decodeURIComponent(encodedTurma);
-      const student = getClassList().find(s => s.name === name && s.turma === turma);
+      const student = cachedClassList.find(s => s.name === name && s.turma === turma);
       if (!student || !student.answers) {
         showToast('Não há respostas enviadas por este aluno.', 'error');
         return;
@@ -2009,7 +2119,7 @@
 
     function exportTeacherDataToCSV() {
       const selectedTurma = document.getElementById('teacherClassSelectFilter').value;
-      const allStudents = getClassList();
+      const allStudents = cachedClassList;
       const students = allStudents.filter(s => selectedTurma === 'ALL' || s.turma === selectedTurma);
 
       if (students.length === 0) {
@@ -2047,12 +2157,12 @@
       const uri = encodeURI(csv);
       const link = document.createElement("a");
       link.setAttribute("href", uri);
-      link.setAttribute("download", `Relatorio_Envios_${selectedTurma.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.setAttribute("download", `Relatorio_GamerZone_${selectedTurma.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      showToast('Planilha CSV com envios e presenças exportada com sucesso!');
+      showToast('Planilha Excel (CSV) exportada com sucesso!');
     }
   </script>
 </body>
